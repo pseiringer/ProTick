@@ -7,6 +7,8 @@ namespace ProTickDatabase
     public class ProTickDatabaseContext : DbContext
     {
 
+        public ProTickDatabaseContext (DbContextOptions opt) : base(opt) { }
+
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
