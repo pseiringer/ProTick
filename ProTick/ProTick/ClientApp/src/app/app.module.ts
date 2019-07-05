@@ -9,7 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+//import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { CreateTicketComponent } from './create-ticket/create-ticket.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    CreateTicketComponent
+    //CreateTicketComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,7 +28,7 @@ import { CreateTicketComponent } from './create-ticket/create-ticket.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'create-ticket', component: CreateTicketComponent },
+     // { path: 'create-ticket', component: CreateTicketComponent },
     ])
   ],
   providers: [],

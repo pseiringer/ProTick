@@ -7,3 +7,12 @@ D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreap
 D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.AssemblyInfo.cs
 D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.dll
 D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.pdb
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\bin\Debug\netcoreapp2.1\ProTickDatabase.deps.json
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\bin\Debug\netcoreapp2.1\ProTickDatabase.dll
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\bin\Debug\netcoreapp2.1\ProTickDatabase.pdb
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.csprojAssemblyReference.cache
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.csproj.CoreCompileInputs.cache
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.AssemblyInfoInputs.cache
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.AssemblyInfo.cs
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.dll
+C:\Diplomarbeit\Projekt\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.pdb
