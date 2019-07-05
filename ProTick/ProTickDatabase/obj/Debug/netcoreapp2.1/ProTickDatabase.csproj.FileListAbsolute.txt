@@ -1,0 +1,9 @@
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\bin\Debug\netcoreapp2.1\ProTickDatabase.deps.json
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\bin\Debug\netcoreapp2.1\ProTickDatabase.dll
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\bin\Debug\netcoreapp2.1\ProTickDatabase.pdb
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.csprojAssemblyReference.cache
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.csproj.CoreCompileInputs.cache
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.AssemblyInfoInputs.cache
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.AssemblyInfo.cs
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.dll
+D:\Files\Schule\Diplomarbeit\ProTick\ProTick\ProTickDatabase\obj\Debug\netcoreapp2.1\ProTickDatabase.pdb
