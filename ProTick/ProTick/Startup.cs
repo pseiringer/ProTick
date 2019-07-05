@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProTickDatabase;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore;
 
 namespace ProTick
 {
@@ -21,6 +24,9 @@ namespace ProTick
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<ProTickDatabaseContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -45,7 +51,7 @@ namespace ProTick
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -65,6 +71,8 @@ namespace ProTick
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            //(app.ApplicationServices.GetRequiredService<ProTickDatabaseContext>()).Database.EnsureCreated();
         }
     }
 }

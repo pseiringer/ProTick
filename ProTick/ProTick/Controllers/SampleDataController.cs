@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ProTickDatabase;
+using ProTickDatabase.DatabasePOCOs;
 
 namespace ProTick.Controllers
 {
@@ -15,8 +17,17 @@ namespace ProTick.Controllers
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public IEnumerable<WeatherForecast> WeatherForecasts([FromServices] ProTickDatabaseContext db)
         {
+            Console.WriteLine("WeatherForecast");
+            Console.WriteLine("WeatherForecast2");
+            db.Address.Add(new Address { Country = "Abc", PostalCode = 123, Street = "strasse", StreetNumber = "12" });
+            db.SaveChanges();
+            var temp = db.Address.FirstOrDefault();
+            if (temp == null)
+                Console.WriteLine("null");
+            else
+                Console.WriteLine(temp.ToString());
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
