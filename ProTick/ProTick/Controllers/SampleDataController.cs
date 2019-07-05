@@ -20,7 +20,9 @@ namespace ProTick.Controllers
         public IEnumerable<WeatherForecast> WeatherForecasts([FromServices] ProTickDatabaseContext db)
         {
             Console.WriteLine("WeatherForecast");
+            Console.WriteLine("WeatherForecast2");
             db.Address.Add(new Address { Country = "Abc", PostalCode = 123, Street = "strasse", StreetNumber = "12" });
+            db.SaveChanges();
             var temp = db.Address.FirstOrDefault();
             if (temp == null)
                 Console.WriteLine("null");
