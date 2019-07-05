@@ -9,17 +9,17 @@ namespace ProTickDatabase
 
         public ProTickDatabaseContext (DbContextOptions opt) : base(opt) { }
 
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<Privilege> Privileges { get; set; }
-        public DbSet<EmployeeTeam> EmployeeTeams { get; set; }
-        public DbSet<EmployeeTeamPrivilege> EmployeeTeamPrivileges { get; set; }
-        public DbSet<Process> Processes { get; set; }
-        public DbSet<Subprocess> Subprocesses { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Team> Team { get; set; }
+        public DbSet<Privilege> Privilege { get; set; }
+        public DbSet<EmployeeTeam> EmployeeTeam { get; set; }
+        public DbSet<EmployeeTeamPrivilege> EmployeeTeamPrivilege { get; set; }
+        public DbSet<Process> Process { get; set; }
+        public DbSet<Subprocess> Subprocess { get; set; }
         public DbSet<ParentChildRelation> ParentChildRelation { get; set; }
-        public DbSet<State> States { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<State> State { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
 
 
     }

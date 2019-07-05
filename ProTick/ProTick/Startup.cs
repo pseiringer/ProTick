@@ -72,7 +72,7 @@ namespace ProTick
                 }
             });
 
-            (app.ApplicationServices.GetRequiredService<ProTickDatabaseContext>()).Database.EnsureCreated();
+            //(app.ApplicationServices.GetRequiredService<ProTickDatabaseContext>()).Database.EnsureCreated();
         }
     }
 }
