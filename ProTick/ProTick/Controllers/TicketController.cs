@@ -11,24 +11,24 @@ namespace ProTick.Controllers
     [Route("ProTick/[controller]")]
     public class TicketController : Controller
     {
-        private ResourceDTOConverter converter = new ResourceDTOConverter();
+        private ResourceDTOConverter converter = new ResourceDTOConverter(null);
 
         [HttpGet]
-        public IEnumerable<AddressResourceDTO> GetAllTickets([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<AddressDTO> GetAllTickets([FromServices] ProTickDatabaseContext db)
         {
             return db.Address.ToList().Select(x => converter.AddressToDTO(x)).ToList();
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<AddressResourceDTO> GetTicketByID([FromServices] ProTickDatabaseContext db, int id)
+        public IEnumerable<AddressDTO> GetTicketByID([FromServices] ProTickDatabaseContext db, int id)
         {
             return db.Address.Where(x => x.AddressID == id).ToList().Select(x => converter.AddressToDTO(x)).ToList();
         }
 
         [HttpPost("Ticket")]
-        public void PostTicket([FromServices] ProTickDatabaseContext db, AddressResourceDTO address)
+        public void PostTicket([FromServices] ProTickDatabaseContext db, AddressDTO address)
         {
-            db.Address.Add(converter.ResourceToAddress(address));
+            db.Address.Add(converter.DTOToAddress(address));
             db.SaveChanges();
         }
 
