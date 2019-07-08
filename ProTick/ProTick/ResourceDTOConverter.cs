@@ -18,6 +18,12 @@ namespace ProTick
             this.db = db;
         }
 
+        public ResourceDTOConverter()
+        {
+        }
+
+
+
         #region ------ DB to DTO
         public AddressDTO AddressToDTO(Address a)
         {
@@ -118,7 +124,7 @@ namespace ProTick
             }
             else
             {
-                return new EmployeeTeamPrivilege { EmployeeTeam = db.EmployeeTeam.First(x => x.EmployeeTeamID == a.EmployeeTeamID), EmployeeTeamPrivilegeID = a.EmployeeTeamPrivilegeID, Privilege = db.Privilege.First(x => x.PrivilegeID == a.PrivilegeID};
+                return new EmployeeTeamPrivilege { EmployeeTeam = db.EmployeeTeam.First(x => x.EmployeeTeamID == a.EmployeeTeamID), EmployeeTeamPrivilegeID = a.EmployeeTeamPrivilegeID, Privilege = db.Privilege.First(x => x.PrivilegeID == a.PrivilegeID)};
 
             }
         }
@@ -161,7 +167,7 @@ namespace ProTick
             }
             else
             {
-                return new Subprocess { Description = a.Description, Process = db.Process.First(x => x.ProcessID == a.ProcessID), SubprocessID = a.SubprocessID, Team = db.Team.First(x => x.TeamID == a.TeamID};
+                return new Subprocess { Description = a.Description, Process = db.Process.First(x => x.ProcessID == a.ProcessID), SubprocessID = a.SubprocessID, Team = db.Team.First(x => x.TeamID == a.TeamID)};
 
             }
         }

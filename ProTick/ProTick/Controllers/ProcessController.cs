@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ProTick.ResourceDTOs;
 using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
 
@@ -11,6 +12,8 @@ namespace ProTick.Controllers
     [Route("ProTick/[controller]")]
     public class ProcessController : Controller
     {
+        private ResourceDTOConverter converter = new ResourceDTOConverter(null);
+
         public IActionResult Index()
         {
             return View();
@@ -26,15 +29,15 @@ namespace ProTick.Controllers
         }
 
         [HttpGet("{id}")]
-        public Process GetProcess([FromServices] ProTickDatabaseContext db, int id)
+        public ProcessDTO GetProcess([FromServices] ProTickDatabaseContext db, int id)
         {
-            return db.Process.First(x => x.ProcessID == id);
+            return converter.ProcessToDTO(db.Process.First(x => x.ProcessID == id));
         }
 
         [HttpGet]
-        public List<Process> GetProcesses([FromServices] ProTickDatabaseContext db)
+        public List<ProcessDTO> GetProcesses([FromServices] ProTickDatabaseContext db)
         {
-            return db.Process.ToList();
+            return db.Process.Select(x => converter.ProcessToDTO(x)).ToList();
         }
 
         [HttpPost("{p}")]
