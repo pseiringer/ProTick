@@ -38,9 +38,25 @@ namespace ProTick.Controllers
         }
 
         [HttpPost("{p}")]
-        public List<Process> NewProcess([FromServices] ProTickDatabaseContext db, Process p)
+        public void NewProcess([FromServices] ProTickDatabaseContext db, Process p)
         {
-            return db.Process.ToList();
+            db.Process.Add(p);
+            db.SaveChanges();
+        }
+
+        [HttpPut("{id}")]
+        public void Edit([FromServices] ProTickDatabaseContext db, int id, [FromBody] Process p)
+        {
+            var pr = db.Process.FirstOrDefault(x => x.ProcessID == p.ProcessID);
+            pr.Description = p.Description;
+            db.SaveChanges();
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete([FromServices] ProTickDatabaseContext db, int id)
+        {
+            db.Process.Remove(db.Process.First(x => x.ProcessID == id));
+            db.SaveChanges();
         }
     }
 }
