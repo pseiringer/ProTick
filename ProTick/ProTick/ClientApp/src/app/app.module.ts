@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { TestComponent } from './test/test.component';
 //import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
+    TestComponent,
     //CreateTicketComponent
   ],
   imports: [
