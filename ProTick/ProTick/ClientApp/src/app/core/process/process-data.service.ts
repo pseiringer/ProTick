@@ -9,7 +9,7 @@ export class ProcessDataService {
   constructor(private http: HttpClient) { }
 
   getProcesses() : Observable<Process[]> {
-    return this.http.get<Process[]>('http://localhost:51036/ProTick/Ticket');
+    return this.http.get<Process[]>('http://localhost:51036/ProTick/Process');
   }
 
   postProcess(process: Process): Observable<Process> {

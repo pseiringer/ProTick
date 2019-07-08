@@ -13,6 +13,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 import { CoreModule } from './core/core.module';
 import { TicketsComponent } from './tickets/tickets.component';
+import { ProcessesComponent } from './processes/processes.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TicketsComponent } from './tickets/tickets.component';
     FetchDataComponent,
     CreateTicketComponent,
     TicketsComponent,
+    ProcessesComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,6 +36,7 @@ import { TicketsComponent } from './tickets/tickets.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'processes', component: ProcessesComponent },
       { path: 'tickets', component: TicketsComponent },
       { path: 'create-ticket', component: CreateTicketComponent },
     ])

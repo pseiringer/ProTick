@@ -11,7 +11,7 @@ namespace ProTick.Controllers
     [Route("ProTick/[controller]")]
     public class TicketController : Controller
     {
-        private ResourceDTOConverter converter = new ResourceDTOConverter();
+        private ResourceDTOConverter converter = new ResourceDTOConverter(null);
 
         [HttpGet]
         public IEnumerable<AddressDTO> GetAllTickets([FromServices] ProTickDatabaseContext db)
