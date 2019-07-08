@@ -19,7 +19,7 @@ namespace ProTick.Controllers
             return View();
         }
 
-        public List<Process> Test([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<Process> Test([FromServices] ProTickDatabaseContext db)
         {
             db.Process.Add(new Process { Description = "test_process_1" });
             db.Process.Add(new Process { Description = "test_process_2" });
@@ -35,24 +35,31 @@ namespace ProTick.Controllers
         }
 
         [HttpGet]
-        public List<ProcessDTO> GetProcesses([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<ProcessDTO> GetProcesses([FromServices] ProTickDatabaseContext db)
         {
             return db.Process.Select(x => converter.ProcessToDTO(x)).ToList();
         }
 
         [HttpPost("{p}")]
-        public void NewProcess([FromServices] ProTickDatabaseContext db, Process p)
+        public ProcessDTO NewProcess([FromServices] ProTickDatabaseContext db, Process p)
         {
-            db.Process.Add(p);
+            var a = db.Process.Add(p);
+            
             db.SaveChanges();
+
+            return converter.ProcessToDTO(a.Entity);
         }
 
         [HttpPut("{id}")]
-        public void Edit([FromServices] ProTickDatabaseContext db, int id, [FromBody] Process p)
+        public ProcessDTO Edit([FromServices] ProTickDatabaseContext db, int id, [FromBody] Process p)
         {
             var pr = db.Process.FirstOrDefault(x => x.ProcessID == p.ProcessID);
+
+            if(pr.Description != p.Description)
             pr.Description = p.Description;
+
             db.SaveChanges();
+            return converter.ProcessToDTO(pr);
         }
 
         [HttpDelete("{id}")]
