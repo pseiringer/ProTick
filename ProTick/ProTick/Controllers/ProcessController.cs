@@ -18,9 +18,9 @@ namespace ProTick.Controllers
 
         public List<Process> Test([FromServices] ProTickDatabaseContext db)
         {
-            db.Process.Add(new Process { Description = "test_process_1" });
-            db.Process.Add(new Process { Description = "test_process_2" });
-            db.SaveChanges();
+            //db.Process.Add(new Process { Description = "test_process_1" });
+            //db.Process.Add(new Process { Description = "test_process_2" });
+            //db.SaveChanges();
 
             return db.Process.ToList();
         }

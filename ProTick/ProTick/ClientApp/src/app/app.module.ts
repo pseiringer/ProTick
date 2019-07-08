@@ -12,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 import { CoreModule } from './core/core.module';
+import { TicketsComponent } from './tickets/tickets.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CoreModule } from './core/core.module';
     CounterComponent,
     FetchDataComponent,
     CreateTicketComponent,
+    TicketsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,6 +34,7 @@ import { CoreModule } from './core/core.module';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'tickets', component: TicketsComponent },
       { path: 'create-ticket', component: CreateTicketComponent },
     ])
   ],
