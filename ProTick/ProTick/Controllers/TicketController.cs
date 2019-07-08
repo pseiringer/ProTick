@@ -14,22 +14,36 @@ namespace ProTick.Controllers
         private ResourceDTOConverter converter = new ResourceDTOConverter();
 
         [HttpGet]
-        public IEnumerable<AddressResourceDTO> GetAllTickets([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<AddressDTO> GetAllTickets([FromServices] ProTickDatabaseContext db)
         {
             return db.Address.ToList().Select(x => converter.AddressToDTO(x)).ToList();
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<AddressResourceDTO> GetTicketByID([FromServices] ProTickDatabaseContext db, int id)
+        public AddressDTO GetTicketByID([FromServices] ProTickDatabaseContext db, int id)
         {
-            return db.Address.Where(x => x.AddressID == id).ToList().Select(x => converter.AddressToDTO(x)).ToList();
+            return converter.AddressToDTO(db.Address.FirstOrDefault(x => x.AddressID == id));
         }
 
-        [HttpPost("Ticket")]
-        public void PostTicket([FromServices] ProTickDatabaseContext db, AddressResourceDTO address)
+        [HttpPost]
+        public AddressDTO PostTicket([FromServices] ProTickDatabaseContext db, [FromBody] AddressDTO address)
         {
-            db.Address.Add(converter.ResourceToAddress(address));
+            var newAddress = db.Address.Add(converter.ResourceToAddress(address));
             db.SaveChanges();
+            return converter.AddressToDTO(newAddress.Entity);
+        }
+
+        [HttpPut("{id}")]
+        public AddressDTO PostTicket([FromServices] ProTickDatabaseContext db, int id, [FromBody] AddressDTO address)
+        {
+            var oldAddress = db.Address.FirstOrDefault(x => x.AddressID == id);
+            if (oldAddress == null) throw new 
+            if (oldAddress.AddressID != address.AddressID)
+            {
+
+            }
+            db.SaveChanges();
+            return converter.AddressToDTO(newAddress.Entity);
         }
 
     }
