@@ -3,14 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ProTick.ResourceDTOs;
+using ProTickDatabase;
 
 namespace ProTick.Controllers
 {
+    [Route("ProTick/[controller]")]
     public class TicketController : Controller
     {
-        public IActionResult Index()
+        private ResourceDTOConverter converter = new ResourceDTOConverter();
+
+        [HttpGet]
+        public IEnumerable<AddressResourceDTO> GetAllTickets([FromServices] ProTickDatabaseContext db)
         {
-            return View();
+            return db.Address.ToList().Select(x => converter.AddressToDTO(x)).ToList();
         }
+
+        [HttpGet("{id}")]
+        public IEnumerable<AddressResourceDTO> GetTicketByID([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return db.Address.Where(x => x.AddressID == id).ToList().Select(x => converter.AddressToDTO(x)).ToList();
+        }
+
+        [HttpPost("Ticket")]
+        public void PostTicket([FromServices] ProTickDatabaseContext db, AddressResourceDTO address)
+        {
+            db.Address.Add(converter.ResourceToAddress(address));
+            db.SaveChanges();
+        }
+
     }
 }
