@@ -8,7 +8,7 @@ namespace ProTickDatabase.DatabasePOCOs
     {
         public int ParentChildRelationID { get; set; }
 
-        public virtual Subprocess ParentID { get; set; }
-        public virtual Subprocess ChildID { get; set; }
+        public virtual Subprocess Parent { get; set; }
+        public virtual Subprocess Child { get; set; }
     }
 }
