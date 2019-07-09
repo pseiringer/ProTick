@@ -15,6 +15,10 @@ namespace ProTick.ResourceDTOs
         public DateTime DateOfBirth { get; set; }
         public DateTime HireDate { get; set; }
 
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
         public int AddressID { get; set; }
 
     }

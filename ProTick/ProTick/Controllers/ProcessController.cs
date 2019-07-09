@@ -51,7 +51,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public ProcessDTO Edit([FromServices] ProTickDatabaseContext db, int id, [FromBody] Process p)
+        public ProcessDTO EditProcess([FromServices] ProTickDatabaseContext db, int id, [FromBody] Process p)
         {
             var pr = db.Process.FirstOrDefault(x => x.ProcessID == p.ProcessID);
 
@@ -63,7 +63,7 @@ namespace ProTick.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Delete([FromServices] ProTickDatabaseContext db, int id)
+        public void DeleteProcess([FromServices] ProTickDatabaseContext db, int id)
         {
             db.Process.Remove(db.Process.First(x => x.ProcessID == id));
             db.SaveChanges();
