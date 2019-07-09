@@ -13,6 +13,10 @@ namespace ProTick
     {
         ProTickDatabaseContext db;
 
+        public ResourceDTOConverter()
+        {
+        }
+
         public ResourceDTOConverter(ProTickDatabaseContext db)
         {
             this.db = db;
@@ -167,7 +171,7 @@ namespace ProTick
             else
             {
                 return new Subprocess { Description = a.Description, Process = db.Process.First(x => x.ProcessID == a.ProcessID), SubprocessID = a.SubprocessID, Team = db.Team.First(x => x.TeamID == a.TeamID)};
-
+              
             }
         }
 
