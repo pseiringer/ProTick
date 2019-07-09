@@ -72,7 +72,7 @@ namespace ProTick
 
         public TeamDTO TeamToDTO(Team a)
         {
-            return new TeamDTO { TeamID = a.TeamID, Description = a.Description };
+            return new TeamDTO { TeamID = a.TeamID, Description = a.Description, Abbreviation = a.Abbreviation };
         }
 
         public TicketDTO TicketToDTO(Ticket a)
@@ -173,7 +173,7 @@ namespace ProTick
 
         public Team DTOToTeam(TeamDTO a)
         {
-            return new Team { TeamID = a.TeamID, Description = a.Description };
+            return new Team { TeamID = a.TeamID, Description = a.Description, Abbreviation = a.Abbreviation };
         }
 
         public Ticket DTOToTicket(TicketDTO a)
