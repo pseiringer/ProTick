@@ -1,0 +1,22 @@
+<p>
+  teams works! test
+</p>
+
+<body>
+  <input type="text" [(ngModel)]="_teamDescription" placeholder="Name">
+  <br>
+  <!--<mat-form-field>
+    <input matInput placeholder="Favorite food" value="Sushi">
+  </mat-form-field>-->
+
+  <button></button>
+
+  <button routerLink="/" (click)="clearValues()">Abbrechen</button>
+  <button (click)="postTeam()" routerLink="/">Erstellen</button>
+
+
+  <select>
+    <option *ngFor="let team of allTeams">{{ team.description }}</option>
+  </select>
+
+</body>
