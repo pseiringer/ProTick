@@ -24,14 +24,14 @@ namespace ProTick.Controllers
         {
             return db.Address.Where(x => x.AddressID == id).ToList().Select(x => converter.AddressToDTO(x)).ToList();
         }
-
+        
         //[HttpPost("Ticket")]
         //public void PostTicket([FromServices] ProTickDatabaseContext db, AddressDTO address)
         //{
         //    db.Address.Add(converter.ResourceToAddress(address));
         //    db.SaveChanges();
         //}
-
+        
         [HttpPost("Ticket")]
         public void PostTicket([FromServices] ProTickDatabaseContext db, AddressDTO address)
         {
