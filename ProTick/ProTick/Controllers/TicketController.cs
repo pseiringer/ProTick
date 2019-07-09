@@ -99,6 +99,5 @@ namespace ProTick.Controllers
             if (state == null) throw new Exception($"State with ID ({id}) was not found");
             return state;
         }
-
     }
 }

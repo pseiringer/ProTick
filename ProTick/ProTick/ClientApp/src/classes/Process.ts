@@ -1,4 +1,4 @@
 export interface Process {
-  ProcessID: number,
-  Description: string
+  processID: number,
+  description: string
 }

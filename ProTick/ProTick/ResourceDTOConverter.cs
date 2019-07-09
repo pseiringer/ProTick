@@ -22,6 +22,12 @@ namespace ProTick
             this.db = db;
         }
 
+        public ResourceDTOConverter()
+        {
+        }
+
+
+
         #region ------ DB to DTO
         public AddressDTO AddressToDTO(Address a)
         {
@@ -30,7 +36,7 @@ namespace ProTick
 
         public EmployeeDTO EmployeeToDTO(Employee a)
         {
-            return new EmployeeDTO { AddressID = a.Address.AddressID, DateOfBirth = a.DateOfBirth, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = a.HireDate, LastName = a.LastName };
+            return new EmployeeDTO { AddressID = a.Address.AddressID, DateOfBirth = a.DateOfBirth, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = a.HireDate, LastName = a.LastName, Username = a.Username, Password = a.Password};
         }
 
         public EmployeeTeamDTO EmployeeTeamToDTO(EmployeeTeam a)
@@ -70,7 +76,7 @@ namespace ProTick
 
         public TeamDTO TeamToDTO(Team a)
         {
-            return new TeamDTO { TeamID = a.TeamID, Description = a.Description };
+            return new TeamDTO { TeamID = a.TeamID, Description = a.Description, Abbreviation = a.Abbreviation };
         }
 
         public TicketDTO TicketToDTO(Ticket a)
@@ -91,11 +97,11 @@ namespace ProTick
         {
             if (db == null)
             {
-                return new Employee { Address = null, DateOfBirth = a.DateOfBirth, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = a.HireDate, LastName = a.LastName };
+                return new Employee { Address = null, DateOfBirth = a.DateOfBirth, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = a.HireDate, Password = a.Password, Username = a.Username, LastName = a.LastName };
             }
             else
             {
-                return new Employee { Address = db.Address.First(x => x.AddressID == a.AddressID), DateOfBirth = a.DateOfBirth, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = a.HireDate, LastName = a.LastName };
+                return new Employee { Address = db.Address.First(x => x.AddressID == a.AddressID), DateOfBirth = a.DateOfBirth, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = a.HireDate, Password = a.Password, Username = a.Username, LastName = a.LastName };
             }
         }
 
@@ -123,7 +129,6 @@ namespace ProTick
             else
             {
                 return new EmployeeTeamPrivilege { EmployeeTeam = db.EmployeeTeam.First(x => x.EmployeeTeamID == a.EmployeeTeamID), EmployeeTeamPrivilegeID = a.EmployeeTeamPrivilegeID, Privilege = db.Privilege.First(x => x.PrivilegeID == a.PrivilegeID)};
-
             }
         }
 
@@ -165,14 +170,14 @@ namespace ProTick
             }
             else
             {
-                return new Subprocess { Description = a.Description, Process = db.Process.First(x => x.ProcessID == a.ProcessID), SubprocessID = a.SubprocessID, Team = db.Team.First(x => x.TeamID == a.TeamID) };
-
+                return new Subprocess { Description = a.Description, Process = db.Process.First(x => x.ProcessID == a.ProcessID), SubprocessID = a.SubprocessID, Team = db.Team.First(x => x.TeamID == a.TeamID)};
+              
             }
         }
 
         public Team DTOToTeam(TeamDTO a)
         {
-            return new Team { TeamID = a.TeamID, Description = a.Description };
+            return new Team { TeamID = a.TeamID, Description = a.Description, Abbreviation = a.Abbreviation };
         }
 
         public Ticket DTOToTicket(TicketDTO a)

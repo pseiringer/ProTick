@@ -1,0 +1,7 @@
+<select>
+  <option *ngFor="let process of allProcesses">{{ process.description }}</option>
+</select>
+
+<br />
+
+<button (click)="openDialog()">Prozess erstellen</button>
