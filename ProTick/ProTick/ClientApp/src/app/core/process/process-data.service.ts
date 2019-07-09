@@ -9,13 +9,13 @@ export class ProcessDataService {
   constructor(private http: HttpClient) { }
 
   getProcesses() : Observable<Process[]> {
-    return this.http.get<Process[]>('http://localhost:51036/Process/Test');
+    return this.http.get<Process[]>('http://localhost:51036/ProTick/Process');
   }
 
   postProcess(process: Process): Observable<Process> {
     console.log(process);
 
-    return this.http.post<Process>('http://localhost:51036/Process/Test', process, {
+    return this.http.post<Process>('http://localhost:51036/ProTick/Ticket', process, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

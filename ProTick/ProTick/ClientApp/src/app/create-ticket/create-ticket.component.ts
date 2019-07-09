@@ -13,8 +13,8 @@ export class CreateTicketComponent implements OnInit {
   allProcesses: any = [];
 
   process: Process = {
-    ProcessID: null,
-    Description: null
+    processID: null,
+    description: null
   };
 
   constructor(private _processDataService: ProcessDataService) { }
@@ -29,7 +29,7 @@ export class CreateTicketComponent implements OnInit {
   }
 
   postProcess() {
-    this.process.Description = "Beschreibung_1";
+    this.process.description = "Beschreibung_1";
 
     this._processDataService.postProcess(this.process);
   }

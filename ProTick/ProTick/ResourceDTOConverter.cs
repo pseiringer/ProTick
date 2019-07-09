@@ -125,7 +125,10 @@ namespace ProTick
             else
             {
                 return new EmployeeTeamPrivilege { EmployeeTeam = db.EmployeeTeam.First(x => x.EmployeeTeamID == a.EmployeeTeamID), EmployeeTeamPrivilegeID = a.EmployeeTeamPrivilegeID, Privilege = db.Privilege.First(x => x.PrivilegeID == a.PrivilegeID)};
+<<<<<<< HEAD
+=======
 
+>>>>>>> 5666fbdd57680687a60afaae176b9e9d3ed19a18
             }
         }
 
