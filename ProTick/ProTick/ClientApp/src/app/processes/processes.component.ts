@@ -9,12 +9,14 @@ import { CreateTicketComponent } from '../create-ticket/create-ticket.component'
   styleUrls: ['./processes.component.css'],
   providers: [ProcessDataService]
 })
+
 export class ProcessesComponent implements OnInit {
 
   allProcesses: any = [];
 
-  constructor(private _processDataService: ProcessDataService/*, private dialog: MatDialog*/) { }
 
+
+  constructor(private _processDataService: ProcessDataService, public dialog: MatDialog) { }
   ngOnInit() {
     this._processDataService.getProcesses()
       .subscribe(data => this.allProcesses = data);
