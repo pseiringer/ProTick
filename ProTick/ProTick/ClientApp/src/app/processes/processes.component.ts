@@ -9,11 +9,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./processes.component.css'],
   providers: [ProcessDataService]
 })
+
 export class ProcessesComponent implements OnInit {
 
   allProcesses: any = [];
 
-  constructor(private _processDataService: ProcessDataService, private dialog: MatDialog) { }
+  //nameVar: string;
+
+  constructor(private _processDataService: ProcessDataService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this._processDataService.getProcesses()
