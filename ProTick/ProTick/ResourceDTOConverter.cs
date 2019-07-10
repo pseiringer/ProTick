@@ -21,12 +21,7 @@ namespace ProTick
         {
             this.db = db;
         }
-
-        public ResourceDTOConverter()
-        {
-        }
-
-
+        
 
         #region ------ DB to DTO
         public AddressDTO AddressToDTO(Address a)
