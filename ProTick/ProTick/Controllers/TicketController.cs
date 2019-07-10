@@ -7,31 +7,34 @@ using Microsoft.EntityFrameworkCore;
 using ProTick.ResourceDTOs;
 using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
+using ProTick.Singletons;
 
 namespace ProTick.Controllers
 {
     [Route("ProTick/[controller]")]
     public class TicketController : Controller
     {
-        private ResourceDTOConverter converter = new ResourceDTOConverter();
-        private ProTickDatabaseContext db = null;
+        private ProTickDatabaseContext db;
+        private IResourceDTOConverter converter;
+        private IDatabaseQueryManager dbm;
 
-        public TicketController([FromServices] ProTickDatabaseContext db)
+        public TicketController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
         {
             this.db = db;
-            this.converter = new ResourceDTOConverter(db);
+            this.converter = converter;
+            this.dbm = dbm;
         }
 
         [HttpGet]
         public IEnumerable<TicketDTO> GetAllTickets()
         {
-            return db.Ticket.Include(x => x.Subprocess).Include(x => x.State).ToList().Select(x => converter.TicketToDTO(x)).ToList();
+            return dbm.FindAllTickets(true).Select(x => converter.TicketToDTO(x)).ToList();
         }
 
         [HttpGet("{id}")]
         public TicketDTO GetTicketByID(int id)
         {
-            return converter.TicketToDTO(FindTicketByID(id));
+            return converter.TicketToDTO(dbm.FindTicketByID(id));
         }
 
         [HttpPost]
@@ -45,7 +48,7 @@ namespace ProTick.Controllers
         [HttpPut("{id}")]
         public TicketDTO PutTicket(int id, [FromBody] TicketDTO ticket)
         {
-            var editTicket = FindTicketByID(id);
+            var editTicket = dbm.FindTicketByID(id);
 
             bool changesDone = false;
             if (editTicket.Description != ticket.Description)
@@ -55,12 +58,12 @@ namespace ProTick.Controllers
             }
             if (editTicket.State.StateID != ticket.StateID)
             {
-                editTicket.State = FindStateByID(ticket.StateID);
+                editTicket.State = dbm.FindStateByID(ticket.StateID);
                 changesDone = true;
             }
             if (editTicket.Subprocess.SubprocessID != ticket.SubprocessID)
             {
-                editTicket.Subprocess = FindSubprocessByID(ticket.SubprocessID);
+                editTicket.Subprocess = dbm.FindSubprocessByID(ticket.SubprocessID);
                 changesDone = true;
             }
 
@@ -71,33 +74,12 @@ namespace ProTick.Controllers
         [HttpDelete("{id}")]
         public void DeleteTicket(int id)
         {
-            var removeTicket = FindTicketByID(id);
+            var removeTicket = dbm.FindTicketByID(id);
             if (removeTicket != null)
             {
                 db.Ticket.Remove(removeTicket);
                 db.SaveChanges();
             }
-        }
-
-
-        
-        private Ticket FindTicketByID(int id)
-        {
-            var ticket = db.Ticket.Include(x => x.Subprocess).Include(x => x.State).FirstOrDefault(x => x.TicketID == id);
-            if (ticket == null) throw new Exception($"Ticket with ID ({id}) was not found");
-            return ticket;
-        }
-        private Subprocess FindSubprocessByID(int id)
-        {
-            var subprocess = db.Subprocess.FirstOrDefault(x => x.SubprocessID == id);
-            if (subprocess == null) throw new Exception($"Subprocess with ID ({id}) was not found");
-            return subprocess;
-        }
-        private State FindStateByID(int id)
-        {
-            var state = db.State.FirstOrDefault(x => x.StateID == id);
-            if (state == null) throw new Exception($"State with ID ({id}) was not found");
-            return state;
         }
     }
 }
