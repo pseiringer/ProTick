@@ -16,7 +16,7 @@ export class ProcessesComponent implements OnInit {
 
 
 
-  constructor(private _processDataService: ProcessDataService, public dialog: MatDialog) { }
+  constructor(private _processDataService: ProcessDataService/*, public dialog: MatDialog*/) { }
   ngOnInit() {
     this._processDataService.getProcesses()
       .subscribe(data => this.allProcesses = data);

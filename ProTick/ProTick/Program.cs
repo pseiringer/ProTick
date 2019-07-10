@@ -14,16 +14,14 @@ namespace ProTick
     {
         public static void Main(string[] args)
         {
-            //CreateWebHostBuilder(args).Build().Run();
-            var host = new WebHostBuilder()
+            CreateWebHostBuilder(args)
             .UseKestrel()
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseIISIntegration()
             .UseStartup<Startup>()
             .UseUrls("http://localhost:8080/")
-            .Build();
-
-            host.Run();
+            .Build()
+            .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
