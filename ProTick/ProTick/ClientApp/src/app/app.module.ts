@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { MatTableModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -34,6 +37,10 @@ import { TeamsComponent } from './teams/teams.component';
     HttpModule,
     FormsModule,
     CoreModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
@@ -42,7 +49,8 @@ import { TeamsComponent } from './teams/teams.component';
       { path: 'tickets', component: TicketsComponent },
       { path: 'create-ticket', component: CreateTicketComponent },
       { path: 'teams', component: TeamsComponent },
-    ])
+    ]),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

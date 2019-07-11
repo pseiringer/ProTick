@@ -1,25 +1,61 @@
-<p>
-  teams works! test
-</p>
-
 <body>
-  
+
   <!--<mat-form-field>
     <input matInput placeholder="Favorite food" value="Sushi">
   </mat-form-field>-->
 
-  <div>
-    <input type="text" [(ngModel)]="_teamDescription" placeholder="Name">
-    <br>
-
-    <button routerLink="/" (click)="clearValues()">Abbrechen</button>
-    <button (click)="postTeam()" routerLink="/">Erstellen</button>
 
 
-    <select>
-      <option *ngFor="let team of allTeams">{{ team.description }}</option>
-    </select>
+
+  <input type="text" [(ngModel)]="_teamDescription" placeholder="Name" class="margin_teams">
+  <br>
+
+  <select class="margin_teams">
+    <option *ngFor="let team of allTeams">{{ team.description }}</option>
+  </select>
+  <br>
+
+  <button (click)="postTeam()" routerLink="/" class="margin_teams">Erstellen</button>
+  <br>
+  <button routerLink="/" (click)="clearValues()" class="margin_teams">Abbrechen</button>
+  <br>
+
+  <div class="mat-elevation-z8">
+    <mat-table #table [dataSource]="allTeams" matSort>
+
+      <ng-container matColumnDef="teamID">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.teamID}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="abbreviation">
+        <mat-header-cell *matHeaderCellDef> Abkürzung </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.abbreviation}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <ng-container matColumnDef="options">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="onEdit(row)">
+            <mat-icon>build</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDelete(row.teamID)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+    </mat-table>
   </div>
   
+
+
 
 </body>
