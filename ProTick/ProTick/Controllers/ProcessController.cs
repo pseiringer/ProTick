@@ -40,11 +40,13 @@ namespace ProTick.Controllers
             return db.Process.Select(x => converter.ProcessToDTO(x)).ToList();
         }
 
-        [HttpPost("{p}")]
-        public ProcessDTO NewProcess([FromServices] ProTickDatabaseContext db, Process p)
+        [HttpPost]
+        public ProcessDTO NewProcess([FromServices] ProTickDatabaseContext db, [FromBody] ProcessDTO p)
         {
-            var a = db.Process.Add(p);
-            
+            var a = db.Process.Add(converter.DTOToProcess(p));
+
+            Console.WriteLine(p.Description);
+
             db.SaveChanges();
 
             return converter.ProcessToDTO(a.Entity);
