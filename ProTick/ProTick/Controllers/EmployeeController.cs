@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProTick.ResourceDTOs;
+using ProTick.Singletons;
 using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
 
@@ -12,23 +13,29 @@ namespace ProTick.Controllers
     [Route("ProTick/[controller]")]
     public class EmployeeController : Controller
     {
-        private ResourceDTOConverter converter = new ResourceDTOConverter(null);
+        private ProTickDatabaseContext db;
+        private IResourceDTOConverter converter;
+        private IDatabaseQueryManager dbm;
 
-        public IActionResult Index()
+        public EmployeeController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
         {
-            return View();
+            this.db = db;
+            this.converter = converter;
+            this.dbm = dbm;
         }
+        
 
         [HttpGet("{id}")]
         public EmployeeDTO GetEmployee([FromServices] ProTickDatabaseContext db, int id)
         {
-            return converter.EmployeeToDTO(db.Employee.First(x => x.EmployeeID == id));
+            return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
+
         }
 
         [HttpGet]
         public IEnumerable<EmployeeDTO> GetEmployees([FromServices] ProTickDatabaseContext db)
         {
-            return db.Employee.Select(x => converter.EmployeeToDTO(x)).ToList();
+            return dbm.FindAllEmployees(true).Select(x => converter.EmployeeToDTO(x)).ToList();
         }
 
         [HttpPost("{e}")]
