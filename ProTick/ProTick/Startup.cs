@@ -29,7 +29,7 @@ namespace ProTick
             services.AddDbContext<ProTickDatabaseContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IDatabaseQueryManager, DatabaseQueryManager>();
-            services.AddScoped<IResourceDTOConverter, Singletons.ResourceDTOConverter>();
+            services.AddScoped<IResourceDTOConverter, ResourceDTOConverter>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
