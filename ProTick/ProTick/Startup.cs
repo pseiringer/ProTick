@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProTickDatabase;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore;
+using ProTick.Singletons;
 
 namespace ProTick
 {
@@ -27,6 +28,8 @@ namespace ProTick
 
             services.AddDbContext<ProTickDatabaseContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IDatabaseQueryManager, DatabaseQueryManager>();
+            services.AddScoped<IResourceDTOConverter, Singletons.ResourceDTOConverter>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
