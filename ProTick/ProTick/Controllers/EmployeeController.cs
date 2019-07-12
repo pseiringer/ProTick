@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProTick.ResourceDTOs;
+using ProTick.Singletons;
 using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
 
@@ -12,29 +13,35 @@ namespace ProTick.Controllers
     [Route("ProTick/[controller]")]
     public class EmployeeController : Controller
     {
-        private ResourceDTOConverter converter = new ResourceDTOConverter(null);
+        private ProTickDatabaseContext db;
+        private IResourceDTOConverter converter;
+        private IDatabaseQueryManager dbm;
 
-        public IActionResult Index()
+        public EmployeeController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
         {
-            return View();
+            this.db = db;
+            this.converter = converter;
+            this.dbm = dbm;
         }
+        
 
         [HttpGet("{id}")]
-        public EmployeeDTO GetEmployee([FromServices] ProTickDatabaseContext db, int id)
+        public EmployeeDTO GetEmployee(int id)
         {
-            return converter.EmployeeToDTO(db.Employee.First(x => x.EmployeeID == id));
+            return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
+
         }
 
         [HttpGet]
-        public IEnumerable<EmployeeDTO> GetEmployees([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<EmployeeDTO> GetEmployees()
         {
-            return db.Employee.Select(x => converter.EmployeeToDTO(x)).ToList();
+            return dbm.FindAllEmployees(true).Select(x => converter.EmployeeToDTO(x)).ToList();
         }
 
-        [HttpPost("{e}")]
-        public EmployeeDTO NewEmployee([FromServices] ProTickDatabaseContext db, Employee e)
+        [HttpPost]
+        public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
-            var a = db.Employee.Add(e);
+            var a = db.Employee.Add(converter.DTOToEmployee( e));
 
             db.SaveChanges();
 
@@ -42,7 +49,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public EmployeeDTO EditEmployee([FromServices] ProTickDatabaseContext db, int id, [FromBody] Employee e)
+        public EmployeeDTO EditEmployee(int id, [FromBody] Employee e)
         {
             var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == e.EmployeeID);
 
@@ -62,7 +69,7 @@ namespace ProTick.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteEmployee([FromServices] ProTickDatabaseContext db, int id)
+        public void DeleteEmployee(int id)
         {
             db.Employee.Remove(db.Employee.First(x => x.EmployeeID == id));
             db.SaveChanges();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProTick.ResourceDTOs;
+using ProTick.Singletons;
 using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
 
@@ -12,32 +13,28 @@ namespace ProTick.Controllers
     [Route("ProTick/[controller]")]
     public class ProcessController : Controller
     {
-        private ResourceDTOConverter converter = new ResourceDTOConverter(null);
+        private ProTickDatabaseContext db;
+        private IResourceDTOConverter converter;
+        private IDatabaseQueryManager dbm;
 
-        public IActionResult Index()
+        public ProcessController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
         {
-            return View();
+            this.db = db;
+            this.converter = converter;
+            this.dbm = dbm;
         }
 
-        public IEnumerable<Process> Test([FromServices] ProTickDatabaseContext db)
-        {
-            //db.Process.Add(new Process { Description = "test_process_1" });
-            //db.Process.Add(new Process { Description = "test_process_2" });
-            //db.SaveChanges();
-
-            return db.Process.ToList();
-        }
 
         [HttpGet("{id}")]
         public ProcessDTO GetProcess([FromServices] ProTickDatabaseContext db, int id)
         {
-            return converter.ProcessToDTO(db.Process.First(x => x.ProcessID == id));
+            return converter.ProcessToDTO(dbm.FindProcessByID(id));
         }
 
         [HttpGet]
         public IEnumerable<ProcessDTO> GetProcesses([FromServices] ProTickDatabaseContext db)
         {
-            return db.Process.Select(x => converter.ProcessToDTO(x)).ToList();
+            return dbm.FindAllProcesses(true).Select(x => converter.ProcessToDTO(x)).ToList();
         }
 
         [HttpPost]
