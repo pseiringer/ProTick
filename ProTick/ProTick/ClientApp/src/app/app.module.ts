@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { MatTableModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,6 +49,9 @@ import { TeamsComponent } from './teams/teams.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -56,7 +62,8 @@ import { TeamsComponent } from './teams/teams.component';
       { path: 'tickets', component: TicketsComponent },
       { path: 'create-ticket', component: CreateTicketComponent },
       { path: 'teams', component: TeamsComponent },
-    ])
+    ]),
+    
   ],
   entryComponents: [CreateProcessComponent],
   providers: [],
