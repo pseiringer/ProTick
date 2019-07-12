@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material';
 export class ProcessesComponent {
 
   process: Process = {
+    processID: undefined,
     description: undefined
   };
 

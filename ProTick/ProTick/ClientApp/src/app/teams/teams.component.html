@@ -20,6 +20,11 @@
   <button routerLink="/" (click)="clearValues()" class="margin_teams">Abbrechen</button>
   <br>
 
+  <button mat-icon-button (click)="onAdd()">
+    <mat-icon>add_circle</mat-icon>
+  </button>
+
+
   <div class="mat-elevation-z8">
     <mat-table #table [dataSource]="allTeams" matSort>
 
@@ -52,9 +57,16 @@
           </button>
         </mat-cell>
       </ng-container>
+
+      <!--<ng-container matColumnDef="add">
+
+          <button mat-icon-button (click)="onAdd()">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+      </ng-container>-->
     </mat-table>
   </div>
-  
+
 
 
 

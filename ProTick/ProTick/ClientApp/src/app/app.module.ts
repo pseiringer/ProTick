@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -25,6 +24,7 @@ import { TicketsComponent } from './tickets/tickets.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 
 import { TeamsComponent } from './teams/teams.component';
+import { CreateTeamComponent } from './create-team/create-team.component';
 
 
 @NgModule({
@@ -39,6 +39,7 @@ import { TeamsComponent } from './teams/teams.component';
     TicketsComponent,
     CreateTicketComponent,
     TeamsComponent,
+    CreateTeamComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,7 +66,7 @@ import { TeamsComponent } from './teams/teams.component';
     ]),
     
   ],
-  entryComponents: [CreateProcessComponent],
+  entryComponents: [CreateProcessComponent, CreateTeamComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
