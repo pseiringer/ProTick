@@ -14,7 +14,6 @@ import { MatDialog } from '@angular/material';
 export class ProcessesComponent {
 
   process: Process = {
-    processID: undefined,
     description: undefined
   };
 
@@ -28,7 +27,8 @@ export class ProcessesComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.process.description = result;
-      this._processService.postProcess(this.process);
+      this._processService.postProcess(this.process)
+        .subscribe((x, y) => { console.log(x); console.log(y) });
     });
   }
 }
