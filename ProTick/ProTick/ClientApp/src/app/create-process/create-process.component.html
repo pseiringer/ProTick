@@ -1,0 +1,7 @@
+<mat-form-field>
+  <input matInput [(ngModel)]="data.description" placeholder="Beschreibung"/>
+</mat-form-field>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button [mat-dialog-close]="data.description" cdkFocusInitial>Prozess erstellen</button>
+</div>
