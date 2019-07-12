@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace ProTick.Controllers
 {
@@ -42,8 +43,9 @@ namespace ProTick.Controllers
             var emp = dbm.FindEmployeeByUsername(loginUser.Username);
             if (emp != null && emp.Password == loginUser.Password)
             {
+                /*
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("protick19@da2019moveIT"));
-                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature);
 
                 var claims = new List<Claim>
                 {
@@ -51,7 +53,7 @@ namespace ProTick.Controllers
                     new Claim(ClaimTypes.Role, "Manager")
                 };
 
-                var tokeOptions = new JwtSecurityToken(
+                var tokenOptions = new JwtSecurityToken(
                     issuer: "http://localhost:8080",
                     audience: "http://localhost:8080",
                     claims: claims,
@@ -59,8 +61,33 @@ namespace ProTick.Controllers
                     signingCredentials: signinCredentials
                 );
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
                 return Ok(new { Token = tokenString });
+                */
+
+                var handler = new JwtSecurityTokenHandler();
+
+                ClaimsIdentity identity = new ClaimsIdentity(
+                    new GenericIdentity(emp.Username, "Token"),
+                    new[] {
+                        new Claim("ID", emp.LastName)
+                    }
+                    );
+
+                var keyByteArray = System.Text.Encoding.UTF8.GetBytes("protick19@da2019moveIT");
+                var signinKey = new SymmetricSecurityKey(keyByteArray);
+                var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+                {
+                    Issuer = "https://localhost:8080/",
+                    Audience = "https://localhost:8080/",
+                    SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
+                    Subject = identity,
+                    Expires = DateTime.Now.AddMinutes(5),
+                    NotBefore = DateTime.Now
+                });
+
+                return Ok(new { Token = handler.WriteToken(securityToken) });
+
             }
 
             return Unauthorized();

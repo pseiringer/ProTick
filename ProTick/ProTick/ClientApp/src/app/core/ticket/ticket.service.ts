@@ -9,17 +9,20 @@ export class TicketService {
 
   getTicket(): Observable<Ticket[]> {
     const token = localStorage.getItem('jwt');
-    console.log(token);
     return this.http.get<Ticket[]>('http://localhost:8080/ProTick/Ticket', {
         headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json'
+          'Authorization': 'Bearer ' + token
         })
       });
   }
 
   getTicketByID(id: number): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>('http://localhost:8080/ProTick/Ticket/'+id);
+    const token = localStorage.getItem('jwt');
+    return this.http.get<Ticket[]>('http://localhost:8080/ProTick/Ticket/' + id, {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    });
   }
 
   postTicket(ticket: Ticket): Observable<Ticket> {

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ProTick.Controllers
 {
-    [Route("ProTick/[controller]")]
+    [Route("ProTick/[controller]"), Authorize]
     public class TicketController : Controller
     {
         private ProTickDatabaseContext db;
@@ -26,7 +26,7 @@ namespace ProTick.Controllers
             this.dbm = dbm;
         }
 
-        [HttpGet, Authorize(Roles = "Manager")]
+        [HttpGet]
         public IEnumerable<TicketDTO> GetAllTickets()
         {
             return dbm.FindAllTickets(true).Select(x => converter.TicketToDTO(x)).ToList();
@@ -38,7 +38,7 @@ namespace ProTick.Controllers
             return converter.TicketToDTO(dbm.FindTicketByID(id));
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         public TicketDTO PostTicket([FromBody] TicketDTO ticket)
         {
             var newTicket = db.Ticket.Add(converter.DTOToTicket(ticket));
@@ -46,7 +46,7 @@ namespace ProTick.Controllers
             return converter.TicketToDTO(newTicket.Entity);
         }
         
-        [HttpPut("{id}"), Authorize]
+        [HttpPut("{id}")]
         public TicketDTO PutTicket(int id, [FromBody] TicketDTO ticket)
         {
             var editTicket = dbm.FindTicketByID(id);
@@ -72,7 +72,7 @@ namespace ProTick.Controllers
             return converter.TicketToDTO(editTicket);
         }
 
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         public void DeleteTicket(int id)
         {
             var removeTicket = dbm.FindTicketByID(id);

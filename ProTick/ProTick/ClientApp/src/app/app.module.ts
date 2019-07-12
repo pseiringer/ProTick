@@ -16,6 +16,8 @@ import { TicketsComponent } from './tickets/tickets.component';
 import { ProcessesComponent } from './processes/processes.component';
 import { TeamsComponent } from './teams/teams.component';
 import { LoginComponent } from './login/login.component';
+import { JwtHelper } from 'angular2-jwt';
+import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
 @NgModule({
   declarations: [
@@ -37,17 +39,17 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     CoreModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'processes', component: ProcessesComponent },
-      { path: 'tickets', component: TicketsComponent },
-      { path: 'create-ticket', component: CreateTicketComponent },
-      { path: 'teams', component: TeamsComponent },
+      { path: '', component: HomeComponent, pathMatch: 'full'},
+      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
+      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
+      { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
+      { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
+      { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
+      { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent },
     ])
   ],
-  providers: [],
+  providers: [JwtHelper, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

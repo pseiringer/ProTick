@@ -42,6 +42,7 @@ namespace ProTick
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            /*
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -56,7 +57,27 @@ namespace ProTick
                         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtAuth["SecurityKey"]))
                     };
                 });
-                
+                */
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                var keyByteArray = System.Text.Encoding.UTF8.GetBytes(jwtAuth["SecurityKey"]);
+                var signinKey = new SymmetricSecurityKey(keyByteArray);
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = signinKey,
+                    ValidAudience = jwtAuth["ValidAudience"],
+                    ValidIssuer = jwtAuth["ValidIssuer"],
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(5)
+                };
+            });
 
 
             services.AddCors(options =>
@@ -84,7 +105,11 @@ namespace ProTick
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            
+
+
+            app.UseAuthentication();
+
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -107,7 +132,6 @@ namespace ProTick
 
             //(app.ApplicationServices.GetRequiredService<ProTickDatabaseContext>()).Database.EnsureCreated();
 
-            app.UseAuthentication();
 
             app.UseCors("EnableCORS");
         }
