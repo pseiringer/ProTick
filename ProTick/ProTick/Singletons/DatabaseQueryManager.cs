@@ -228,5 +228,11 @@ namespace ProTick.Singletons
 
         #endregion
 
+
+        public Employee FindEmployeeByUsername(string username)
+        {
+            return db.Employee.FirstOrDefault(x => x.Username == username);
+        }
+
     }
 }

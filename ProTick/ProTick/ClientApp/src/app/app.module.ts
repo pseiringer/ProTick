@@ -15,6 +15,7 @@ import { CoreModule } from './core/core.module';
 import { TicketsComponent } from './tickets/tickets.component';
 import { ProcessesComponent } from './processes/processes.component';
 import { TeamsComponent } from './teams/teams.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TeamsComponent } from './teams/teams.component';
     TicketsComponent,
     ProcessesComponent,
     TeamsComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -42,6 +44,7 @@ import { TeamsComponent } from './teams/teams.component';
       { path: 'tickets', component: TicketsComponent },
       { path: 'create-ticket', component: CreateTicketComponent },
       { path: 'teams', component: TeamsComponent },
+      { path: 'login', component: LoginComponent },
     ])
   ],
   providers: [],
