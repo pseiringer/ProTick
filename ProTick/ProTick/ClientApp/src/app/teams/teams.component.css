@@ -1,0 +1,12 @@
+.margin_teams {
+  margin: 10px;
+}
+
+mat-table {
+  width: 100%;
+  height: 400px;
+}
+
+.mat-elevation-z8{
+  overflow:auto;
+}

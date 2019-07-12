@@ -1,24 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TeamsComponent } from './teams.component';
-import { MatTableModule } from '@angular/material';
+import { CreateTeamComponent } from './create-team.component';
 
-
-
-describe('TeamsComponent', () => {
-  let component: TeamsComponent;
-  let fixture: ComponentFixture<TeamsComponent>;
+describe('CreateTeamComponent', () => {
+  let component: CreateTeamComponent;
+  let fixture: ComponentFixture<CreateTeamComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[MatTableModule],
-      declarations: [ TeamsComponent ]
+      declarations: [ CreateTeamComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TeamsComponent);
+    fixture = TestBed.createComponent(CreateTeamComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

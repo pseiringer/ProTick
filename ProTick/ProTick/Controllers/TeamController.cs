@@ -27,21 +27,21 @@ namespace ProTick.Controllers
 
 
         [HttpGet("{id}")]
-        public TeamDTO GetTeam([FromServices] ProTickDatabaseContext db, int id)
+        public TeamDTO GetTeam(int id)
         {
             return converter.TeamToDTO(dbm.FindTeamByID(id));
         }
 
         [HttpGet]
-        public IEnumerable<TeamDTO> GetTeams([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<TeamDTO> GetTeams()
         {
             return dbm.FindAllTeams(true).Select(x => converter.TeamToDTO(x)).ToList();
         }
 
-        [HttpPost("{t}")]
-        public TeamDTO NewTeam([FromServices] ProTickDatabaseContext db, Team t)
+        [HttpPost]
+        public TeamDTO NewTeam([FromBody] TeamDTO t)
         {
-            var a = db.Team.Add(t);
+            var a = db.Team.Add(converter.DTOToTeam(t));
 
             db.SaveChanges();
 
@@ -49,7 +49,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public TeamDTO EditTeam([FromServices] ProTickDatabaseContext db, int id, [FromBody] Team t)
+        public TeamDTO EditTeam(int id, [FromBody] Team t)
         {
             var team = db.Team.FirstOrDefault(x => x.TeamID == t.TeamID);
 
@@ -61,7 +61,7 @@ namespace ProTick.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteTeam([FromServices] ProTickDatabaseContext db, int id)
+        public void DeleteTeam(int id)
         {
             db.Team.Remove(db.Team.First(x => x.TeamID == id));
             db.SaveChanges();

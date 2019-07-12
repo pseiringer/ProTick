@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProcessDataService } from '../core/process/process-data.service';
 import { TicketService } from '../core/ticket/ticket.service';
 
+
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',

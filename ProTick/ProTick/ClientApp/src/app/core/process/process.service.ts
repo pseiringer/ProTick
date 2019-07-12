@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { Process } from '../../../classes/Process';
 
 @Injectable()
-export class ProcessDataService {
+export class ProcessService {
+
   constructor(private http: HttpClient) { }
 
   getProcesses() : Observable<Process[]> {
@@ -14,8 +15,7 @@ export class ProcessDataService {
   postProcess(process: Process): Observable<Process> {
     console.log(process);
 
-    return this.http.post<Process>('http://localhost:8080/ProTick/Ticket', process, {
-
+    return this.http.post<Process>('http://localhost:8080/ProTick/Process', process, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
