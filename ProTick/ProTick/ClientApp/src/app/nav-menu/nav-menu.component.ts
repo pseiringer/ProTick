@@ -8,6 +8,10 @@ import { Component } from '@angular/core';
 export class NavMenuComponent {
   isExpanded = false;
 
+  logout() {
+    localStorage.removeItem("jwt");
+  }
+
   collapse() {
     this.isExpanded = false;
   }

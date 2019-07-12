@@ -52,5 +52,8 @@ namespace ProTick.Singletons
         List<Ticket> FindAllTickets();
         List<Ticket> FindAllTickets(bool includeReferences);
 
+
+        Employee FindEmployeeByUsername(string username);
+
     }
 }

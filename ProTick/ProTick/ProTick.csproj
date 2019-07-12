@@ -26,7 +26,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\classes\Authentication\AuthGuard.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProTickDatabase\ProTickDatabase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\classes\Authentication\AuthGuard.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

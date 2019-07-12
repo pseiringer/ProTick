@@ -8,10 +8,11 @@ using ProTick.ResourceDTOs;
 using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
 using ProTick.Singletons;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProTick.Controllers
 {
-    [Route("ProTick/[controller]")]
+    [Route("ProTick/[controller]"), Authorize]
     public class TicketController : Controller
     {
         private ProTickDatabaseContext db;

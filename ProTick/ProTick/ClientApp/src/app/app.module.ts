@@ -24,6 +24,11 @@ import { TicketsComponent } from './tickets/tickets.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 
 import { TeamsComponent } from './teams/teams.component';
+
+import { LoginComponent } from './login/login.component';
+import { JwtHelper } from 'angular2-jwt';
+import { AuthGuard } from '../classes/Authentication/AuthGuard';
+
 import { CreateTeamComponent } from './create-team/create-team.component';
 
 
@@ -39,6 +44,7 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     TicketsComponent,
     CreateTicketComponent,
     TeamsComponent,
+    LoginComponent,
     CreateTeamComponent,
   ],
   imports: [
@@ -55,19 +61,19 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     MatButtonModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'processes', component: ProcessesComponent },
-      { path: 'create-process', component: CreateProcessComponent },
-      { path: 'tickets', component: TicketsComponent },
-      { path: 'create-ticket', component: CreateTicketComponent },
-      { path: 'teams', component: TeamsComponent },
-    ]),
-    
+      { path: '', component: HomeComponent, pathMatch: 'full'},
+      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
+      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
+      { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
+      { path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
+      { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
+      { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
+      { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
+      { path: 'login', component: LoginComponent },
+    ])
   ],
+  providers: [JwtHelper, AuthGuard],
   entryComponents: [CreateProcessComponent, CreateTeamComponent],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
