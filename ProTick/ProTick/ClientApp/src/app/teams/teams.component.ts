@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TeamService } from '../core/team/team.service';
 import { Team } from '../../classes/Team';
 import { MatTableModule, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
@@ -13,7 +13,7 @@ import { CreateTeamComponent } from '../create-team/create-team.component';
   styleUrls: ['./teams.component.css'],
   providers: [TeamService]
 })
-export class TeamsComponent {
+export class TeamsComponent implements OnInit {
 
   allTeams: any = [];
   team: Team = {
@@ -27,33 +27,56 @@ export class TeamsComponent {
 
   constructor(private _teamService: TeamService, public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef) { }
-
   
   ngOnInit() {
     this.refresh();
-    
   }
 
   onAdd(): void {
-    const dialogRef = this.dialog.open(CreateTeamComponent, {
-      data: { description: this.team.description }
-    });
 
+    this.clear();
+
+    const dialogRef = this.dialog.open(CreateTeamComponent, {
+      data: { description: this.team.description, abbreviation: this.team.abbreviation }
+    });
+    
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.team.description = result.description;
-      this.team.abbreviation = result.abbreviation;
-      this._teamService.postTeam(this.team)
-        .subscribe((x, y) => { console.log(x); console.log(y) });
-      this.refresh();
+      if (result !== undefined) {
+        this.team.description = result.description;
+        this.team.abbreviation = result.abbreviation;
+        this._teamService.postTeam(this.team)
+          .subscribe(data => this.team = data);
+
+        this.refresh();
+      }
     });
+  }
+
+  onEdit(team: Team) {
+
+  }
+
+  onDelete(id: number) {
+    this._teamService.deleteTeam(id)
+      .subscribe(data => { this.refresh(); });
+    console.log('Team deleted.');
   }
 
   refresh() {
     this._teamService.getTeams()
       .subscribe(data => this.allTeams = data);
-      this.changeDetectorRefs.detectChanges();
-    });
+    
+    console.log('Team List refreshed.');
   }
+
+  clear() {
+    this.team.teamID = undefined;
+    this.team.description = undefined;
+    this.team.abbreviation = undefined;
+
+    console.log('Team Properties cleared.');
+  }
+  
 }
 

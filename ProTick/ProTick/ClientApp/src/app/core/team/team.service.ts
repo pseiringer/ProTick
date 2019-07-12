@@ -21,4 +21,11 @@ export class TeamService {
     });
   }
 
+
+  deleteTeam(id: number): Observable<Team> {
+    //console.log(id);
+
+    return this.http.delete<Team>('http://localhost:8080/ProTick/Team/' + id);
+  }
+
 }

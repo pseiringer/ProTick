@@ -1,12 +1,5 @@
 <body>
 
-  <!--<mat-form-field>
-    <input matInput placeholder="Favorite food" value="Sushi">
-  </mat-form-field>-->
-
-
-
-
   <input type="text" [(ngModel)]="_teamDescription" placeholder="Name" class="margin_teams">
   <br>
 
@@ -24,6 +17,9 @@
     <mat-icon>add_circle</mat-icon>
   </button>
 
+  <button mat-icon-button (click)="clear(); refresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
 
   <div class="mat-elevation-z8">
     <mat-table #table [dataSource]="allTeams" matSort>
@@ -57,17 +53,7 @@
           </button>
         </mat-cell>
       </ng-container>
-
-      <!--<ng-container matColumnDef="add">
-
-          <button mat-icon-button (click)="onAdd()">
-            <mat-icon>add_circle</mat-icon>
-          </button>
-      </ng-container>-->
     </mat-table>
   </div>
-
-
-
 
 </body>
