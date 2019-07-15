@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Team } from '../../../classes/Team';
+import { Employee } from '../../../classes/Employee';
 
 @Injectable()
 export class TeamService {
@@ -21,6 +22,9 @@ export class TeamService {
     });
   }
 
+  getEmployeesByTeamID(id: number): Observable<Employee[]> {
+    return this.http.get<Employee[]>('http://localhost:8080/ProTick/Team/' + id + '/Employees');
+  }
 
   deleteTeam(id: number): Observable<Team> {
     //console.log(id);

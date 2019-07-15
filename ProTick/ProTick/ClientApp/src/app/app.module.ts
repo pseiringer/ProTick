@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -56,6 +56,7 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTabsModule,
     MatTableModule,
     MatIconModule,
     MatButtonModule,
