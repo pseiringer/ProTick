@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProcessService } from '../core/process/process.service';
 import { Process } from '../../classes/Process';
 import { CreateProcessComponent } from '../create-process/create-process.component';
@@ -11,7 +11,9 @@ import { MatDialog } from '@angular/material';
   providers: [ProcessService]
 })
 
-export class ProcessesComponent {
+export class ProcessesComponent implements OnInit {
+
+  processes = [];
 
   process: Process = {
     processID: undefined,
@@ -19,6 +21,15 @@ export class ProcessesComponent {
   };
 
   constructor(private _processService: ProcessService, public dialog: MatDialog) { }
+
+  ngOnInit() {
+    this.getProcesses();
+  }
+
+  getProcesses(): void {
+    this._processService.getProcesses()
+      .subscribe(data => this.processes = data);
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(CreateProcessComponent, {
@@ -29,7 +40,7 @@ export class ProcessesComponent {
       console.log('The dialog was closed');
       this.process.description = result;
       this._processService.postProcess(this.process)
-        .subscribe((x, y) => { console.log(x); console.log(y) });
+        .subscribe();
     });
   }
 }

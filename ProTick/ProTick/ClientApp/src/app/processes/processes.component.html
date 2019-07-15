@@ -1,10 +1,19 @@
-<!--<select>
-  <option *ngFor="let process of allProcesses">{{ process.description }}</option>
-</select>
 
-<br />-->
+<br />
 
 <button mat-raised-button (click)="openDialog()">Prozess erstellen</button>
 <li *ngIf="process.description">
   Prozess "{{ process.description  }}" wurde erstellt.
 </li>
+
+<br />
+<br />
+
+<select>
+  <option *ngFor="let process of processes">{{ process.description }}</option>
+</select>
+
+<div *ngFor="let subprocess of subprocesses">
+
+</div>
+
