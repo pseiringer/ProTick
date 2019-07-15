@@ -36,6 +36,7 @@ namespace ProTick.Controllers
         {
             return dbm.FindAllSubprocesses(true).Select(x => converter.SubprocessToDTO(x)).ToList();
         }
+        
 
         [HttpPost]
         public SubprocessDTO NewSubprocess([FromServices] ProTickDatabaseContext db, [FromBody] SubprocessDTO s)
