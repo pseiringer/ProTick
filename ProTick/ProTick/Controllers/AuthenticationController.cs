@@ -82,7 +82,7 @@ namespace ProTick.Controllers
                     Audience = "https://localhost:8080/",
                     SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
                     Subject = identity,
-                    Expires = DateTime.Now.AddMinutes(5),
+                    Expires = DateTime.Now.AddMinutes(50),
                     NotBefore = DateTime.Now
                 });
 

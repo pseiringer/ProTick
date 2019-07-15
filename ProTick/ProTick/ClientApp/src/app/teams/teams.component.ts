@@ -1,19 +1,30 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { TeamService } from '../core/team/team.service';
 import { Team } from '../../classes/Team';
-import { MatSort, MatDialog } from '@angular/material';
+import { MatSort, MatDialog, MatTab } from '@angular/material';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CreateTeamComponent } from '../create-team/create-team.component';
+import { EmployeeService } from '../core/employee/employee.service';
 
 @Component({
   selector: 'app-teams',
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.css'],
-  providers: [TeamService]
+  providers: [TeamService, EmployeeService],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 export class TeamsComponent implements OnInit {
 
   allTeams: any = [];
+  allEmployees: any = [];
+  _processID: number;
 
   team: Team = {
     teamID: undefined,
@@ -22,20 +33,28 @@ export class TeamsComponent implements OnInit {
   }
 
   displayedColumns: string[] = ['teamID', 'description', 'abbreviation', 'options'];
-
-  dataSource;
+  displayedColumnsEmp: string[] = ['employeeID', 'firstName', 'lastName', 'dateOfBirth', 'hireDate', 'username', 'options'];
+  
+  expandedElement: Team | null;
+  
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _teamService: TeamService, public dialog: MatDialog) { }
+  constructor(private _teamService: TeamService, private _employeeService: EmployeeService, public dialog: MatDialog) { }
   
   ngOnInit() {
     this.getTeams();
+    this.getEmployees();
   }
 
   getTeams() {
     this._teamService.getTeams()
       .subscribe(data => this.allTeams = data);
+  }
+
+  getEmployees() {
+    this._employeeService.getEmployees()
+      .subscribe(data => this.allEmployees = data);
   }
 
   onAdd(): void {
@@ -77,5 +96,10 @@ export class TeamsComponent implements OnInit {
     this.team.abbreviation = undefined;
 
     console.log('Team Properties cleared.');
+  }
+
+  getEmployeesByTeamID(_teamID) {
+    this._teamService.getEmployeesByTeamID(_teamID)
+      .subscribe(data => this.allEmployees = data);
   }
 }
