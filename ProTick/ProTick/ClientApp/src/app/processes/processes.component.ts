@@ -29,7 +29,7 @@ export class ProcessesComponent {
       console.log('The dialog was closed');
       this.process.description = result;
       this._processService.postProcess(this.process)
-        .subscribe((x, y) => { console.log(x); console.log(y) });
+        .subscribe();
     });
   }
 }
