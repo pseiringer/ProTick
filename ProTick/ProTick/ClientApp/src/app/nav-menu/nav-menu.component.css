@@ -23,7 +23,7 @@ li.link-active a:focus {
   /* On small screens, convert the nav menu to a vertical sidebar */
   .main-nav {
     height: 100%;
-    width: calc(15% - 20px);
+    width: calc(15%);
   }
 
   .navbar {

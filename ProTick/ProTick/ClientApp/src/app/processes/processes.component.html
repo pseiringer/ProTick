@@ -9,8 +9,8 @@
 <br />
 <br />
 
-<select>
-  <option *ngFor="let process of processes">{{ process.description }}</option>
+<select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID)">
+  <option *ngFor="let process of processes" [value]="process.processID">{{ process.description }}</option>
 </select>
 
 <div *ngFor="let subprocess of subprocesses">

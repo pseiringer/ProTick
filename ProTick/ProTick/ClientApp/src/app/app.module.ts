@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { MatTableModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
