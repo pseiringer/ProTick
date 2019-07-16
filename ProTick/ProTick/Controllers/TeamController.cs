@@ -38,6 +38,12 @@ namespace ProTick.Controllers
             return dbm.FindAllTeams(true).Select(x => converter.TeamToDTO(x)).ToList();
         }
 
+        [HttpGet("{id}/Employees")]
+        public IEnumerable<EmployeeDTO> GetEmployeesByTeamID([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return dbm.FindAllEmployeeTeams(true).Where(x => x.Team.TeamID == id).SelectMany(x => dbm.FindAllEmployees(true).Where(y => x.Employee.EmployeeID == y.EmployeeID)).Distinct().Select(x => converter.EmployeeToDTO(x)).ToList();
+        }
+
         [HttpPost]
         public TeamDTO NewTeam([FromBody] TeamDTO t)
         {

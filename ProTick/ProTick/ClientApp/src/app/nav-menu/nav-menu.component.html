@@ -27,13 +27,8 @@
                 <span class='glyphicon glyphicon-user'></span> Teams
               </a>
             </li>
-            <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/login"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-log-in'></span> Login
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]'>
-              <a (click)='logout();collapse();'>
+            <li>
+              <a [routerLink]='["/"]' (click)='logout();collapse();'>
                 <span class='glyphicon glyphicon-log-out'></span> Logout
               </a>
             </li>

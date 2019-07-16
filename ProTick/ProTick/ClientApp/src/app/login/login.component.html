@@ -1,14 +1,17 @@
-<form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-  <div class="container-fluid">
-    <h2 class="form-signin-heading">Login</h2>
-    <div *ngIf="invalidLogin" class="alert alert-danger">Invalid username or password.</div>
-    <br />
-    <label for="Username" class="sr-only">Email address</label>
-    <input type="email" id="username" name="username" ngModel class="form-control" placeholder="User Name" required autofocus>
-    <br />
-    <label for="Password" class="sr-only">Password</label>
-    <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password" required>
-    <br />
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  </div>
-</form>
+<div class="login-form">
+  <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    <div class="container-fluid">
+      <h2 class="form-signin-heading">Login</h2>
+      <br />
+      <div *ngIf="invalidLogin" class="alert alert-danger">Invalid username or password.</div>
+      <div *ngIf="invalidFormInput" class="alert alert-danger">Please enter a username and a password.</div>
+      <label for="Username" class="sr-only">Email address</label>
+      <input type="text" id="username" name="username" ngModel class="form-control" placeholder="Username" required autofocus>
+      <br />
+      <label for="Password" class="sr-only">Password</label>
+      <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password" required>
+      <br />
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </div>
+  </form>
+</div>

@@ -7,3 +7,10 @@
 <br />
 
 <li>{{ firstTicket.description }}</li>
+
+<br />
+<h1>-------------</h1>
+<br />
+
+<button mat-raised-button (click)="findTicket();" *ngIf="this.auth.tokenExists()">Dew It!</button>
+<li>{{ secondTicket.description }}</li>
