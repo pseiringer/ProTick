@@ -2,6 +2,10 @@ li .glyphicon {
     margin-right: 10px;
 }
 
+/*.main-nav[_ngcontent-ng-cli-universal-c1] {
+  background-color: #c50217;
+}*/
+
 /* Highlighting rules for nav menu items */
 li.link-active a,
 li.link-active a:hover,
@@ -37,7 +41,7 @@ li.link-active a:focus {
   }
 
   .navbar-collapse {
-    border-top: 1px solid #444;
+    border-top: 1px solid #f2a718;
     padding: 0px;
   }
 
@@ -64,3 +68,4 @@ li.link-active a:focus {
     text-overflow: ellipsis;
   }
 }
+

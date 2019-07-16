@@ -12,24 +12,19 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
           <ul class='nav navbar-nav'>
+            <li [routerLinkActive]='["link-active"]'>
+              <a [routerLink]='["/tickets"]' (click)='collapse()'>
+                <span class='glyphicon glyphicon-tags'></span> Tickets
+              </a>
+            </li>
             <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
               <a [routerLink]='["/processes"]' (click)='collapse()'>
                 <span class='glyphicon glyphicon-retweet'></span> Prozesse
               </a>
             </li>
             <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/tickets"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-tags'></span> Tickets
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]'>
               <a [routerLink]='["/teams"]' (click)='collapse()'>
                 <span class='glyphicon glyphicon-user'></span> Teams
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/create-ticket"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-th-list'></span> Create ticket
               </a>
             </li>
             <li>

@@ -9,11 +9,13 @@
 <br />
 <br />
 
-<select>
-  <option *ngFor="let process of processes">{{ process.description }}</option>
+<select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID)">
+  <option *ngFor="let process of processes" [value]="process.processID" cdkDrag>{{ process.description }}</option>
 </select>
 
-<div *ngFor="let subprocess of subprocesses">
-  {{ subprocess.description }}
-</div>
+<br />
+<br />
 
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div class="example-box" *ngFor="let subprocess of subprocesses" cdkDrag>{{ subprocess.description }}</div>
+</div>

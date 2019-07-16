@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule } from '@angular/material';
 import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { DatePipe } from '@angular/common'
 
 
@@ -69,6 +71,7 @@ import { createEmptyState } from '@angular/router/src/router_state';
     MatIconModule,
     MatButtonModule,
     BrowserAnimationsModule,
+    DragDropModule,
     RouterModule.forRoot([
       { path: '', component: LoginComponent, pathMatch: 'full'},
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
