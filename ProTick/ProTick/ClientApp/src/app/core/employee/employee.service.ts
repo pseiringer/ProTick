@@ -23,7 +23,6 @@ export class EmployeeService {
     });
   }
 
-
   deleteEmployee(id: number): Observable<Employee> {
     //console.log(id);
 
