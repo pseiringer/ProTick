@@ -3,4 +3,9 @@
   .body-content {
     padding-top: 50px;
   }
+
+  .centered {
+    width: 100%;
+    float: none;
+  }
 }

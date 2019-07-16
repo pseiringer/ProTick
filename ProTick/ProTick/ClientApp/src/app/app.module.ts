@@ -39,7 +39,7 @@ import { AuthGuard } from '../classes/Authentication/AuthGuard';
     FormsModule,
     CoreModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full'},
+      { path: '', component: LoginComponent, pathMatch: 'full'},
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },

@@ -12,15 +12,19 @@ using ProTick.Singletons;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace ProTick
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration conf, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            Configuration = conf;
+            this.env = env;
         }
+
+        private IHostingEnvironment env;
 
         public IConfiguration Configuration { get; }
 
@@ -42,23 +46,6 @@ namespace ProTick
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            /*
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtAuth["ValidIssuer"],
-                        ValidAudience = jwtAuth["ValidAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtAuth["SecurityKey"]))
-                    };
-                });
-                */
-
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,8 +61,7 @@ namespace ProTick
                     ValidAudience = jwtAuth["ValidAudience"],
                     ValidIssuer = jwtAuth["ValidIssuer"],
                     ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(5)
+                    ValidateLifetime = true
                 };
             });
 

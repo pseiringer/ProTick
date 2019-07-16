@@ -14,18 +14,24 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
 
 namespace ProTick.Controllers
 {
     [Route("ProTick/[controller]")]
     public class AuthenticationController : Controller
     {
+        private IConfiguration configuration;
         private ProTickDatabaseContext db;
         private IResourceDTOConverter converter;
         private IDatabaseQueryManager dbm;
 
-        public AuthenticationController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
+        public AuthenticationController(IConfiguration conf, 
+            [FromServices] ProTickDatabaseContext db,
+            [FromServices] IResourceDTOConverter converter,
+            [FromServices] IDatabaseQueryManager dbm)
         {
+            this.configuration = conf;
             this.db = db;
             this.converter = converter;
             this.dbm = dbm;
@@ -36,34 +42,15 @@ namespace ProTick.Controllers
         {
             if (loginUser == null)
                 return BadRequest("Invalid client request");
-
-            Console.WriteLine("Username:" + loginUser.Username);
-            Console.WriteLine("Password:" + loginUser.Password);
-
+            
             var emp = dbm.FindEmployeeByUsername(loginUser.Username);
+
+            //TODO encrypt password
+
             if (emp != null && emp.Password == loginUser.Password)
             {
-                /*
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("protick19@da2019moveIT"));
-                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature);
 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, emp.Username),
-                    new Claim(ClaimTypes.Role, "Manager")
-                };
-
-                var tokenOptions = new JwtSecurityToken(
-                    issuer: "http://localhost:8080",
-                    audience: "http://localhost:8080",
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(5),
-                    signingCredentials: signinCredentials
-                );
-
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return Ok(new { Token = tokenString });
-                */
+                var jwtAuthentication = configuration.GetSection("JwtAuthentication");
 
                 var handler = new JwtSecurityTokenHandler();
 
@@ -74,12 +61,12 @@ namespace ProTick.Controllers
                     }
                     );
 
-                var keyByteArray = System.Text.Encoding.UTF8.GetBytes("protick19@da2019moveIT");
+                var keyByteArray = System.Text.Encoding.UTF8.GetBytes(jwtAuthentication.GetValue<string>("SecurityKey"));
                 var signinKey = new SymmetricSecurityKey(keyByteArray);
                 var securityToken = handler.CreateToken(new SecurityTokenDescriptor
                 {
-                    Issuer = "https://localhost:8080/",
-                    Audience = "https://localhost:8080/",
+                    Issuer = jwtAuthentication.GetValue<string>("ValidIssuer"),
+                    Audience = jwtAuthentication.GetValue<string>("ValidAudience"),
                     SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
                     Subject = identity,
                     Expires = DateTime.Now.AddMinutes(5),
@@ -92,57 +79,6 @@ namespace ProTick.Controllers
 
             return Unauthorized();
 
-        }
-
-        [HttpGet("{id}")]
-        public TicketDTO GetTicketByID(int id)
-        {
-            return converter.TicketToDTO(dbm.FindTicketByID(id));
-        }
-
-        [HttpPost, Authorize]
-        public TicketDTO PostTicket([FromBody] TicketDTO ticket)
-        {
-            var newTicket = db.Ticket.Add(converter.DTOToTicket(ticket));
-            db.SaveChanges();
-            return converter.TicketToDTO(newTicket.Entity);
-        }
-
-        [HttpPut("{id}"), Authorize]
-        public TicketDTO PutTicket(int id, [FromBody] TicketDTO ticket)
-        {
-            var editTicket = dbm.FindTicketByID(id);
-
-            bool changesDone = false;
-            if (editTicket.Description != ticket.Description)
-            {
-                editTicket.Description = ticket.Description;
-                changesDone = true;
-            }
-            if (editTicket.State.StateID != ticket.StateID)
-            {
-                editTicket.State = dbm.FindStateByID(ticket.StateID);
-                changesDone = true;
-            }
-            if (editTicket.Subprocess.SubprocessID != ticket.SubprocessID)
-            {
-                editTicket.Subprocess = dbm.FindSubprocessByID(ticket.SubprocessID);
-                changesDone = true;
-            }
-
-            if (changesDone) db.SaveChanges();
-            return converter.TicketToDTO(editTicket);
-        }
-
-        [HttpDelete("{id}"), Authorize]
-        public void DeleteTicket(int id)
-        {
-            var removeTicket = dbm.FindTicketByID(id);
-            if (removeTicket != null)
-            {
-                db.Ticket.Remove(removeTicket);
-                db.SaveChanges();
-            }
         }
     }
 }
