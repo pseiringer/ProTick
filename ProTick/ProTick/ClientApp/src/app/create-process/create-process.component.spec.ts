@@ -1,24 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TeamsComponent } from './teams.component';
-import { MatTableModule } from '@angular/material';
+import { CreateProcessComponent } from './create-process.component';
 
-
-
-describe('TeamsComponent', () => {
-  let component: TeamsComponent;
-  let fixture: ComponentFixture<TeamsComponent>;
+describe('CreateProcessComponent', () => {
+  let component: CreateProcessComponent;
+  let fixture: ComponentFixture<CreateProcessComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[MatTableModule],
-      declarations: [ TeamsComponent ]
+      declarations: [ CreateProcessComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TeamsComponent);
+    fixture = TestBed.createComponent(CreateProcessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

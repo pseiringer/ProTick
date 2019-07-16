@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProcessDataService } from '../core/process/process-data.service';
+import { ProcessService } from '../core/process/process.service';
 import { TicketService } from '../core/ticket/ticket.service';
 import { AuthGuard } from '../../classes/Authentication/AuthGuard';
+
 
 @Component({
   selector: 'app-tickets',

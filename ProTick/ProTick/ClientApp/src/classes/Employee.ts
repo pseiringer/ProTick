@@ -1,7 +1,7 @@
-export interface Team {
+export interface Employee {
   employeeID: number,
-  firstname: string,
-  lastname: string,
+  firstName: string,
+  lastName: string,
   dateOfBirth: string,
   hireDate: string,
   username: string,

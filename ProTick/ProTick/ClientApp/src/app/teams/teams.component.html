@@ -1,25 +1,135 @@
-<p>
-  teams works! test
-</p>
-
 <body>
-  
-  <!--<mat-form-field>
-    <input matInput placeholder="Favorite food" value="Sushi">
-  </mat-form-field>-->
 
-  <div>
-    <input type="text" [(ngModel)]="_teamDescription" placeholder="Name">
-    <br>
+  <mat-tab-group mat-stretch-tabs class="tabs mat-elevation-z4">
+    <mat-tab label="Teams">
+      <div class="team_tab">
+        <button mat-icon-button (click)="onAdd()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
 
-    <button routerLink="/" (click)="clearValues()">Abbrechen</button>
-    <button (click)="postTeam()" routerLink="/">Erstellen</button>
+        <button mat-icon-button (click)="clear(); refresh()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+
+        <div class="mat-elevation-z8">
+          <mat-table #table multiTemplateDataRows [dataSource]="allTeams" matSort>
+
+            <ng-container matColumnDef="teamID">
+              <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.teamID}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.description}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="abbreviation">
+              <mat-header-cell *matHeaderCellDef> Abkürzung </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.abbreviation}} </mat-cell>
+            </ng-container>
+
+            <!--expanded row-->
+            <ng-container matColumnDef="expandedDetail">
+              <mat-cell *matCellDef="let element" [attr.colspan]="3">
+                <div class="team-detail"
+                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                  <div class="element-description">
+                    {{element.description}}
+                  </div>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;">
+                     <!--[class.expanded-row]="expandedElement === element"
+                     (click)="expandedElement = expandedElement === element ? null : element"-->
+
+                     </mat-row>
+            <!--<mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>-->
+
+            <ng-container matColumnDef="options">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="onEdit(row)">
+                  <mat-icon>build</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDelete(row.teamID)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+          </mat-table>
+        </div>
+
+      </div>
+    </mat-tab>
+    <mat-tab label="Mitarbeiter">
+      <div class="employee_tab">
+
+        <select [(ngModel)] ="_teamID" (ngModelChange)="getEmployeesByTeamID(_teamID)">
+          <option *ngFor="let team of allTeams" [value]="team.teamID">{{ team.description }}</option>
+        </select>
+
+        <button mat-icon-button (click)="onAddEmp()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+
+        <div class="mat-elevation-z8">
+          <mat-table #table [dataSource]="allEmployees" matSort>
+
+            <ng-container matColumnDef="employeeID">
+              <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.employeeID}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="firstName">
+              <mat-header-cell *matHeaderCellDef> Vorname </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.firstName}}</mat-cell>
+            </ng-container>
 
 
-    <select>
-      <option *ngFor="let team of allTeams">{{ team.description }}</option>
-    </select>
-  </div>
-  
+            <ng-container matColumnDef="lastName">
+              <mat-header-cell *matHeaderCellDef> Nachname </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+            </ng-container>
 
+            <ng-container matColumnDef="dateOfBirth">
+              <mat-header-cell *matHeaderCellDef> Geburtsdatum </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.dateOfBirth}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="hireDate">
+              <mat-header-cell *matHeaderCellDef> Einstellungsdatum </mat-header-cell>
+              <mat-cell *matCellDef="let element" class="tip"> {{element.hireDate}}</mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="username">
+              <mat-header-cell *matHeaderCellDef> Benutzername </mat-header-cell>
+              <mat-cell *matCellDef="let element" class="tip"> {{element.username}}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumnsEmp"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsEmp;"></mat-row>
+
+            <ng-container matColumnDef="options">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="onEditEmp(row)">
+                  <mat-icon>build</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDeleteEmp(row.employeeID)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+          </mat-table>
+        </div>
+
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </body>

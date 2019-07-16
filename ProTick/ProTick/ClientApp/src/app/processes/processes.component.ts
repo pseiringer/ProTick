@@ -1,31 +1,46 @@
 import { Component, OnInit } from '@angular/core';
-import { ProcessDataService } from '../core/process/process-data.service';
-import { CreateTicketComponent } from '../create-ticket/create-ticket.component';
-//import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProcessService } from '../core/process/process.service';
+import { Process } from '../../classes/Process';
+import { CreateProcessComponent } from '../create-process/create-process.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-processes',
   templateUrl: './processes.component.html',
   styleUrls: ['./processes.component.css'],
-  providers: [ProcessDataService]
+  providers: [ProcessService]
 })
 
 export class ProcessesComponent implements OnInit {
 
-  allProcesses: any = [];
+  processes = [];
 
+  process: Process = {
+    processID: undefined,
+    description: undefined
+  };
 
+  constructor(private _processService: ProcessService, public dialog: MatDialog) { }
 
-  constructor(private _processDataService: ProcessDataService/*, public dialog: MatDialog*/) { }
   ngOnInit() {
-    this._processDataService.getProcesses()
-      .subscribe(data => this.allProcesses = data);
+    this.getProcesses();
   }
 
-  //private openDialog() {
-  //  let dialogRef = this.dialog.open(CreateTicketComponent, {
-  //    height: '400px',
-  //    width: '600px',
-  //  });
-  //}
+  getProcesses(): void {
+    this._processService.getProcesses()
+      .subscribe(data => this.processes = data);
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CreateProcessComponent, {
+      data: { description: this.process.description }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.process.description = result;
+      this._processService.postProcess(this.process)
+        .subscribe();
+    });
+  }
 }

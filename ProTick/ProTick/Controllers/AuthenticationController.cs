@@ -69,7 +69,7 @@ namespace ProTick.Controllers
                     Audience = jwtAuthentication.GetValue<string>("ValidAudience"),
                     SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
                     Subject = identity,
-                    Expires = DateTime.Now.AddMinutes(5),
+                    Expires = DateTime.Now.AddMinutes(50),
                     NotBefore = DateTime.Now
                 });
 
