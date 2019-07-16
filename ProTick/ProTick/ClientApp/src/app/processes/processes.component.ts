@@ -4,6 +4,7 @@ import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
 import { CreateProcessComponent } from '../create-process/create-process.component';
 import { MatDialog } from '@angular/material';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-processes',
@@ -41,6 +42,11 @@ export class ProcessesComponent implements OnInit {
   getSubprocessesByProcessID(_processID): void {
     this._processService.getSubprocessesByProcessID(_processID)
       .subscribe(data => this.subprocesses = data);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.subprocesses, event.previousIndex, event.currentIndex);
+    console.log(this.subprocesses);
   }
 
   openDialog(): void {

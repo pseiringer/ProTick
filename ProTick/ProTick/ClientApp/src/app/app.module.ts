@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { MatTableModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
@@ -59,6 +60,7 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     MatIconModule,
     MatButtonModule,
     BrowserAnimationsModule,
+    DragDropModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full'},
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },

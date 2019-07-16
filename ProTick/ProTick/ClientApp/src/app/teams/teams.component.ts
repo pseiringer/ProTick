@@ -25,7 +25,7 @@ export class TeamsComponent implements OnInit {
 
   dataSource;
 
-  @ViewChild(MatSort) sort: MatSort;
+  //@ViewChild(MatSort) sort: MatSort;
 
   constructor(private _teamService: TeamService, public dialog: MatDialog) { }
   
