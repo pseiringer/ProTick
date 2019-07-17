@@ -2,12 +2,13 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { TeamService } from '../core/team/team.service';
 import { Team } from '../../classes/Team';
 import { Employee } from '../../classes/Employee';
-import { MatSort, MatDialog, MatTab } from '@angular/material';
+import { EmployeeTeam } from '../../classes/EmployeeTeam';
+import { MatSort, MatDialog, MatTab, MatSelectModule, MatDatepickerModule} from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CreateTeamComponent } from '../create-team/create-team.component';
 import { CreateEmployeeComponent } from '../create-employee/create-employee.component';
 import { EmployeeService } from '../core/employee/employee.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { EmployeeTeamService } from '../core/employee-team/employee-team.service';
 import { MAT_DATE_FORMATS } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common'
@@ -17,7 +18,7 @@ import { DatePipe } from '@angular/common'
   selector: 'app-teams',
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.css'],
-  providers: [TeamService, EmployeeService],
+  providers: [TeamService, EmployeeService, EmployeeTeamService],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -51,6 +52,13 @@ export class TeamsComponent implements OnInit {
     addressID: undefined
   }
 
+  et: EmployeeTeam = {
+    employeeTeamID: undefined,
+    employeeID: undefined,
+    roleID: undefined,
+    teamID: undefined
+  }
+
   displayedColumns: string[] = ['teamID', 'description', 'abbreviation', 'options'];
   displayedColumnsEmp: string[] = ['employeeID', 'firstName', 'lastName', 'dateOfBirth', 'hireDate', 'username', 'options'];
   
@@ -59,7 +67,9 @@ export class TeamsComponent implements OnInit {
 
   //@ViewChild(MatSort) sort: MatSort;
 
-  constructor(public datepipe: DatePipe, private _teamService: TeamService, private _employeeService: EmployeeService, public dialog: MatDialog) { }
+  constructor(public datepipe: DatePipe, private _employeeTeamService: EmployeeTeamService,
+    private _teamService: TeamService,
+    private _employeeService: EmployeeService, public dialog: MatDialog) { }
   
   ngOnInit() {
     this.getTeams();
@@ -123,14 +133,26 @@ export class TeamsComponent implements OnInit {
         this.emp.password = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName).toLowerCase();
         this.emp.addressID = 1;
 
-       
-
         this._employeeService.postEmployee(this.emp)
           .subscribe(data => {
-            this.emp = data,
-              this.clearEmp(),
-              this.getEmployees()
-          });
+            console.log(data);
+            this.emp = data;
+            
+            if (result.selTeams.length > 0) {
+              console.log("teams nicht leer");
+              result.selTeams.forEach((team) => {
+                this.et.employeeID = this.emp.employeeID;
+                this.et.teamID = team.teamID;
+                this.et.roleID = 1;
+
+                this._employeeTeamService.postEmployeeTeam(this.et)
+                  .subscribe(data => this.et = data);
+              });
+            }
+
+            this.clearEmp();
+            this.getEmployees();
+          }); 
       }
     }
     );

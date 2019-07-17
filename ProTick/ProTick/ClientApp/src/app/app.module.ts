@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatSelectModule, MatListModule } from '@angular/material';
 import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -35,7 +35,6 @@ import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
-import { createEmptyState } from '@angular/router/src/router_state';
 
 
 @NgModule({
@@ -65,6 +64,8 @@ import { createEmptyState } from '@angular/router/src/router_state';
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
+    MatListModule,
+    MatSelectModule,
     MatTabsModule,
     MatTableModule,
     MatNativeDateModule,

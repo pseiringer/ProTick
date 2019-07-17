@@ -23,21 +23,24 @@
 </mat-form-field>
 <br />
 
-<select [(ngModel)]="data.teamID">
-  <option *ngFor="let team of allTeams" [value]="team.teamID">{{ team.description }}</option>
-</select>
+<mat-form-field>
+  <mat-label>Teams</mat-label>
+  <mat-select [(ngModel)]="data.teamID">
+    <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
+      {{team.description}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
 <button mat-icon-button (click)="onAddTeam()">
   <mat-icon>playlist_add</mat-icon>
 </button>
 
+<p>Klicken, um zu entfernen</p>
 
-<!--<mat-form-field>
-  <input matInput [matDatepicker]="pickBirthDate" placeholder="Geburtsdatum" [formControl]="date">
-  <mat-datepicker-toggle matSuffix [for]="pickBirthDate"></mat-datepicker-toggle>
-  <mat-datepicker #pickBirthDate></mat-datepicker>
-</mat-form-field>
-<br />-->
+<mat-action-list>
+  <button class="selectedTeamsListItem" *ngFor="let t of data.selTeams" mat-list-item (click)="onRemoveTeam(t)"> {{t.description}} </button>
+</mat-action-list>
 
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClickEmp()">Abbrechen</button>
