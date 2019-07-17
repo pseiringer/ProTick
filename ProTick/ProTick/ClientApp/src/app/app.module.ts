@@ -35,7 +35,6 @@ import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
-import { createEmptyState } from '@angular/router/src/router_state';
 
 
 @NgModule({
@@ -73,7 +72,7 @@ import { createEmptyState } from '@angular/router/src/router_state';
     BrowserAnimationsModule,
     DragDropModule,
     RouterModule.forRoot([
-      { path: '', component: LoginComponent, pathMatch: 'full'},
+      { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full' },
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },

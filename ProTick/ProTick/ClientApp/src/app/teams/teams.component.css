@@ -18,7 +18,6 @@ mat-cell{
   white-space: nowrap;
 }
 
-
 /*mat-cell[title]:hover:after{
   content:attr(title);
   position: absolute;

@@ -1,6 +1,6 @@
 export interface Ticket {
-  TicketID: number,
-  Description: string,
-  StateFK: number,
-  SubprocessFK: number
+  ticketID: number,
+  description: string,
+  stateFK: number,
+  subprocessFK: number
 }
