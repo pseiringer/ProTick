@@ -23,14 +23,6 @@ namespace ProTick.Controllers
             this.converter = converter;
             this.dbm = dbm;
         }
-        
-
-        [HttpGet("{id}")]
-        public EmployeeDTO GetEmployee(int id)
-        {
-            return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
-
-        }
 
         [HttpGet]
         public IEnumerable<EmployeeDTO> GetEmployees()
@@ -41,7 +33,7 @@ namespace ProTick.Controllers
         [HttpPost]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
-            var a = db.Employee.Add(converter.DTOToEmployee( e));
+            var a = db.Employee.Add(converter.DTOToEmployee(e));
 
             db.SaveChanges();
 
@@ -71,6 +63,11 @@ namespace ProTick.Controllers
         [HttpDelete("{id}")]
         public void DeleteEmployee(int id)
         {
+            var et = dbm.FindEmployeeTeamsByEmployeeID(id);
+            for (int i = 0; i < et.Count; i++)
+            {
+                db.EmployeeTeam.Remove(et[i]);
+            }
             db.Employee.Remove(db.Employee.First(x => x.EmployeeID == id));
             db.SaveChanges();
         }

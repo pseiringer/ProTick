@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Team } from '../../../classes/Team';
 import { Employee } from '../../../classes/Employee';
+import { EmployeeTeam } from '../../../classes/EmployeeTeam';
 
 @Injectable()
 export class TeamService {
@@ -10,6 +11,10 @@ export class TeamService {
 
   getTeams(): Observable<Team[]> {
     return this.http.get<Team[]>('http://localhost:8080/ProTick/Team');
+  }
+
+  getTeam(id: number): Observable<Team> {
+    return this.http.get<Team>('http://localhost:8080/ProTick/Team/' + id);
   }
 
   postTeam(team: Team): Observable<Team> {
@@ -24,6 +29,10 @@ export class TeamService {
 
   getEmployeesByTeamID(id: number): Observable<Employee[]> {
     return this.http.get<Employee[]>('http://localhost:8080/ProTick/Team/' + id + '/Employees');
+  }
+
+  getEmployeeTeamssByTeamID(id: number): Observable<EmployeeTeam[]> {
+    return this.http.get<EmployeeTeam[]>('http://localhost:8080/ProTick/Team/' + id + '/EmployeeTeams');
   }
 
   deleteTeam(id: number): Observable<Team> {

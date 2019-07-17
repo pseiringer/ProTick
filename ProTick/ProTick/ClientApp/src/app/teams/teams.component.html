@@ -63,10 +63,17 @@
     <mat-tab label="Mitarbeiter">
       <div class="employee_tab">
 
-        <select [(ngModel)]="_teamID" (ngModelChange)="getEmployeesByTeamID(_teamID)">
-          <option  [value]="0">-</option>
-          <option *ngFor="let team of allTeams" [value]="team.teamID">{{ team.description }}</option>
-        </select>
+        <mat-form-field>
+          <mat-label>Teams</mat-label>
+          <mat-select [(ngModel)]="_teamID" (ngModelChange)="getEmployeesByTeamID(_teamID)">
+            <mat-option [value]="0">
+              Alle Teams
+            </mat-option>
+            <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
+              {{team.description}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <button mat-icon-button (click)="onAddEmp()">
           <mat-icon>add_circle</mat-icon>

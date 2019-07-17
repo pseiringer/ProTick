@@ -32,12 +32,7 @@ namespace ProTick.Singletons
 
         public EmployeeTeamDTO EmployeeTeamToDTO(EmployeeTeam a)
         {
-            return new EmployeeTeamDTO { EmployeeID = a.Employee.EmployeeID, EmployeeTeamID = a.EmployeeTeamID, Role = a.Role, TeamID = a.Team.TeamID };
-        }
-
-        public EmployeeTeamPrivilegeDTO EmployeeTeamPrivilegeToDTO(EmployeeTeamPrivilege a)
-        {
-            return new EmployeeTeamPrivilegeDTO { EmployeeTeamID = a.EmployeeTeam.EmployeeTeamID, EmployeeTeamPrivilegeID = a.EmployeeTeamPrivilegeID, PrivilegeID = a.Privilege.PrivilegeID };
+            return new EmployeeTeamDTO { EmployeeID = a.Employee.EmployeeID, EmployeeTeamID = a.EmployeeTeamID, RoleID = a.Role.RoleID, TeamID = a.Team.TeamID };
         }
 
         public ParentChildRelationDTO ParentChildRelationToDTO(ParentChildRelation a)
@@ -45,9 +40,9 @@ namespace ProTick.Singletons
             return new ParentChildRelationDTO { ChildID = a.Child.SubprocessID, ParentChildRelationID = a.ParentChildRelationID, ParentID = a.Parent.SubprocessID };
         }
 
-        public PrivilegeDTO PrivilegeToDTO(Privilege a)
+        public RoleDTO PrivilegeToDTO(Role a)
         {
-            return new PrivilegeDTO { PrivilegeID = a.PrivilegeID, Description = a.Description };
+            return new RoleDTO { RoleID = a.RoleID, Title = a.Title };
         }
 
         public ProcessDTO ProcessToDTO(Process a)
@@ -91,22 +86,17 @@ namespace ProTick.Singletons
 
         public EmployeeTeam DTOToEmployeeTeam(EmployeeTeamDTO a)
         {
-            return new EmployeeTeam { Employee = dbm.FindEmployeeByID(a.EmployeeID), EmployeeTeamID = a.EmployeeTeamID, Role = a.Role, Team = dbm.FindTeamByID(a.TeamID)};
+            return new EmployeeTeam { Employee = dbm.FindEmployeeByID(a.EmployeeID), EmployeeTeamID = a.EmployeeTeamID, Role = dbm.FindRoleByID(a.RoleID), Team = dbm.FindTeamByID(a.TeamID)};
         }
-
-        public EmployeeTeamPrivilege DTOToEmployeeTeamPrivilege(EmployeeTeamPrivilegeDTO a)
-        {
-            return new EmployeeTeamPrivilege { EmployeeTeam = dbm.FindEmployeeTeamByID(a.EmployeeTeamID), EmployeeTeamPrivilegeID = a.EmployeeTeamPrivilegeID, Privilege = dbm.FindPrivilegeByID(a.PrivilegeID)};
-        }
-
+        
         public ParentChildRelation DTOToParentChildRelation(ParentChildRelationDTO a)
         {
             return new ParentChildRelation { Child = dbm.FindSubprocessByID(a.ChildID), ParentChildRelationID = a.ParentChildRelationID, Parent = dbm.FindSubprocessByID(a.ParentID) };
         }
 
-        public Privilege DTOToPrivilege(PrivilegeDTO a)
+        public Role DTOToPrivilege(RoleDTO a)
         {
-            return new Privilege { PrivilegeID = a.PrivilegeID, Description = a.Description };
+            return new Role { RoleID = a.RoleID, Title = a.Title };
         }
 
         public Process DTOToProcess(ProcessDTO a)

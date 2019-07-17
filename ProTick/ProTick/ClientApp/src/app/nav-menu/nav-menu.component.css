@@ -36,6 +36,16 @@ li.link-active a:focus {
     height: 100%;
   }
 
+  .protick {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    text-decoration: none;
+    color: white;
+  }
+
   .navbar-header {
     float: none;
   }

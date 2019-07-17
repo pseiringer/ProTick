@@ -1700,9 +1700,9 @@ dd {
     white-space: nowrap
   }
 
-  .dl-horizontal dd {
+  /*.dl-horizontal dd {
     margin-left: 180px
-  }
+  }*/
 }
 
 abbr[data-original-title], abbr[title] {
@@ -1816,12 +1816,12 @@ pre {
   overflow-y: scroll
 }
 
-.container {
+/*.container {
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto
-}
+}*/
 
 @media (min-width:768px) {
   .container {
@@ -2026,7 +2026,7 @@ pre {
   left: auto
 }
 
-.col-xs-offset-12 {
+/*.col-xs-offset-12 {
   margin-left: 100%
 }
 
@@ -2076,9 +2076,9 @@ pre {
 
 .col-xs-offset-0 {
   margin-left: 0
-}
+}*/
 
-@media (min-width:768px) {
+/*@media (min-width:768px) {
   .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
     float: left
   }
@@ -2286,9 +2286,9 @@ pre {
   .col-sm-offset-0 {
     margin-left: 0
   }
-}
+}*/
 
-@media (min-width:992px) {
+/*@media (min-width:992px) {
   .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
     float: left
   }
@@ -2706,7 +2706,7 @@ pre {
   .col-lg-offset-0 {
     margin-left: 0
   }
-}
+}*/
 
 table {
   background-color: transparent
@@ -6877,14 +6877,14 @@ button.close {
   }
 }*/
 
-.btn-group-vertical > .btn-group:after, .btn-group-vertical > .btn-group:before, .btn-toolbar:after, .btn-toolbar:before, .clearfix:after, .clearfix:before, .container-fluid:after, .container-fluid:before, .container:after, .container:before, .dl-horizontal dd:after, .dl-horizontal dd:before, .form-horizontal .form-group:after, .form-horizontal .form-group:before, .modal-footer:after, .modal-footer:before, .modal-header:after, .modal-header:before, .nav:after, .nav:before, .navbar-collapse:after, .navbar-collapse:before, .navbar-header:after, .navbar-header:before, .navbar:after, .navbar:before, .pager:after, .pager:before, .panel-body:after, .panel-body:before, .row:after, .row:before {
+/*.btn-group-vertical > .btn-group:after, .btn-group-vertical > .btn-group:before, .btn-toolbar:after, .btn-toolbar:before, .clearfix:after, .clearfix:before, .container-fluid:after, .container-fluid:before, .container:after, .container:before, .dl-horizontal dd:after, .dl-horizontal dd:before, .form-horizontal .form-group:after, .form-horizontal .form-group:before, .modal-footer:after, .modal-footer:before, .modal-header:after, .modal-header:before, .nav:after, .nav:before, .navbar-collapse:after, .navbar-collapse:before, .navbar-header:after, .navbar-header:before, .navbar:after, .navbar:before, .pager:after, .pager:before, .panel-body:after, .panel-body:before, .row:after, .row:before {
   display: table;
   content: " "
 }
 
 .btn-group-vertical > .btn-group:after, .btn-toolbar:after, .clearfix:after, .container-fluid:after, .container:after, .dl-horizontal dd:after, .form-horizontal .form-group:after, .modal-footer:after, .modal-header:after, .nav:after, .navbar-collapse:after, .navbar-header:after, .navbar:after, .pager:after, .panel-body:after, .row:after {
   clear: both
-}
+}*/
 
 /*.center-block {
   display: block;
