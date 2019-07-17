@@ -38,7 +38,7 @@ export class TeamsComponent implements OnInit {
   expandedElement: Team | null;
   
 
-  @ViewChild(MatSort) sort: MatSort;
+  //@ViewChild(MatSort) sort: MatSort;
 
   constructor(private _teamService: TeamService, private _employeeService: EmployeeService, public dialog: MatDialog) { }
   

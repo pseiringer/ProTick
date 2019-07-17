@@ -21,7 +21,7 @@ import { ProcessesComponent } from './processes/processes.component';
 import { CreateProcessComponent } from './create-process/create-process.component';
 
 import { TicketsComponent } from './tickets/tickets.component';
-import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { CreateTicketComponent } from './tickets/create-ticket/create-ticket.component';
 
 import { TeamsComponent } from './teams/teams.component';
 
@@ -30,6 +30,8 @@ import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
 import { CreateTeamComponent } from './create-team/create-team.component';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -42,10 +44,10 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     ProcessesComponent,
     CreateProcessComponent,
     TicketsComponent,
-    CreateTicketComponent,
     TeamsComponent,
     LoginComponent,
     CreateTeamComponent,
+    CreateTicketComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -61,8 +63,9 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     MatIconModule,
     MatButtonModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', component: LoginComponent, pathMatch: 'full'},
+      { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
@@ -74,7 +77,7 @@ import { CreateTeamComponent } from './create-team/create-team.component';
     ])
   ],
   providers: [JwtHelper, AuthGuard],
-  entryComponents: [CreateProcessComponent, CreateTeamComponent],
+  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

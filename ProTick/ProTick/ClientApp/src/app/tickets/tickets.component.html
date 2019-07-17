@@ -1,16 +1,68 @@
-<h1>Tickets</h1>
 
-<li *ngFor="let ticket of allTickets">{{ ticket.description }}</li>
+<div class="ticket-list">
+  <h1>Tickets</h1>
 
-<br />
-<h1>-------------</h1>
-<br />
+  <button mat-icon-button (click)="onAdd()">
+    <mat-icon>add_circle</mat-icon>
+  </button>
 
-<li>{{ firstTicket.description }}</li>
+  <div class="mat-elevation-z8">
+    <mat-table #table multiTemplateDataRows [dataSource]="allTickets">
 
-<br />
-<h1>-------------</h1>
-<br />
+      <ng-container matColumnDef="ticketID">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ticketID}} </mat-cell>
+      </ng-container>
 
-<button mat-raised-button (click)="findTicket();" *ngIf="this.auth.tokenExists()">Dew It!</button>
-<li>{{ secondTicket.description }}</li>
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.description}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="stateDescription">
+        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.stateDescription}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="subprocessDescription">
+        <mat-header-cell *matHeaderCellDef> Subprozess </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.subprocessDescription}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="teamDescription">
+        <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.teamDescription}} </mat-cell>
+      </ng-container>
+
+      <!--expanded row-->
+      <!--<ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let element" [attr.colspan]="3">
+          <div class="team-detail"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="element-description">
+              {{element.description}}
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>-->
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <ng-container matColumnDef="options"  >
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="onFinished(row)">
+            <mat-icon>done</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onEdit(row)">
+            <mat-icon>build</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDelete(row.teamID)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+    </mat-table>
+  </div>
+</div>

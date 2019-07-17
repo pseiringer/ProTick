@@ -1,4 +1,4 @@
-export interface Ticket {
+export interface State {
   ticketID: number,
   description: string,
   stateID: number,
