@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatSelectModule, MatListModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatTooltipModule, MatSelectModule, MatListModule, MatStepperModule } from '@angular/material';
 import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -66,6 +66,8 @@ import { CreateEmployeeComponent } from './create-employee/create-employee.compo
     MatInputModule,
     MatListModule,
     MatSelectModule,
+    MatStepperModule,
+    MatTooltipModule,
     MatTabsModule,
     MatTableModule,
     MatNativeDateModule,

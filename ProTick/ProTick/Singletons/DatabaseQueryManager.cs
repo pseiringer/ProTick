@@ -219,7 +219,7 @@ namespace ProTick.Singletons
 
         public List<EmployeeTeam> FindEmployeeTeamsByEmployeeID(int id)
         {
-            return db.EmployeeTeam.Where(x => x.Employee.EmployeeID == id).ToList();
+            return db.EmployeeTeam.Include(x => x.Employee).Where(x => x.Employee.EmployeeID == id).ToList();
         }
 
         public List<EmployeeTeam> FindEmployeeTeamsByTeamID(int id)
