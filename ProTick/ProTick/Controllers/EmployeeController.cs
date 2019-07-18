@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProTick.ResourceDTOs;
 using ProTick.Singletons;
 using ProTickDatabase;
@@ -63,13 +64,27 @@ namespace ProTick.Controllers
         [HttpDelete("{id}")]
         public void DeleteEmployee(int id)
         {
+            var emp = db.Employee.Include(x => x.Address).First(x => x.EmployeeID == id);
             var et = dbm.FindEmployeeTeamsByEmployeeID(id);
             for (int i = 0; i < et.Count; i++)
             {
                 db.EmployeeTeam.Remove(et[i]);
             }
-            db.Employee.Remove(db.Employee.First(x => x.EmployeeID == id));
+
+            var add = dbm.FindAddressByID(emp.Address.AddressID);
+
+            db.Employee.Remove(emp);
+
+            //db.SaveChanges();
+            
+            if(db.Employee.Include(x => x.Address).Where(x => x.Address.AddressID == add.AddressID).ToList().Count() <= 1)
+            {
+                db.Address.Remove(add);
+            }
+
             db.SaveChanges();
+
+
         }
     }
 }

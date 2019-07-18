@@ -3,22 +3,23 @@ import { TeamService } from '../core/team/team.service';
 import { Team } from '../../classes/Team';
 import { Employee } from '../../classes/Employee';
 import { EmployeeTeam } from '../../classes/EmployeeTeam';
-import { MatSort, MatDialog, MatTab, MatSelectModule, MatDatepickerModule} from '@angular/material';
+import { Address } from '../../classes/Address';
+import { MatSort, MatDialog, MatTab, MatSelectModule, MatDatepickerModule, MatTooltipModule, TooltipPosition} from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CreateTeamComponent } from '../create-team/create-team.component';
 import { CreateEmployeeComponent } from '../create-employee/create-employee.component';
 import { EmployeeService } from '../core/employee/employee.service';
 import { EmployeeTeamService } from '../core/employee-team/employee-team.service';
+import { AddressService } from '../core/address/address.service';
 import { MAT_DATE_FORMATS } from '@angular/material';
 import { FormControl } from '@angular/forms';
-import { DatePipe } from '@angular/common'
-
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-teams',
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.css'],
-  providers: [TeamService, EmployeeService, EmployeeTeamService],
+  providers: [TeamService, EmployeeService, EmployeeTeamService, AddressService],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -59,9 +60,19 @@ export class TeamsComponent implements OnInit {
     teamID: undefined
   }
 
-  displayedColumns: string[] = ['teamID', 'description', 'abbreviation', 'options'];
+  address: Address = {
+    addressID: undefined,
+    street: undefined,
+    streetNumber: undefined,
+    postalCode: undefined,
+    country: undefined,
+    city: undefined
+  }
+
+  displayedColumns: string[] = ['teamID', 'abbreviation', 'options'];
   displayedColumnsEmp: string[] = ['employeeID', 'firstName', 'lastName', 'dateOfBirth', 'hireDate', 'username', 'options'];
-  
+
+
   expandedElement: Team | null;
   
 
@@ -69,6 +80,7 @@ export class TeamsComponent implements OnInit {
 
   constructor(public datepipe: DatePipe, private _employeeTeamService: EmployeeTeamService,
     private _teamService: TeamService,
+    private _addressService: AddressService,
     private _employeeService: EmployeeService, public dialog: MatDialog) { }
   
   ngOnInit() {
@@ -131,28 +143,43 @@ export class TeamsComponent implements OnInit {
         this.emp.hireDate = this.datepipe.transform(result.hireDate, "yyyy-MM-dd hh:mm:ss");
         this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName).toLowerCase();
         this.emp.password = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName).toLowerCase();
-        this.emp.addressID = 1;
 
-        this._employeeService.postEmployee(this.emp)
+        this.address.city = result.city;
+        this.address.country = result.country;
+        this.address.postalCode = result.postalCode;
+        this.address.street = result.street;
+        this.address.streetNumber = result.streetNumber;
+
+        this._addressService.postAddress(this.address)    //add address
           .subscribe(data => {
             console.log(data);
-            this.emp = data;
-            
-            if (result.selTeams.length > 0) {
-              console.log("teams nicht leer");
-              result.selTeams.forEach((team) => {
-                this.et.employeeID = this.emp.employeeID;
-                this.et.teamID = team.teamID;
-                this.et.roleID = 1;
+            this.address = data;
 
-                this._employeeTeamService.postEmployeeTeam(this.et)
-                  .subscribe(data => this.et = data);
-              });
-            }
+            this.emp.addressID = this.address.addressID;  //add new addressID to emp
 
-            this.clearEmp();
-            this.getEmployees();
-          }); 
+            this._employeeService.postEmployee(this.emp)  //add emp
+              .subscribe(data => {
+                console.log(data);
+                this.emp = data;
+
+                if (result.selTeams.length > 0) {
+                  console.log("teams nicht leer");
+                  result.selTeams.forEach((team) => {
+                    this.et.employeeID = this.emp.employeeID;
+                    this.et.teamID = team.teamID;
+                    this.et.roleID = 1;
+
+                    this._employeeTeamService.postEmployeeTeam(this.et)
+                      .subscribe(data => this.et = data);
+                  });
+                }
+
+                this.clearEmp();
+                this.getEmployees();
+              }); 
+
+
+          })
       }
     }
     );
