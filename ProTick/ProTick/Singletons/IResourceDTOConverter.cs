@@ -20,11 +20,9 @@ namespace ProTick.Singletons
 
         EmployeeTeamDTO EmployeeTeamToDTO(EmployeeTeam a);
 
-        EmployeeTeamPrivilegeDTO EmployeeTeamPrivilegeToDTO(EmployeeTeamPrivilege a);
-
         ParentChildRelationDTO ParentChildRelationToDTO(ParentChildRelation a);
 
-        PrivilegeDTO PrivilegeToDTO(Privilege a);
+        RoleDTO PrivilegeToDTO(Role a);
 
         ProcessDTO ProcessToDTO(Process a);
 
@@ -46,11 +44,9 @@ namespace ProTick.Singletons
 
         EmployeeTeam DTOToEmployeeTeam(EmployeeTeamDTO a);
 
-        EmployeeTeamPrivilege DTOToEmployeeTeamPrivilege(EmployeeTeamPrivilegeDTO a);
-
         ParentChildRelation DTOToParentChildRelation(ParentChildRelationDTO a);
 
-        Privilege DTOToPrivilege(PrivilegeDTO a);
+        Role DTOToPrivilege(RoleDTO a);
 
         Process DTOToProcess(ProcessDTO a);
 

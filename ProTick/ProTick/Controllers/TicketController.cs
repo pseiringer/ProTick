@@ -51,24 +51,24 @@ namespace ProTick.Controllers
         {
             var editTicket = dbm.FindTicketByID(id);
 
-            bool changesDone = false;
+            bool changesMade = false;
             if (editTicket.Description != ticket.Description)
             {
                 editTicket.Description = ticket.Description;
-                changesDone = true;
+                changesMade = true;
             }
             if (editTicket.State.StateID != ticket.StateID)
             {
                 editTicket.State = dbm.FindStateByID(ticket.StateID);
-                changesDone = true;
+                changesMade = true;
             }
             if (editTicket.Subprocess.SubprocessID != ticket.SubprocessID)
             {
                 editTicket.Subprocess = dbm.FindSubprocessByID(ticket.SubprocessID);
-                changesDone = true;
+                changesMade = true;
             }
 
-            if (changesDone) db.SaveChanges();
+            if (changesMade) db.SaveChanges();
             return converter.TicketToDTO(editTicket);
         }
 

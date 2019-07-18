@@ -19,18 +19,15 @@ namespace ProTick.Singletons
         EmployeeTeam FindEmployeeTeamByID(int id);
         List<EmployeeTeam> FindAllEmployeeTeams();
         List<EmployeeTeam> FindAllEmployeeTeams(bool includeReferences);
-
-        EmployeeTeamPrivilege FindEmployeeTeamPrivilegeByID(int id);
-        List<EmployeeTeamPrivilege> FindAllEmployeeTeamPrivileges();
-        List<EmployeeTeamPrivilege> FindAllEmployeeTeamPrivileges(bool includeReferences);
-
+        List<EmployeeTeam> FindEmployeeTeamsByEmployeeID(int id);
+        List<EmployeeTeam> FindEmployeeTeamsByTeamID(int id);
         ParentChildRelation FindParentChildRelationByID(int id);
         List<ParentChildRelation> FindAllParentChildRelations();
         List<ParentChildRelation> FindAllParentChildRelations(bool includeReferences);
 
-        Privilege FindPrivilegeByID(int id);
-        List<Privilege> FindAllPrivileges();
-        List<Privilege> FindAllPrivileges(bool includeReferences);
+        Role FindRoleByID(int id);
+        List<Role> FindAllRoles();
+        List<Role> FindAllRoles(bool includeReferences);
 
         Process FindProcessByID(int id);
         List<Process> FindAllProcesses();

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatSelectModule, MatListModule } from '@angular/material';
 import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -25,7 +25,7 @@ import { ProcessesComponent } from './processes/processes.component';
 import { CreateProcessComponent } from './create-process/create-process.component';
 
 import { TicketsComponent } from './tickets/tickets.component';
-import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { CreateTicketComponent } from './tickets/create-ticket/create-ticket.component';
 
 import { TeamsComponent } from './teams/teams.component';
 
@@ -35,6 +35,8 @@ import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+
+import { YesNoComponent } from './yes-no/yes-no.component';
 
 
 @NgModule({
@@ -47,10 +49,11 @@ import { CreateEmployeeComponent } from './create-employee/create-employee.compo
     ProcessesComponent,
     CreateProcessComponent,
     TicketsComponent,
-    CreateTicketComponent,
     TeamsComponent,
     LoginComponent,
     CreateTeamComponent,
+    CreateTicketComponent,
+    YesNoComponent,
     CreateEmployeeComponent,
   ],
   imports: [
@@ -64,6 +67,8 @@ import { CreateEmployeeComponent } from './create-employee/create-employee.compo
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
+    MatListModule,
+    MatSelectModule,
     MatTabsModule,
     MatTableModule,
     MatNativeDateModule,
@@ -72,7 +77,7 @@ import { CreateEmployeeComponent } from './create-employee/create-employee.compo
     BrowserAnimationsModule,
     DragDropModule,
     RouterModule.forRoot([
-      { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+      { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
@@ -84,7 +89,7 @@ import { CreateEmployeeComponent } from './create-employee/create-employee.compo
     ])
   ],
   providers: [JwtHelper, AuthGuard, DatePipe],
-  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateEmployeeComponent],
+  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent, YesNoComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

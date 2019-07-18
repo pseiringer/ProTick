@@ -43,13 +43,6 @@ namespace ProTick.Singletons
             return employeeTeam;
         }
 
-        public EmployeeTeamPrivilege FindEmployeeTeamPrivilegeByID(int id)
-        {
-            var employeeTeamPrivilege = db.EmployeeTeamPrivilege.FirstOrDefault(x => x.EmployeeTeamPrivilegeID == id);
-            if (employeeTeamPrivilege == null) throw new DatabaseEntryNotFoundException($"EmployeeTeamPrivilege with ID ({id}) was not found");
-            return employeeTeamPrivilege;
-        }
-
         public ParentChildRelation FindParentChildRelationByID(int id)
         {
             var parentChildRelation = db.ParentChildRelation.FirstOrDefault(x => x.ParentChildRelationID == id);
@@ -57,11 +50,11 @@ namespace ProTick.Singletons
             return parentChildRelation;
         }
 
-        public Privilege FindPrivilegeByID(int id)
+        public Role FindRoleByID(int id)
         {
-            var privilege = db.Privilege.FirstOrDefault(x => x.PrivilegeID == id);
-            if (privilege == null) throw new DatabaseEntryNotFoundException($"Privilege with ID ({id}) was not found");
-            return privilege;
+            var role = db.Role.FirstOrDefault(x => x.RoleID == id);
+            if (role == null) throw new DatabaseEntryNotFoundException($"Role with ID ({id}) was not found");
+            return role;
         }
 
         public Process FindProcessByID(int id)
@@ -80,7 +73,7 @@ namespace ProTick.Singletons
 
         public Subprocess FindSubprocessByID(int id)
         {
-            var subprocess = db.Subprocess.FirstOrDefault(x => x.SubprocessID == id);
+            var subprocess = db.Subprocess.Include(x => x.Process).Include(x => x.Team).FirstOrDefault(x => x.SubprocessID == id);
             if (subprocess == null) throw new DatabaseEntryNotFoundException($"Subprocess with ID ({id}) was not found");
             return subprocess;
         }
@@ -114,12 +107,7 @@ namespace ProTick.Singletons
         {
             return FindAllEmployees(false);
         }
-
-        public List<EmployeeTeamPrivilege> FindAllEmployeeTeamPrivileges()
-        {
-            return FindAllEmployeeTeamPrivileges(false);
-        }
-
+        
         public List<EmployeeTeam> FindAllEmployeeTeams()
         {
             return FindAllEmployeeTeams(false);
@@ -130,9 +118,9 @@ namespace ProTick.Singletons
             return FindAllParentChildRelations(false);
         }
 
-        public List<Privilege> FindAllPrivileges()
+        public List<Role> FindAllRoles()
         {
-            return FindAllPrivileges(false);
+            return FindAllRoles(false);
         }
 
         public List<Process> FindAllProcesses()
@@ -175,16 +163,11 @@ namespace ProTick.Singletons
             if (includeReferences) return db.Employee.Include(x => x.Address).ToList();
             return db.Employee.ToList();
         }
-
-        public List<EmployeeTeamPrivilege> FindAllEmployeeTeamPrivileges(bool includeReferences)
-        {
-            if (includeReferences) return db.EmployeeTeamPrivilege.Include(x => x.Privilege).Include(x => x.EmployeeTeam).ToList();
-            return db.EmployeeTeamPrivilege.ToList();
-        }
+        
 
         public List<EmployeeTeam> FindAllEmployeeTeams(bool includeReferences)
         {
-            if (includeReferences) return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).ToList();
+            if (includeReferences) return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).Include(x => x.Role).ToList();
             return db.EmployeeTeam.ToList();
         }
 
@@ -194,9 +177,9 @@ namespace ProTick.Singletons
             return db.ParentChildRelation.ToList();
         }
 
-        public List<Privilege> FindAllPrivileges(bool includeReferences)
+        public List<Role> FindAllRoles(bool includeReferences)
         {
-            return db.Privilege.ToList();
+            return db.Role.ToList();
         }
 
         public List<Process> FindAllProcesses(bool includeReferences)
@@ -234,5 +217,14 @@ namespace ProTick.Singletons
             return db.Employee.FirstOrDefault(x => x.Username == username);
         }
 
+        public List<EmployeeTeam> FindEmployeeTeamsByEmployeeID(int id)
+        {
+            return db.EmployeeTeam.Where(x => x.Employee.EmployeeID == id).ToList();
+        }
+
+        public List<EmployeeTeam> FindEmployeeTeamsByTeamID(int id)
+        {
+            return db.EmployeeTeam.Where(x => x.Team.TeamID == id).ToList();
+        }
     }
 }

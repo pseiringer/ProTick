@@ -5,11 +5,11 @@ using System.Text;
 
 namespace ProTickDatabase.DatabasePOCOs
 {
-    public class Privilege
+    public class Role
     {
 
-        public int PrivilegeID { get; set; }
-        public string Description { get; set; }
+        public int RoleID { get; set; }
+        public string Title { get; set; }
 
     }
 }

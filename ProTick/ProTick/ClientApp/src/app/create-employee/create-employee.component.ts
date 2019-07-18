@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { TeamService } from '../core/team/team.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Team } from '../../classes/Team';
+import { MatDialogRef, MAT_DIALOG_DATA, MatListModule } from '@angular/material';
+
 
 
 export interface CreateEmployeeDialogData {
@@ -11,7 +13,8 @@ export interface CreateEmployeeDialogData {
   username: string,
   password: string,
   addressID: number,
-  teamID: number
+  teamID: number,
+  selTeams: Team[]
 }
 
 @Component({
@@ -26,10 +29,14 @@ export class CreateEmployeeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: CreateEmployeeDialogData) { }
 
   allTeams: any = [];
+  //selTeams: Team[] = [];
+
+  selTeam: Team;
 
   ngOnInit() {
     this.getTeams();
     this.data.teamID = 1;
+    this.data.selTeams = [];
   }
 
 
@@ -38,7 +45,25 @@ export class CreateEmployeeComponent implements OnInit {
       .subscribe(data => this.allTeams = data);
   }
 
-  onNoClickEmp(): void {
-    this.dialogRef.close();
-  }
+  onAddTeam() {
+    this._teamService.getTeam(this.data.teamID)
+      .subscribe(data => {
+        this.selTeam = data;
+
+        if (this.data.selTeams.some(e => e.teamID === this.selTeam.teamID) == false) {
+          this.data.selTeams.push(this.selTeam);
+        }
+      }
+      );
+}
+
+onNoClickEmp(): void {
+  this.dialogRef.close();
+}
+
+  onRemoveTeam(t: Team) {
+    const index = this.data.selTeams.findIndex(i => i.teamID === t.teamID);
+    this.data.selTeams.splice(index, 1);
+}
+  
 }
