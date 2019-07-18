@@ -10,15 +10,15 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'app-processes',
   templateUrl: './processes.component.html',
   styleUrls: ['./processes.component.css'],
-  providers: [ProcessService]
+  providers: [ProcessService],
 })
 
 export class ProcessesComponent implements OnInit {
 
-  processes: Process[] = [];
-  subprocesses: Subprocess[] = [];
+  private processes: Process[];
+  private subprocesses: Subprocess[];
 
-  _processID: number;
+  private _processID: number;
 
   process: Process = {
     processID: undefined,

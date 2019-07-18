@@ -18,7 +18,6 @@ mat-cell{
   white-space: nowrap;
 }
 
-
 /*mat-cell[title]:hover:after{
   content:attr(title);
   position: absolute;
@@ -35,7 +34,6 @@ mat-cell{
   margin-top: 1%;
 }
 
-body
-{
- display: inherit; 
+body {
+  display: inherit;
 }

@@ -1,38 +1,34 @@
-<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
-        <div class='navbar-header'>
-            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-            <p class="protick">ProTick</p>
-        </div>
-        <div class='clearfix'></div>
-        <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
-          <ul class='nav navbar-nav'>
-            <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/tickets"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-tags'></span> Tickets
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-              <a [routerLink]='["/processes"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-retweet'></span> Prozesse
-              </a>
-            </li>
-            <li [routerLinkActive]='["link-active"]'>
-              <a [routerLink]='["/teams"]' (click)='collapse()'>
-                <span class='glyphicon glyphicon-user'></span> Teams
-              </a>
-            </li>
-            <li>
-              <a [routerLink]='["/login"]' (click)='logout();collapse();'>
-                <span class='glyphicon glyphicon-log-out'></span> Logout
-              </a>
-            </li>
-          </ul>
-        </div>
-    </div>
-</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<ul class="sidebar navbar-nav">
+  <li class="nav-item">
+    <a class="nav-link align-left">
+      <span class="sidebar-header">ProTick</span>
+    </a>
+  </li>
+  <div class="protick-underline"></div>
+  <li [routerLinkActive]='["link-active"]' class="nav-item">
+    <a [routerLink]='["/tickets"]' class="nav-link">
+      <i class="fa fa-ticket"></i>
+      <span>  Tickets</span>
+    </a>
+  </li>
+  <li [routerLinkActive]='["link-active"]' class="nav-item">
+    <a [routerLink]='["/processes"]' class="nav-link">
+      <i class="fa fa-cog"></i> 
+      <span> Prozesse</span>
+    </a>
+  </li>
+  <li [routerLinkActive]='["link-active"]' class="nav-item">
+    <a [routerLink]='["/teams"]' class="nav-link">
+      <i class="fa fa-users"></i>
+      <span> Teams</span>
+    </a>
+  </li>
+  <li [routerLinkActive]='["link-active"]' class="nav-item">
+    <a [routerLink]='["/login"]' (click)='logout();' class="nav-link">
+      <i class="fa fa-sign-out"></i>
+      <span>Logout</span>
+    </a>
+  </li>
+</ul>

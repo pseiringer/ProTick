@@ -1,9 +1,9 @@
 <div class='container-fluid'>
   <div class='row'>
-    <div class='col-sm-3' *ngIf="this.auth.tokenExists()">
+    <div class='nav' *ngIf="this.auth.tokenExists()">
       <app-nav-menu></app-nav-menu> 
     </div>
-    <div [ngClass]="{'col-sm-9': this.auth.tokenExists(), 'body-content': this.auth.tokenExists(), 'centered':!this.auth.tokenExists()}">
+    <div [ngClass]="{ 'body-content': this.auth.tokenExists(), 'centered': !this.auth.tokenExists() }">
       <router-outlet></router-outlet>
     </div>
   </div>

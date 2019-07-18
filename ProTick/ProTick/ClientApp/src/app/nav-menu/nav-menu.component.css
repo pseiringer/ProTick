@@ -1,81 +1,59 @@
-li .glyphicon {
-    margin-right: 10px;
-}
-
-/*.main-nav[_ngcontent-ng-cli-universal-c1] {
-  background-color: #c50217;
-}*/
-
-/* Highlighting rules for nav menu items */
 li.link-active a,
 li.link-active a:hover,
 li.link-active a:focus {
   background-color: #f2a718;
-  color: white;
+  color: #fff;
+  transition: .3s;
 }
 
-/* Keep the nav menu independent of scrolling and on top of other items */
-.main-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
+.sidebar {
+  background-color: #303030;
+  height: 100%;
+  min-width: 100%;
+  text-align: center;
+  position: static;
 }
 
-@media (min-width: 400px) {
-  /* On small screens, convert the nav menu to a vertical sidebar */
-  .main-nav {
-    height: 100%;
-    width: 15%;
+.nav-link {
+  color: grey;
+  padding: 17px 100px 17px 10px;
+  font-size: 1.15em;
+  border-radius: 5px;
+  margin: 5px;
+  text-align: left;
+}
+
+  .nav-link:hover {
+    color: #fff;
+    transition: .3s;
   }
 
-  .navbar {
-    border-radius: 0px;
-    border-width: 0px;
-    height: 100%;
-  }
+i {
+  margin-left: 0.5em;
+  margin-right: 0.3em;
+  float: left;
+  padding-top: 4px;
 
-  .protick {
-    float: left;
-    height: 50px;
-    padding: 15px 15px;
-    font-size: 18px;
-    line-height: 20px;
-    text-decoration: none;
-    color: white;
-  }
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  /*position: relative;
+  right: 5px;*/
+}
 
-  .navbar-header {
-    float: none;
-  }
+span.sidebar-header {
+  font-size: 1.15em;
+  color: #fff;
+}
 
-  .navbar-collapse {
-    border-top: 1px solid #f2a718;
-    padding: 0px;
-  }
+div.protick-underline {
+  margin: 0 auto;
+  height: 1px;
+  width: 90%;
+  background-color: #f2a718;
+}
 
-  .navbar ul {
-    float: none;
-  }
-
-  .navbar li {
-    float: none;
-    font-size: 15px;
-    margin: 6px;
-  }
-
-    .navbar li a {
-      padding: 10px 16px;
-      border-radius: 4px;
-    }
-
-  .navbar a {
-    /* If a menu item's text is too long, truncate it */
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.align-left {
+  text-align: left;
 }
 

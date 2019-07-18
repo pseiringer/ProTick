@@ -1,21 +1,20 @@
+<body>
+  <button mat-raised-button (click)="openDialog()">Prozess erstellen</button>
+  <li *ngIf="process.description">
+    Prozess "{{ process.description  }}" wurde erstellt.
+  </li>
 
-<br />
+  <br />
+  <br />
 
-<button mat-raised-button (click)="openDialog()">Prozess erstellen</button>
-<li *ngIf="process.description">
-  Prozess "{{ process.description  }}" wurde erstellt.
-</li>
+  <select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID)">
+    <option *ngFor="let process of processes" [value]="process.processID" cdkDrag>{{ process.description }}</option>
+  </select>
 
-<br />
-<br />
+  <br />
+  <br />
 
-<select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID)">
-  <option *ngFor="let process of processes" [value]="process.processID" cdkDrag>{{ process.description }}</option>
-</select>
-
-<br />
-<br />
-
-<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let subprocess of subprocesses" cdkDrag>{{ subprocess.description }}</div>
-</div>
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let subprocess of subprocesses" cdkDrag>{{ subprocess.description }}</div>
+  </div>
+</body>

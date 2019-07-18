@@ -1,24 +1,52 @@
 @media (max-width: 767px) {
   /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
- HEAD
-  .body-content {
-    padding-top: 50px;
-  }
-
   .centered {
     width: 100%;
     float: none;
   }
-
 }
 
-.col-sm-3 {
-  width: 15%;
-}
-
-.col-sm-9 {
-  width:85%;
-  padding: 0%;
-  margin: 0%;
+.nav {
   height: 100%;
+  width: 225px;
+}
+
+.body-content {
+  display: table-cell;
+  width: 100%;
+  vertical-align: top;
+  height: 100%;
+}
+
+.row {
+  display: table;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+html, body, .container-fluid {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+app-nav-menu {
+  min-width: 100%
+}
+
+.btn {
+  float: left;
+  padding: 0 10px;
+  background-color: red;
+  height: 30px;
+  cursor: pointer;
+}
+
+.btn:before {
+  background-color: blue;
+}
+
+.btnc:before {
+  background-color: green;
 }

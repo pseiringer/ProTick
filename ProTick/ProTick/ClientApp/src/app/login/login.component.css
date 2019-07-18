@@ -1,27 +1,32 @@
 .login-form {
   display: block;
-  width: 30%;
   margin: auto;
+  width: 24em;
   align-items: center;
   justify-content: center;
   text-align: center;
+  border-radius: 2px;
+}
+
+input[type] {
+  border-radius: 2px;
 }
 
 button {
-  color: #000000;
+  color: #000;
   background-color: #f2a718;
-  border-color: #9c6c13;
+  border-radius: 2px;
+  border: none;
+  transition: .5s;
 }
 
   button:hover, button:focus, button:active, button:active:focus {
-    color: #000000;
-    background-color: #c78914;
-    border-color: #855d13;
-    outline: 5px auto #c98402;
+    color: #000;
+    background-color: #db9716;
   }
 
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
   border-color: #f2a718;
-  box-shadow: 0 1px 1px #f2a718 inset, 0 0 8px #f0d5a1;
+  border: 1px solid #f2a718;
   outline: 0 none;
 }

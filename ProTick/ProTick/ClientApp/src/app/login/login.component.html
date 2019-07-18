@@ -1,7 +1,7 @@
 <div class="login-form">
   <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
     <div class="container-fluid">
-      <h2 class="form-signin-heading">Login</h2>
+      <h1 class="form-signin-heading">Login</h1>
       <br />
       <div *ngIf="invalidLogin" class="alert alert-danger">Invalid username or password.</div>
       <div *ngIf="invalidFormInput" class="alert alert-danger">Please enter a username and a password.</div>
