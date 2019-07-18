@@ -12,9 +12,8 @@ namespace ProTickDatabase
         public DbSet<Address> Address { get; set; }
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Team> Team { get; set; }
-        public DbSet<Privilege> Privilege { get; set; }
+        public DbSet<Role> Role { get; set; }
         public DbSet<EmployeeTeam> EmployeeTeam { get; set; }
-        public DbSet<EmployeeTeamPrivilege> EmployeeTeamPrivilege { get; set; }
         public DbSet<Process> Process { get; set; }
         public DbSet<Subprocess> Subprocess { get; set; }
         public DbSet<ParentChildRelation> ParentChildRelation { get; set; }

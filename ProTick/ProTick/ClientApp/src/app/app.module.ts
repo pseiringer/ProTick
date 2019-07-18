@@ -1,11 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatSelectModule, MatListModule } from '@angular/material';
+import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+import { DatePipe } from '@angular/common'
 
 
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
@@ -30,6 +34,7 @@ import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
 import { CreateTeamComponent } from './create-team/create-team.component';
+import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { YesNoComponent } from './yes-no/yes-no.component';
@@ -50,22 +55,28 @@ import { YesNoComponent } from './yes-no/yes-no.component';
     CreateTeamComponent,
     CreateTicketComponent,
     YesNoComponent,
+    CreateEmployeeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     HttpModule,
     FormsModule,
+    ReactiveFormsModule,
     CoreModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatDatepickerModule,
     MatInputModule,
+    MatListModule,
+    MatSelectModule,
     MatTabsModule,
     MatTableModule,
+    MatNativeDateModule,
     MatIconModule,
     MatButtonModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
+    DragDropModule,
     RouterModule.forRoot([
       { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
       { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
@@ -78,7 +89,7 @@ import { YesNoComponent } from './yes-no/yes-no.component';
       { path: 'login', component: LoginComponent },
     ])
   ],
-  providers: [JwtHelper, AuthGuard],
+  providers: [JwtHelper, AuthGuard, DatePipe],
   entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent, YesNoComponent],
   bootstrap: [AppComponent],
 })

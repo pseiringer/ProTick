@@ -5,11 +5,11 @@ using System.Text;
 
 namespace ProTick.ResourceDTOs
 {
-    public class PrivilegeDTO
+    public class RoleDTO
     {
 
-        public int PrivilegeID { get; set; }
-        public string Description { get; set; }
+        public int RoleID { get; set; }
+        public string Title { get; set; }
 
     }
 }

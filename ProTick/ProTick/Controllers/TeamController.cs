@@ -44,6 +44,13 @@ namespace ProTick.Controllers
             return dbm.FindAllEmployeeTeams(true).Where(x => x.Team.TeamID == id).SelectMany(x => dbm.FindAllEmployees(true).Where(y => x.Employee.EmployeeID == y.EmployeeID)).Distinct().Select(x => converter.EmployeeToDTO(x)).ToList();
         }
 
+        [HttpGet("{id}/EmployeeTeams")]
+        public IEnumerable<EmployeeTeamDTO> GetEmployeeTeamsByTeamID(int id)
+        {
+            return dbm.FindEmployeeTeamsByTeamID(id).Select(x => converter.EmployeeTeamToDTO(x)).ToList();
+
+        }
+
         [HttpPost]
         public TeamDTO NewTeam([FromBody] TeamDTO t)
         {
@@ -69,6 +76,11 @@ namespace ProTick.Controllers
         [HttpDelete("{id}")]
         public void DeleteTeam(int id)
         {
+            var et = dbm.FindEmployeeTeamsByTeamID(id);
+            for (int i = 0; i < et.Count; i++)
+            {
+                db.EmployeeTeam.Remove(et[i]);
+            }
             db.Team.Remove(db.Team.First(x => x.TeamID == id));
             db.SaveChanges();
         }

@@ -1,0 +1,48 @@
+<p>Neuer Mitarbeiter</p>
+<mat-form-field class="mat-form-field-appearance-legacy">
+  <input matInput [(ngModel)]="data.firstName" placeholder="Vorname" />
+</mat-form-field>
+<br />
+
+<mat-form-field class="mat-form-field-appearance-legacy">
+  <input matInput [(ngModel)]="data.lastName" placeholder="Nachname" />
+</mat-form-field>
+<br />
+
+<mat-form-field class="mat-form-field-appearance-legacy">
+  <input matInput [(ngModel)]="data.dateOfBirth" [matDatepicker]="pickBirthDate" placeholder="Geburtsdatum">
+  <mat-datepicker-toggle matSuffix [for]="pickBirthDate"></mat-datepicker-toggle>
+  <mat-datepicker #pickBirthDate></mat-datepicker>
+</mat-form-field>
+<br />
+
+<mat-form-field class="mat-form-field-appearance-legacy">
+  <input matInput [(ngModel)]="data.hireDate" [matDatepicker]="pickHireDate" placeholder="Einstellungsdatum">
+  <mat-datepicker-toggle matSuffix [for]="pickHireDate"></mat-datepicker-toggle>
+  <mat-datepicker #pickHireDate></mat-datepicker>
+</mat-form-field>
+<br />
+
+<mat-form-field>
+  <mat-label>Teams</mat-label>
+  <mat-select [(ngModel)]="data.teamID">
+    <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
+      {{team.description}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<button mat-icon-button (click)="onAddTeam()">
+  <mat-icon>playlist_add</mat-icon>
+</button>
+
+<p>Klicken, um zu entfernen</p>
+
+<mat-action-list>
+  <button class="selectedTeamsListItem" *ngFor="let t of data.selTeams" mat-list-item (click)="onRemoveTeam(t)"> {{t.description}} </button>
+</mat-action-list>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClickEmp()">Abbrechen</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Mitarbeiter erstellen</button>
+</div>

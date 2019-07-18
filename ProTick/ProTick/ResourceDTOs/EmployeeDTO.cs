@@ -12,8 +12,8 @@ namespace ProTick.ResourceDTOs
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public DateTime HireDate { get; set; }
+        public string DateOfBirth { get; set; }
+        public string HireDate { get; set; }
 
         public string Username { get; set; }
 

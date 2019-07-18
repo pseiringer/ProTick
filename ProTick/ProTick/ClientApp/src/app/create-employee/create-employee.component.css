@@ -1,0 +1,12 @@
+.selectedTeamsListItem
+{
+  background-color: #f7f5f5;
+  margin: 2px;
+  border-radius: 3px;
+  transition: .5s
+}
+
+  .selectedTeamsListItem:hover {
+    background-color: #f2a718;
+
+  }
