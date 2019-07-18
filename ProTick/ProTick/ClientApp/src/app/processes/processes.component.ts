@@ -10,7 +10,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'app-processes',
   templateUrl: './processes.component.html',
   styleUrls: ['./processes.component.css'],
-  providers: [ProcessService]
+  providers: [ProcessService],
 })
 
 export class ProcessesComponent implements OnInit {

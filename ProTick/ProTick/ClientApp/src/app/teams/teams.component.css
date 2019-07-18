@@ -34,7 +34,6 @@ mat-cell{
   margin-top: 1%;
 }
 
-body
-{
- display: inherit; 
+body {
+  display: inherit;
 }
