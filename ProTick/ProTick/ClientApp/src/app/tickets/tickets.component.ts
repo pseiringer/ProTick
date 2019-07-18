@@ -20,7 +20,7 @@ import { YesNoComponent } from '../yes-no/yes-no.component';
 })
 export class TicketsComponent implements OnInit {
 
-  @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatTable, {static: false}) table: MatTable<any>;
 
   allTeams = [];
   currentTeam: Team = {
