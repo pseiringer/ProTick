@@ -73,7 +73,7 @@ namespace ProTick.Singletons
 
         public Subprocess FindSubprocessByID(int id)
         {
-            var subprocess = db.Subprocess.FirstOrDefault(x => x.SubprocessID == id);
+            var subprocess = db.Subprocess.Include(x => x.Process).Include(x => x.Team).FirstOrDefault(x => x.SubprocessID == id);
             if (subprocess == null) throw new DatabaseEntryNotFoundException($"Subprocess with ID ({id}) was not found");
             return subprocess;
         }

@@ -13,6 +13,10 @@ export class TeamService {
     return this.http.get<Team[]>('http://localhost:8080/ProTick/Team');
   }
 
+  getTeamById(id: number): Observable<Team> {
+    return this.http.get<Team>('http://localhost:8080/ProTick/Team/' + id);
+  }
+  
   getTeam(id: number): Observable<Team> {
     return this.http.get<Team>('http://localhost:8080/ProTick/Team/' + id);
   }

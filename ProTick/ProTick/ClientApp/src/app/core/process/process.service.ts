@@ -19,6 +19,9 @@ export class ProcessService {
     return this.http.get<Subprocess[]>(this.url + '/Subprocess');
   }
 
+  getSubprocessById(subprocessID: number): Observable<Subprocess> {
+    return this.http.get<Subprocess>(this.url + `/Subprocess/${subprocessID}`);
+  }
   getSubprocessesByProcessID(processID: number): Observable<Subprocess[]> {
     return this.http.get<Subprocess[]>(this.url + `/Process/${processID}/Subprocesses`);
   }
