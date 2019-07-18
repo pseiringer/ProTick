@@ -9,6 +9,7 @@ import { FullTicket } from '../../classes/FullTicket';
 import { Team } from '../../classes/Team';
 import { State } from '../../classes/State';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { YesNoComponent } from '../yes-no/yes-no.component';
 
 
 @Component({
@@ -105,22 +106,32 @@ export class TicketsComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    this.ticketService.deleteTicket(id)
-      .subscribe(data => {
-        //TODO error handling
-        this.reloadTickets();
-        console.log('Team deleted.');
-      });
-
+    const dialogRef = this.dialog.open(YesNoComponent, {
+      data: {
+        title: "Delete",
+        text: "Do you really want to delete Ticket "+id,
+        no: "No",
+        yes: "Yes"
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result === true) {
+        this.ticketService.deleteTicket(id)
+          .subscribe(data => {
+            //TODO error handling
+            this.reloadTickets();
+            console.log('Team deleted.');
+          });
+      }
+    });
   }
 
   reloadTickets() {
-
+    this.allTickets = [];
     this.ticketService.getTicket()
       .subscribe(data => {
         //TODO error handling
-        let allNewTickets: FullTicket[] = [];
-
         data.forEach(d => {
           const fullTicket: FullTicket = {
             ticketID: undefined,
@@ -154,10 +165,7 @@ export class TicketsComponent implements OnInit {
                     });
                 });
             });
-
-        })
-        
+        })        
       });
-
   }
 }

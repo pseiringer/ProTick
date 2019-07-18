@@ -32,6 +32,7 @@ import { AuthGuard } from '../classes/Authentication/AuthGuard';
 import { CreateTeamComponent } from './create-team/create-team.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { YesNoComponent } from './yes-no/yes-no.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     CreateTeamComponent,
     CreateTicketComponent,
+    YesNoComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -77,7 +79,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ])
   ],
   providers: [JwtHelper, AuthGuard],
-  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent],
+  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent, YesNoComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

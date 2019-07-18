@@ -34,18 +34,6 @@
         <mat-cell *matCellDef="let element"> {{element.teamDescription}} </mat-cell>
       </ng-container>
 
-      <!--expanded row-->
-      <!--<ng-container matColumnDef="expandedDetail">
-        <mat-cell *matCellDef="let element" [attr.colspan]="3">
-          <div class="team-detail"
-               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-            <div class="element-description">
-              {{element.description}}
-            </div>
-          </div>
-        </mat-cell>
-      </ng-container>-->
-
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
@@ -58,7 +46,7 @@
           <button mat-icon-button (click)="onEdit(row)">
             <mat-icon>build</mat-icon>
           </button>
-          <button mat-icon-button (click)="onDelete(row.teamID)">
+          <button mat-icon-button (click)="onDelete(row.ticketID)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>

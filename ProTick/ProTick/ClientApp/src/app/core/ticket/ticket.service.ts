@@ -49,11 +49,10 @@ export class TicketService {
 
   deleteTicket(id: number): Observable<Ticket> {
     const token = localStorage.getItem('jwt');
-    this.http.delete('http://localhost:8080/ProTick/Ticket/' + id, {
+    return this.http.delete<Ticket>('http://localhost:8080/ProTick/Ticket/' + id, {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + token
       })
     });
-    return null;
   }
 }

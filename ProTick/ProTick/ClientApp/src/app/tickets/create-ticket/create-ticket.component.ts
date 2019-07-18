@@ -23,11 +23,11 @@ export class CreateTicketComponent implements OnInit {
     stateID: new FormControl(''),
     subprocessID: new FormControl(''),
   });
-  
+
+  error: string = 'Bitte geben Sie einen gültigen Wert ein!';
+    
 
   ngOnInit() {
-    console.log(JSON.stringify(this.data));
-
     if (this.data.ticketID !== undefined)
       this.ticketID = this.data.ticketID;
 
@@ -36,11 +36,8 @@ export class CreateTicketComponent implements OnInit {
       'stateID': this.data.stateID,
       'subprocessID': this.data.subprocessID,
     });
-
   }
-  
-  error: string = 'Bitte geben Sie einen gültigen Wert ein!';
-  
+    
 
   onCancelClicked(): void {
     this.dialogRef.close();
