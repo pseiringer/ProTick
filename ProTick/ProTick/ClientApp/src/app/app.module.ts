@@ -91,7 +91,7 @@ import { YesNoComponent } from './yes-no/yes-no.component';
     ])
   ],
   providers: [JwtHelper, AuthGuard, DatePipe],
-  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent, YesNoComponent],
+  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateEmployeeComponent, CreateTicketComponent, YesNoComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

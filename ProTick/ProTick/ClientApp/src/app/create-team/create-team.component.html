@@ -1,14 +1,38 @@
-<p>Neues Team</p>
-<mat-form-field class="mat-form-field-appearance-legacy">
-  <input matInput [(ngModel)]="data.description" placeholder="Beschreibung" />
+<form [formGroup]="teamDataFormGroup">
+
+  <p>Neues Team</p>
+  <mat-form-field class="mat-form-field-appearance-legacy" [hideRequiredMarker]="true">
+    <input matInput [(ngModel)]="data.description" placeholder="Beschreibung" formControlName="descCtrl" required />
+
+  </mat-form-field>
+  <br />
+  <mat-form-field class="mat-form-field-appearance-legacy" [hideRequiredMarker]="true">
+    <input matInput [(ngModel)]="data.abbreviation" placeholder="Abkürzung" formControlName="abbrCtrl" required />
+  </mat-form-field>
+  <br />
+</form>
+
+  <mat-form-field>
+    <mat-label>Mitarbeiter</mat-label>
+    <mat-select [(ngModel)]="data.employeeID">
+      <mat-option *ngFor="let emp of allEmps" [value]="emp.employeeID">
+        {{emp.firstName}} {{emp.lastName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-icon-button (click)="onAddEmp()">
+    <mat-icon>playlist_add</mat-icon>
+  </button>
+
+  <p>Klicken, um zu entfernen</p>
+
+  <mat-action-list>
+    <button class="selectedEmpsListItem" *ngFor="let e of data.selEmps" mat-list-item (click)="onRemoveEmp(e)"> {{e.firstName}} {{e.lastName}} </button>
+  </mat-action-list>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!teamDataFormGroup.valid">Team erstellen</button>
+  </div>
   
-</mat-form-field>
-<br />
-<mat-form-field class="mat-form-field-appearance-legacy">
-  <input matInput [(ngModel)]="data.abbreviation" placeholder="Abkürzung" />
-</mat-form-field>
-    
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Abbrechen</button>
-      <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Team erstellen</button>
-    </div>
