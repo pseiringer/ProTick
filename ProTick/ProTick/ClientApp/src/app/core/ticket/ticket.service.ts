@@ -25,6 +25,24 @@ export class TicketService {
     });
   }
 
+  getTicketsByStateID(id: number): Observable<Ticket[]> {
+    const token = localStorage.getItem('jwt');
+    return this.http.get<Ticket[]>('http://localhost:8080/ProTick/State/' + id + '/Tickets', {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    });
+  }
+
+  getTicketsByTeamID(id: number): Observable<Ticket[]> {
+    const token = localStorage.getItem('jwt');
+    return this.http.get<Ticket[]>('http://localhost:8080/ProTick/Team/' + id + '/Tickets', {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    });
+  }
+
   postTicket(ticket: Ticket): Observable<Ticket> {
     const token = localStorage.getItem('jwt');
     console.log(ticket);

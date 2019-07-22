@@ -37,7 +37,12 @@ namespace ProTick.Singletons
 
         public ParentChildRelationDTO ParentChildRelationToDTO(ParentChildRelation a)
         {
-            return new ParentChildRelationDTO { ChildID = a.Child.SubprocessID, ParentChildRelationID = a.ParentChildRelationID, ParentID = a.Parent.SubprocessID };
+            int childID = -1;
+            if (a.Child != null) childID = a.Child.SubprocessID;
+            int parentID = -1;
+            if (a.Parent != null) parentID = a.Parent.SubprocessID;
+
+            return new ParentChildRelationDTO { ChildID = childID, ParentChildRelationID = a.ParentChildRelationID, ParentID = parentID };
         }
 
         public RoleDTO PrivilegeToDTO(Role a)
@@ -67,7 +72,7 @@ namespace ProTick.Singletons
 
         public TicketDTO TicketToDTO(Ticket a)
         {
-            return new TicketDTO { Description = a.Description, SubprocessID = a.Subprocess.SubprocessID, StateID = a.State.StateID, TicketID = a.TicketID };
+            return new TicketDTO { Description = a.Description, Note = a.Note, SubprocessID = a.Subprocess.SubprocessID, StateID = a.State.StateID, TicketID = a.TicketID };
         }
 
         #endregion
@@ -121,7 +126,7 @@ namespace ProTick.Singletons
 
         public Ticket DTOToTicket(TicketDTO a)
         {
-            return new Ticket { Description = a.Description, Subprocess = dbm.FindSubprocessByID(a.SubprocessID), State = dbm.FindStateByID(a.StateID), TicketID = a.TicketID };
+            return new Ticket { Description = a.Description, Note = a.Note, Subprocess = dbm.FindSubprocessByID(a.SubprocessID), State = dbm.FindStateByID(a.StateID), TicketID = a.TicketID };
         }
 
 

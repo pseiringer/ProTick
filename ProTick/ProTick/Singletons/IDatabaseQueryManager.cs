@@ -32,6 +32,7 @@ namespace ProTick.Singletons
         Process FindProcessByID(int id);
         List<Process> FindAllProcesses();
         List<Process> FindAllProcesses(bool includeReferences);
+        List<Process> FindAllProcessesWithSubprocess(bool hasSubprocess);
 
         State FindStateByID(int id);
         List<State> FindAllStates();
@@ -48,6 +49,8 @@ namespace ProTick.Singletons
         Ticket FindTicketByID(int id);
         List<Ticket> FindAllTickets();
         List<Ticket> FindAllTickets(bool includeReferences);
+        List<Ticket> FindAllTicketsByTeamID(int id);
+        List<Ticket> FindAllTicketsByStateID(int id);
 
 
         Employee FindEmployeeByUsername(string username);

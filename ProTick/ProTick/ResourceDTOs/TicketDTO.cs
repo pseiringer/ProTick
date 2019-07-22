@@ -8,6 +8,7 @@ namespace ProTick.ResourceDTOs
     {
         public int TicketID { get; set; }
         public string Description { get; set; }
+        public string Note { get; set; }
 
         public int SubprocessID { get; set; }
         public int StateID { get; set; }

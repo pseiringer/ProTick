@@ -16,7 +16,7 @@ export class StateService {
     });
   }
 
-  getStateByID(id: number): Observable<State> {
+  getState(id: number): Observable<State> {
     const token = localStorage.getItem('jwt');
     return this.http.get<State>('http://localhost:8080/ProTick/State/' + id, {
       headers: new HttpHeaders({
@@ -35,7 +35,7 @@ export class StateService {
     });
   }
 
-  putTicket(id: number, state: State): Observable<State> {
+  putStates(id: number, state: State): Observable<State> {
     const token = localStorage.getItem('jwt');
     console.log(state);
     return this.http.put<State>('http://localhost:8080/ProTick/State/' + id, state, {
@@ -46,7 +46,7 @@ export class StateService {
     });
   }
 
-  deleteTicket(id: number): void {
+  deleteStates(id: number): void {
     const token = localStorage.getItem('jwt');
     this.http.delete('http://localhost:8080/ProTick/State/' + id, {
       headers: new HttpHeaders({
