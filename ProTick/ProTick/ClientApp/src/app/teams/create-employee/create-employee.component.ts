@@ -7,6 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatListModule, MatStepperModule } from '
 
 
 export interface CreateEmployeeDialogData {
+  employeeID: number,
   firstName: string,
   lastName: string,
   dateOfBirth: string,
@@ -48,11 +49,23 @@ export class CreateEmployeeComponent implements OnInit {
   selTeam: Team;
 
   error: string = 'Feld darf nicht leer sein!';
-  
+
+  _header: string;
+  _buttonText: string;
 
   ngOnInit() {
+    if (this.data.employeeID !== undefined) {
+      console.log(this.data);
+      this._header = "Mitarbeiter bearbeiten";
+      this._buttonText = "Ändern"
+    }
+    else {
+      this._header = "Neuer Mitarbeiter";
+      this._buttonText = "Erstellen";
+      this.data.selTeams = [];
+    }
+
     this.getTeams();
-    this.data.selTeams = [];
 
     this.personalFormGroup = this._formBuilder.group({
       firstNameCtrl: ['', Validators.required],

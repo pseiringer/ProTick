@@ -68,7 +68,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public TeamDTO EditTeam(int id, [FromBody] Team t)
+        public TeamDTO EditTeam(int id, [FromBody] TeamDTO t)
         {
             var team = db.Team.FirstOrDefault(x => x.TeamID == t.TeamID);
 

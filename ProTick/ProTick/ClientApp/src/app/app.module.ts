@@ -23,7 +23,7 @@ import { CoreModule } from './core/core.module';
 
 import { ProcessesComponent } from './processes/processes.component';
 
-import { CreateProcessComponent } from './create-process/create-process.component';
+import { CreateProcessComponent } from './processes/create-process/create-process.component';
 import { CreateSubprocessComponent } from './create-subprocess/create-subprocess.component';
 
 import { TicketsComponent } from './tickets/tickets.component';
