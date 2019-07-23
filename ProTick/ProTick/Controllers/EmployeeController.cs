@@ -37,6 +37,11 @@ namespace ProTick.Controllers
             return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
         }
 
+        [HttpGet("{id}/Teams")]
+        public IEnumerable<TeamDTO> GetTeamsByEmployeeID([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return dbm.FindAllEmployeeTeams(true).Where(x => x.Employee.EmployeeID == id).SelectMany(x => dbm.FindAllTeams(true).Where(y => x.Team.TeamID == y.TeamID)).Distinct().Select(x => converter.TeamToDTO(x)).ToList();
+        }
 
         [HttpPost]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
@@ -49,9 +54,10 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public EmployeeDTO EditEmployee(int id, [FromBody] Employee e)
+        public EmployeeDTO EditEmployee(int id, [FromBody] EmployeeDTO changedE)
         {
-            var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == e.EmployeeID);
+            var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == changedE.EmployeeID);
+            var e = converter.DTOToEmployee(changedE);
 
             if (emp.FirstName != e.FirstName)
                 emp.FirstName = e.FirstName;
@@ -73,6 +79,7 @@ namespace ProTick.Controllers
                 emp.Address = e.Address;
 
             db.SaveChanges();
+            Console.WriteLine(emp == null);
             return converter.EmployeeToDTO(emp);
         }
 
