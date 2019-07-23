@@ -1,5 +1,16 @@
+.table_container_teams {
+  height: 80vh;
+  overflow: auto;
+}
+
+.table_container_emps {
+  height: 76vh;
+  overflow: auto;
+}
+
 table {
   width: 100%;
+  border-collapse: unset;
 }
 
 tr.mat-row.example-detail-row {
@@ -10,7 +21,6 @@ tr.mat-row {
   height: 48px;
 }
 
-
 tr.example-element-row:not(.example-expanded-row):hover {
   background: #777;
 }
@@ -19,8 +29,13 @@ tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
 
+th.mat-header-cell {
+  border-bottom-color: #f2a718;
+}
+
 .example-element-row td {
   border-bottom-width: 0;
+  border-top-width: 0;
 }
 
 .example-element-detail {
@@ -28,17 +43,29 @@ tr.example-element-row:not(.example-expanded-row):active {
   display: flex;
 }
 
-.example-element-description,.example-element-street,.example-element-city,.example-element-country,.example-element-postalCode,.example-element-streetNumber {
-  padding: 16px;
+.example-element-birthDate, .example-element-description, .example-element-street, .example-element-city, .example-element-country, .example-element-phoneNumber, .example-element-email, .example-element-postalCode, .example-element-streetNumber {
+  padding: 14px;
 }
 
-
-
-
-.mat-elevation-z8{
-  overflow: auto;
-  height: 80vh;
+.desc_element {
+  font-size: 8pt;
+  padding-left: 14px;
+  color: #f2a718;
 }
+
+.details_div{
+  width: 100%;
+}
+
+.wrapper_div {
+  width: 100%;
+}
+
+.floating_div{
+  float: left;
+  width: 50%;
+}
+
 
 .mat-column-teamID {
   flex: 0 0 150px;
