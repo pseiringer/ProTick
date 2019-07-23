@@ -71,7 +71,7 @@ th.mat-header-cell {
   flex: 0 0 150px;
 }
 
-mat-cell{
+mat-cell {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

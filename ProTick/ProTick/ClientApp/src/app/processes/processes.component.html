@@ -1,20 +1,48 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 <body>
-  <button mat-raised-button (click)="openDialog()">Prozess erstellen</button>
-  <li *ngIf="process.description">
-    Prozess "{{ process.description  }}" wurde erstellt.
-  </li>
+  <button mat-raised-button (click)="openCreateProcessDialog()">Prozess erstellen</button>
 
   <br />
   <br />
 
-  <select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID)">
-    <option *ngFor="let process of processes" [value]="process.processID" cdkDrag>{{ process.description }}</option>
+  <button mat-raised-button (click)="openCreateSubprocessDialog()">Subprozess erstellen</button>
+
+  <br />
+  <br />
+
+  <select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID); getParentChildRelationsByProcessID(_processID)">
+    <option *ngFor="let process of processes" [value]="process.processID">{{ process.description }}</option>
   </select>
 
   <br />
   <br />
 
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let subprocess of subprocesses" cdkDrag>{{ subprocess.description }}</div>
+  <div cdkDropList
+       *ngIf="subprocesses.length > 0"
+       #subprocessList="cdkDropList"
+       [cdkDropListData]="subprocesses"
+       [cdkDropListConnectedTo]="[doneList]"
+       class="example-list"
+       (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let process of subprocesses" cdkDrag>{{ process.description }}</div>
   </div>
+
+  <!--<div *ngIf="checkIfSubprocessesEmpty()" style="background-color: red; color: white; padding: 10px; width: 500px;">Warnung, keine Subprozesse enthalten! Andere Funktionen können diesen Prozess möglicherweise nicht verwenden!</div>-->
+
+  <br />
+
+  <button (click)="saveSubprocesses()">Speichern</button>
+
+  <br />
+
+  <div cdkDropList
+       #doneList="cdkDropList"
+       [cdkDropListData]="subprocesses"
+       [cdkDropListConnectedTo]="[subprocessList]"
+       class="fa fa-trash"
+       style="font-size: 32px; padding: 30px; border: 1px solid black; float: right;"
+       (cdkDropListDropped)="deleteSubprocessWhenDropped($event)">
+  </div>
+
 </body>

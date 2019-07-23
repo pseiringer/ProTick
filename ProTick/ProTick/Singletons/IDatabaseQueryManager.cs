@@ -24,6 +24,7 @@ namespace ProTick.Singletons
         ParentChildRelation FindParentChildRelationByID(int id);
         List<ParentChildRelation> FindAllParentChildRelations();
         List<ParentChildRelation> FindAllParentChildRelations(bool includeReferences);
+        List<ParentChildRelation> FindAllParentChildRelationsOfProcess(int ProcessID);
 
         Role FindRoleByID(int id);
         List<Role> FindAllRoles();

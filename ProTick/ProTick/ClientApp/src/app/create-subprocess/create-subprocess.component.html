@@ -1,0 +1,30 @@
+<mat-form-field>
+  <input matInput [(ngModel)]="data.description" placeholder="Beschreibung" />
+</mat-form-field>
+
+<br />
+
+<mat-form-field>
+  <mat-label>Team</mat-label>
+  <mat-select [(ngModel)]="data.teamID">
+    <mat-option *ngFor="let team of teams" [value]="team.teamID">
+      {{team.description}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br />
+
+<mat-form-field>
+  <mat-label>Prozess</mat-label>
+  <mat-select [(ngModel)]="data.processID">
+    <mat-option *ngFor="let process of processes" [value]="process.processID">
+      {{process.description}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Subprozess erstellen</button>
+</div>

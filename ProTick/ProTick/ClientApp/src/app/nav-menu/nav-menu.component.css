@@ -37,8 +37,6 @@ i {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  /*position: relative;
-  right: 5px;*/
 }
 
 span.sidebar-header {
@@ -56,4 +54,3 @@ div.protick-underline {
 .align-left {
   text-align: left;
 }
-
