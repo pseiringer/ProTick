@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { EmployeeService } from '../core/employee/employee.service';
+import { EmployeeService } from '../../core/employee/employee.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Employee } from '../../classes/Employee';
+import { Employee } from '../../../classes/Employee';
 
 export interface CreateTeamDialogData {
   teamID: number;
@@ -30,12 +30,25 @@ export class CreateTeamComponent implements OnInit {
   allEmps: any = [];
   selEmp: Employee;
 
+  _header: string;
+  _buttonText: string;
+
   teamDataFormGroup: FormGroup;
 
   ngOnInit() {
-    this.getEmps();
-    this.data.selEmps = [];
+    if (this.data.teamID !== undefined) {
+      console.log(this.data);
+      this._header = "Team bearbeiten";
+      this._buttonText = "Ändern"
+    }
+    else {
+      this._header = "Neues Team";
+      this._buttonText = "Erstellen";
+      this.data.selEmps = [];
+    }
 
+    this.getEmps();
+   
     this.teamDataFormGroup = this._formBuilder.group({
       descCtrl: ['', Validators.required],
       abbrCtrl: ['', Validators.required]

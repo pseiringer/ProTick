@@ -39,6 +39,15 @@ export class TeamService {
     return this.http.get<EmployeeTeam[]>('http://localhost:8080/ProTick/Team/' + id + '/EmployeeTeams');
   }
 
+  putTeam(id: number, team: Team): Observable<Team> {
+    console.log(team);
+    return this.http.put<Team>('http://localhost:8080/ProTick/Team/' + id, team, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
   deleteTeam(id: number): Observable<Team> {
     //console.log(id);
 

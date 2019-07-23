@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProcessService } from '../core/process/process.service';
 import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
-import { CreateProcessComponent } from '../create-process/create-process.component';
+import { CreateProcessComponent } from '../processes/create-process/create-process.component';
 import { MatDialog } from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 

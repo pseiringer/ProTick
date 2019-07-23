@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TeamService } from '../core/team/team.service';
-import { Team } from '../../classes/Team';
+import { TeamService } from '../../core/team/team.service';
+import { Team } from '../../../classes/Team';
 import { MatDialogRef, MAT_DIALOG_DATA, MatListModule, MatStepperModule } from '@angular/material';
 
 
@@ -11,6 +11,8 @@ export interface CreateEmployeeDialogData {
   lastName: string,
   dateOfBirth: string,
   hireDate: string,
+  phoneNumber: string,
+  email: string,
   username: string,
   password: string,
   addressID: number,
@@ -45,14 +47,18 @@ export class CreateEmployeeComponent implements OnInit {
   allTeams: any = [];
   selTeam: Team;
 
+  error: string = 'Feld darf nicht leer sein!';
+  
+
   ngOnInit() {
     this.getTeams();
-    this.data.teamID = this.allTeams[0].teamID;
     this.data.selTeams = [];
 
     this.personalFormGroup = this._formBuilder.group({
       firstNameCtrl: ['', Validators.required],
       lastNameCtrl: ['', Validators.required],
+      phoneNumberCtrl: ['', Validators.required],
+      emailCtrl: ['', Validators.email],
       hireDateCtrl: ['', Validators.required],
       birthDateCtrl: ['', Validators.required]
     });
@@ -72,7 +78,10 @@ export class CreateEmployeeComponent implements OnInit {
 
   getTeams() {
     this._teamService.getTeams()
-      .subscribe(data => this.allTeams = data);
+      .subscribe(data => {
+        this.allTeams = data;
+        this.data.teamID = this.allTeams[0].teamID;
+      });
   }
 
   onAddTeam() {
