@@ -19,7 +19,6 @@ namespace ProTick.Singletons
             this.db = db;
         }
 
-
         #region --- FindByID ---
 
         public Address FindAddressByID(int id)
@@ -211,7 +210,6 @@ namespace ProTick.Singletons
 
         #endregion
 
-
         public Employee FindEmployeeByUsername(string username)
         {
             return db.Employee.FirstOrDefault(x => x.Username == username);
@@ -226,7 +224,6 @@ namespace ProTick.Singletons
         {
             return db.EmployeeTeam.Where(x => x.Team.TeamID == id).ToList();
         }
-
 
         public List<Ticket> FindAllTicketsByTeamID(int id)
         {
@@ -243,7 +240,6 @@ namespace ProTick.Singletons
                 .Where(x => x.State.StateID == id)
                 .ToList();
         }
-
 
         public List<Process> FindAllProcessesWithSubprocess(bool hasSubprocess)
         {
@@ -265,5 +261,13 @@ namespace ProTick.Singletons
             }
         }
 
+        public List<ParentChildRelation> FindAllParentChildRelationsOfProcess(int ProcessID)
+        {
+            return db.ParentChildRelation
+                .Include(x => x.Parent)
+                .Include(x => x.Child)
+                .Where(x => x.Parent.Process.ProcessID == ProcessID || x.Child.Process.ProcessID == ProcessID)
+                .ToList();
+        }
     }
 }

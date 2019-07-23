@@ -11,7 +11,7 @@
   <br />
   <br />
 
-  <select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID)">
+  <select [(ngModel)]="_processID" (ngModelChange)="getSubprocessesByProcessID(_processID); getParentChildRelationsByProcessID(_processID)">
     <option *ngFor="let process of processes" [value]="process.processID">{{ process.description }}</option>
   </select>
 
@@ -28,7 +28,7 @@
     <div class="example-box" *ngFor="let process of subprocesses" cdkDrag>{{ process.description }}</div>
   </div>
 
-  <div *ngIf="checkIfSubprocessesEmpty()" style="background-color: red; color: white; padding: 10px; width: 500px;">Warnung, keine Subprozesse enthalten! Andere Funktionen können diesen Prozess möglicherweise nicht verwenden!</div>
+  <!--<div *ngIf="checkIfSubprocessesEmpty()" style="background-color: red; color: white; padding: 10px; width: 500px;">Warnung, keine Subprozesse enthalten! Andere Funktionen können diesen Prozess möglicherweise nicht verwenden!</div>-->
 
   <br />
 

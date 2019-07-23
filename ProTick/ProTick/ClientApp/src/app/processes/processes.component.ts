@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProcessService } from '../core/process/process.service';
+import { ParentChildRelationService } from '../core/parent-child-relation/parent-child-relation.service';
 import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
+import { ParentChildRelation } from '../../classes/ParentChildRelation';
 import { CreateProcessComponent } from '../create-process/create-process.component';
 import { CreateSubprocessComponent } from '../create-subprocess/create-subprocess.component';
 import { MatDialog } from '@angular/material';
@@ -11,14 +13,14 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'app-processes',
   templateUrl: './processes.component.html',
   styleUrls: ['./processes.component.css'],
-  providers: [ProcessService],
+  providers: [ProcessService, ParentChildRelationService],
 })
 
 export class ProcessesComponent implements OnInit {
 
   private processes: Process[] = [];
   private subprocesses: Subprocess[] = [];
-  private initiated: boolean = false;
+  private parentChildRelations: ParentChildRelation[] = [];
 
   private _processID: number;
 
@@ -34,15 +36,16 @@ export class ProcessesComponent implements OnInit {
     processID: undefined
   };
 
-  constructor(private _processService: ProcessService, public dialog: MatDialog) { }
+  parentChildRelation: ParentChildRelation = {
+    parentChildRelationID: undefined,
+    parentID: undefined,
+    childID: undefined
+  }
+
+  constructor(private _processService: ProcessService, private _parentChildRelationService: ParentChildRelationService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getProcesses();
-
-    this._processID = 1;
-    this.getSubprocessesByProcessID(this._processID);
-
-    this.initiated = true;
   }
 
   getProcesses(): void {
@@ -53,6 +56,15 @@ export class ProcessesComponent implements OnInit {
   getSubprocessesByProcessID(_processID): void {
     this._processService.getSubprocessesByProcessID(_processID)
       .subscribe(data => this.subprocesses = data);
+
+    console.log(this.subprocesses);
+  }
+
+  getParentChildRelationsByProcessID(_processID): void {
+    this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
+      .subscribe(data => this.parentChildRelations = data);
+
+    console.log(this.parentChildRelations);
   }
 
   deleteSubprocess(subprocessID: number): void {
@@ -63,10 +75,11 @@ export class ProcessesComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.subprocesses, event.previousIndex, event.currentIndex);
     console.log(this.subprocesses);
+    console.log(this.parentChildRelations);
   }
 
   saveSubprocesses(): void {
-    console.log(this.subprocesses);
+    
   }
 
   openCreateProcessDialog(): void {
@@ -109,16 +122,5 @@ export class ProcessesComponent implements OnInit {
 
   deleteSubprocessWhenDropped(event: CdkDragDrop<string[]>) {
     this.deleteSubprocess(event.container.data[event.previousIndex].subprocessID);
-  }
-
-  checkIfSubprocessesEmpty(): boolean {
-    if (this.subprocesses.length <= 0 && this.initiated == false) {
-      console.log('false');
-      return false;
-    }
-    else {
-      console.log('true');
-      return true;
-    }
   }
 }
