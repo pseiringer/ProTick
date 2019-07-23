@@ -57,6 +57,11 @@ namespace ProTick.Controllers
                 editTicket.Description = ticket.Description;
                 changesMade = true;
             }
+            if (editTicket.Note != ticket.Note)
+            {
+                editTicket.Note = ticket.Note;
+                changesMade = true;
+            }
             if (editTicket.State.StateID != ticket.StateID)
             {
                 editTicket.State = dbm.FindStateByID(ticket.StateID);

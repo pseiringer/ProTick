@@ -9,6 +9,7 @@ import { FullTicket } from '../../classes/FullTicket';
 import { Team } from '../../classes/Team';
 import { State } from '../../classes/State';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { FinishTicketComponent } from './finish-ticket/finish-ticket.component';
 import { YesNoComponent } from '../yes-no/yes-no.component';
 
 
@@ -20,27 +21,19 @@ import { YesNoComponent } from '../yes-no/yes-no.component';
 })
 export class TicketsComponent implements OnInit {
 
-  @ViewChild(MatTable, {static: false}) table: MatTable<any>;
+  @ViewChild(MatTable, { static: true, read:MatTable }) table: MatTable<any>;
+  //@ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  allTeams = [];
-  currentTeam: Team = {
-    teamID: undefined,
-    description: undefined,
-    abbreviation: undefined
-  }
-
-  allStates = [];
-  currentState: State = {
-    ticketID: undefined,
-    description: undefined,
-    stateID: undefined,
-    subprocessID: undefined
-  }
-
+  allTeams: Team[] = [];
+  selectedTeam: number = 0;
+  allStates: State[] = [];
+  selectedState: number = 0;
   allTickets: FullTicket[] = [];
-  newTicket: Ticket;
+  displayedTickets: FullTicket[] = [];
 
-  //expandedElement: newTicket | null;
+  //dataSource = new MatTableDataSource(this.displayedTickets);
+
+  newTicket: Ticket;
 
   displayedColumns: string[] = ['ticketID', 'description', 'stateDescription', 'subprocessDescription', 'teamDescription', 'options'];
 
@@ -54,27 +47,51 @@ export class TicketsComponent implements OnInit {
 
   ngOnInit() {
     this.reloadTickets();
-  }
+    this.reloadTeams();
+    this.reloadStates();
 
-  onFinished() {
-    //TODO FinishTicket-Dialog
+    //this.renderTable();
+  }
+  
+
+  onFinished(ticket: Ticket) {
+    console.log(ticket);
+    const dialogRef = this.dialog.open(FinishTicketComponent, {
+      data: {
+        ticketID: ticket.ticketID,
+        description: ticket.description,
+        note: ticket.note,
+        stateID: ticket.stateID,
+        subprocessID: ticket.subprocessID
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(JSON.stringify(result));
+    });
   }
 
   onAdd(): void {
     
     const dialogRef = this.dialog.open(CreateTicketComponent, {
       data: {
-        ticketID: undefined,
-        description: undefined,
-        stateID: undefined,
-        subprocessID: undefined
+        ticket: {
+          ticketID: undefined,
+          description: undefined,
+          note: undefined,
+          stateID: undefined,
+          subprocessID: undefined
+        },
+        isEdit: false
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {                
+      if (result !== undefined) {
+        console.log(JSON.stringify(result));
+
         this.ticketService.postTicket(result)
-          .subscribe(data => {
+          .subscribe(data => {            
             //TODO error handling
             this.reloadTickets();
           });          
@@ -86,16 +103,20 @@ export class TicketsComponent implements OnInit {
     const id = ticket.ticketID;
     const dialogRef = this.dialog.open(CreateTicketComponent, {
       data: {
-        ticketID: id,
-        description: ticket.description,
-        stateID: ticket.stateID,
-        subprocessID: ticket.subprocessID
+        ticket: {
+          ticketID: id,
+          description: ticket.description,
+          note: ticket.note,
+          stateID: ticket.stateID,
+          subprocessID: ticket.subprocessID
+        },
+        isEdit: true
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
       if (result !== undefined) {
+        console.log(JSON.stringify(result));
         this.ticketService.putTicket(id, result)
           .subscribe(data => {
             //TODO error handling
@@ -127,45 +148,97 @@ export class TicketsComponent implements OnInit {
     });
   }
 
+
+  reloadStates() {
+    this.allStates = [];
+    this.stateService.getStates()
+      .subscribe(data => {
+        //TODO Error handling
+        this.allStates = data;
+      });
+  }
+
+  reloadTeams() {
+    this.allTeams = [];
+    this.teamService.getTeams()
+      .subscribe(data => {
+        //TODO Error handling
+        this.allTeams = data;
+      });
+  }
+
   reloadTickets() {
     this.allTickets = [];
     this.ticketService.getTicket()
       .subscribe(data => {
         //TODO error handling
-        data.forEach(d => {
-          const fullTicket: FullTicket = {
-            ticketID: undefined,
-            description: undefined,
-            stateID: undefined,
-            stateDescription: undefined,
-            subprocessID: undefined,
-            subprocessDescription: undefined,
-            teamID: undefined,
-            teamDescription: undefined
-          };
-
-          fullTicket.ticketID = d.ticketID
-          fullTicket.description = d.description;
-
-          fullTicket.stateID = d.stateID;
-          this.stateService.getStateByID(d.stateID)
-            .subscribe(state => {
-              fullTicket.stateDescription = state.description;
-              fullTicket.subprocessID = d.ticketID;
-              this.processService.getSubprocessById(d.subprocessID)
-                .subscribe(subprocess => {
-                  fullTicket.subprocessDescription = subprocess.description;
-                  fullTicket.teamID = subprocess.teamID;
-                  this.teamService.getTeamById(subprocess.teamID)
-                    .subscribe(team => {
-                      fullTicket.teamDescription = team.description;
-                      console.log(fullTicket);
-                      this.allTickets.push(fullTicket);
-                      this.table.renderRows();
-                    });
-                });
-            });
-        })        
+        this.fillTickets(data); 
       });
   }
+  
+
+  renderTable() {
+    this.displayedTickets = this.allTickets
+      .filter(x => {
+        if (this.selectedState !== 0 && this.selectedState !== x.stateID) return false;
+        if (this.selectedTeam !== 0 && this.selectedTeam !== x.teamID) return false;
+        return true;
+      })
+      .sort((x, y) => x.ticketID - y.ticketID);
+
+    //this.dataSource = new MatTableDataSource(this.displayedTickets);
+    //this.dataSource.sort = this.sort;
+
+    this.table.renderRows();
+  }
+  
+  fillTickets(data: Ticket[]) {
+    data.forEach(d => {
+      const fullTicket: FullTicket = {
+        ticketID: undefined,
+        description: undefined,
+        note: undefined,
+        stateID: undefined,
+        stateDescription: undefined,
+        subprocessID: undefined,
+        subprocessDescription: undefined,
+        teamID: undefined,
+        teamDescription: undefined
+      };
+
+      fullTicket.ticketID = d.ticketID
+      fullTicket.description = d.description;
+      fullTicket.note = d.note;
+
+      fullTicket.stateID = d.stateID;
+      this.stateService.getState(d.stateID)
+        .subscribe(state => {
+          fullTicket.stateDescription = state.description;
+          fullTicket.subprocessID = d.ticketID;
+          this.processService.getSubprocessById(d.subprocessID)
+            .subscribe(subprocess => {
+              fullTicket.subprocessDescription = subprocess.description;
+              fullTicket.teamID = subprocess.teamID;
+              this.teamService.getTeam(subprocess.teamID)
+                .subscribe(team => {
+                  fullTicket.teamDescription = team.description;
+                  console.log(fullTicket);
+                  this.allTickets.push(fullTicket);
+                  this.renderTable();
+                });
+            });
+        });
+    })       
+  }
+
+  getTicketsByStateID(stateID) {
+    this.selectedState = stateID;
+    this.renderTable();
+  }
+
+  getEmployeesByTeamID(teamID) {
+    this.selectedTeam = teamID;
+    this.renderTable();
+  }
+
 }

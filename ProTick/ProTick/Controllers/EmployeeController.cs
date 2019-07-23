@@ -31,6 +31,13 @@ namespace ProTick.Controllers
             return dbm.FindAllEmployees(true).Select(x => converter.EmployeeToDTO(x)).ToList();
         }
 
+        [HttpGet("{id}")]
+        public EmployeeDTO GetEmployee(int id)
+        {
+            return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
+        }
+
+
         [HttpPost]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {

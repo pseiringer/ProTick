@@ -31,7 +31,7 @@ namespace ProTick.Singletons
 
         public Employee FindEmployeeByID(int id)
         {
-            var employee = db.Employee.FirstOrDefault(x => x.EmployeeID == id);
+            var employee = db.Employee.Include(x => x.Address).FirstOrDefault(x => x.EmployeeID == id);
             if (employee == null) throw new DatabaseEntryNotFoundException($"Employee with ID ({id}) was not found");
             return employee;
         }
@@ -45,7 +45,7 @@ namespace ProTick.Singletons
 
         public ParentChildRelation FindParentChildRelationByID(int id)
         {
-            var parentChildRelation = db.ParentChildRelation.FirstOrDefault(x => x.ParentChildRelationID == id);
+            var parentChildRelation = db.ParentChildRelation.Include(x => x.Child).Include(x => x.Parent).FirstOrDefault(x => x.ParentChildRelationID == id);
             if (parentChildRelation == null) throw new DatabaseEntryNotFoundException($"ParentChildRelation with ID ({id}) was not found");
             return parentChildRelation;
         }
@@ -226,5 +226,44 @@ namespace ProTick.Singletons
         {
             return db.EmployeeTeam.Where(x => x.Team.TeamID == id).ToList();
         }
+
+
+        public List<Ticket> FindAllTicketsByTeamID(int id)
+        {
+            return db.Ticket.Include(x => x.Subprocess)
+                .Include(x => x.Subprocess.Team)
+                .Where(x => x.Subprocess.Team.TeamID == id)
+                .ToList();
+        }
+
+        public List<Ticket> FindAllTicketsByStateID(int id)
+        {
+            return db.Ticket.Include(x => x.Subprocess)
+                .Include(x => x.Subprocess.Team)
+                .Where(x => x.State.StateID == id)
+                .ToList();
+        }
+
+
+        public List<Process> FindAllProcessesWithSubprocess(bool hasSubprocess)
+        {
+            var subprocesses = db.Subprocess;
+
+            if (hasSubprocess)
+            {
+                return db.Process.Where(x => subprocesses
+                                            .Where(y => y.Process.ProcessID == x.ProcessID)
+                                            .Count() > 0)
+                                            .ToList();
+            }
+            else
+            {
+                return db.Process.Where(x => subprocesses
+                                            .Where(y => y.Process.ProcessID == x.ProcessID)
+                                            .Count() <= 0)
+                                            .ToList();
+            }
+        }
+
     }
 }

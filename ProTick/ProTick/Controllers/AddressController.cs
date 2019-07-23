@@ -30,6 +30,13 @@ namespace ProTick.Controllers
         {
             return dbm.FindAllAddresses(true).Select(x => converter.AddressToDTO(x)).ToList();
         }
+        
+
+        [HttpGet("{id}")]
+        public AddressDTO GetAddress(int id)
+        {
+            return converter.AddressToDTO(dbm.FindAddressByID(id));
+        }
 
         [HttpPost]
         public AddressDTO NewEmployee([FromBody] AddressDTO a)

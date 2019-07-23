@@ -2,43 +2,67 @@
 <div class="ticket-list">
   <h1>Tickets</h1>
 
+  <mat-form-field>
+    <mat-label>Status</mat-label>
+    <mat-select [(ngModel)]="selectedState" (ngModelChange)="renderTable()">
+      <mat-option [value]="0">
+        Alle Status
+      </mat-option>
+      <mat-option *ngFor="let state of allStates" [value]="state.stateID">
+        {{state.description}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Team</mat-label>
+    <mat-select [(ngModel)]="selectedTeam" (ngModelChange)="renderTable()">
+      <mat-option [value]="0">
+        Alle Teams
+      </mat-option>
+      <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
+        {{team.description}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <button mat-icon-button (click)="onAdd()">
     <mat-icon>add_circle</mat-icon>
   </button>
 
   <div class="mat-elevation-z8">
-    <mat-table #table multiTemplateDataRows [dataSource]="allTickets">
+    <mat-table #table multiTemplateDataRows [dataSource]="displayedTickets" matSort>
 
       <ng-container matColumnDef="ticketID">
-        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.ticketID}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.ticketID}} </mat-cell>
       </ng-container>
 
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.description}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Beschreibung </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.description}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="stateDescription">
-        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.stateDescription}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.stateDescription}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="subprocessDescription">
-        <mat-header-cell *matHeaderCellDef> Subprozess </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.subprocessDescription}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Subprozess </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.subprocessDescription}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="teamDescription">
-        <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.teamDescription}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Team </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.teamDescription}} </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-      <ng-container matColumnDef="options"  >
+      <ng-container matColumnDef="options">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
           <button mat-icon-button (click)="onFinished(row)">

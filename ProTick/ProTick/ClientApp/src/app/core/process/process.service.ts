@@ -16,6 +16,10 @@ export class ProcessService {
     return this.http.get<Process[]>(this.url + '/Process');
   }
 
+  getProcessesWithSubprocess(hasSubprocess: boolean): Observable<Process[]> {
+    return this.http.get<Process[]>(this.url + '/Process/hasSubprocess=' + hasSubprocess);
+  }
+
   getSubprocesses(): Observable<Subprocess[]> {
     return this.http.get<Subprocess[]>(this.url + '/Subprocess');
   }

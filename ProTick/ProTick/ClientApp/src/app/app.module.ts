@@ -38,6 +38,7 @@ import { CreateTeamComponent } from './create-team/create-team.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 
 import { YesNoComponent } from './yes-no/yes-no.component';
+import { FinishTicketComponent } from './tickets/finish-ticket/finish-ticket.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { YesNoComponent } from './yes-no/yes-no.component';
     YesNoComponent,
     CreateEmployeeComponent,
     CreateSubprocessComponent,
+    FinishTicketComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -100,6 +102,7 @@ import { YesNoComponent } from './yes-no/yes-no.component';
     CreateEmployeeComponent,
     YesNoComponent,
     CreateSubprocessComponent,
+	FinishTicketComponent,
   ],
   bootstrap: [AppComponent],
 })
