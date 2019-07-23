@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface CreateProcessDialogData {
-  description: string;
+  description: string
 }
 
 @Component({

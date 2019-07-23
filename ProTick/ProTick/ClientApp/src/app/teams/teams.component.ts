@@ -72,9 +72,7 @@ export class TeamsComponent implements OnInit {
   displayedColumns: string[] = ['teamID', 'abbreviation', 'options'];
   displayedColumnsEmp: string[] = ['employeeID', 'firstName', 'lastName', 'dateOfBirth', 'hireDate', 'username', 'options'];
 
-
-  expandedElement: Team | null;
-  
+  expandedElement: Team | null;  
 
   //@ViewChild(MatSort) sort: MatSort;
 

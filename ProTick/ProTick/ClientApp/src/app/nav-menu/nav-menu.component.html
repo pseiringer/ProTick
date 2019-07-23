@@ -6,25 +6,30 @@
       <span class="sidebar-header">ProTick</span>
     </a>
   </li>
+
   <div class="protick-underline"></div>
+
   <li [routerLinkActive]='["link-active"]' class="nav-item">
     <a [routerLink]='["/tickets"]' class="nav-link">
       <i class="fa fa-ticket"></i>
       <span>  Tickets</span>
     </a>
   </li>
+
   <li [routerLinkActive]='["link-active"]' class="nav-item">
     <a [routerLink]='["/processes"]' class="nav-link">
-      <i class="fa fa-cog"></i> 
+      <i class="fa fa-cog"></i>
       <span> Prozesse</span>
     </a>
   </li>
+
   <li [routerLinkActive]='["link-active"]' class="nav-item">
     <a [routerLink]='["/teams"]' class="nav-link">
       <i class="fa fa-users"></i>
       <span> Teams</span>
     </a>
   </li>
+
   <li [routerLinkActive]='["link-active"]' class="nav-item">
     <a [routerLink]='["/login"]' (click)='logout();' class="nav-link">
       <i class="fa fa-sign-out"></i>

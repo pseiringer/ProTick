@@ -23,6 +23,7 @@ import { CoreModule } from './core/core.module';
 
 import { ProcessesComponent } from './processes/processes.component';
 import { CreateProcessComponent } from './create-process/create-process.component';
+import { CreateSubprocessComponent } from './create-subprocess/create-subprocess.component';
 
 import { TicketsComponent } from './tickets/tickets.component';
 import { CreateTicketComponent } from './tickets/create-ticket/create-ticket.component';
@@ -37,7 +38,6 @@ import { CreateTeamComponent } from './create-team/create-team.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 
 import { YesNoComponent } from './yes-no/yes-no.component';
-
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import { YesNoComponent } from './yes-no/yes-no.component';
     CreateTicketComponent,
     YesNoComponent,
     CreateEmployeeComponent,
+    CreateSubprocessComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -84,6 +85,7 @@ import { YesNoComponent } from './yes-no/yes-no.component';
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
       { path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
+      { path: 'create-subprocess', component: CreateSubprocessComponent, canActivate: [AuthGuard] },
       { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
       { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
       { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
@@ -91,7 +93,14 @@ import { YesNoComponent } from './yes-no/yes-no.component';
     ])
   ],
   providers: [JwtHelper, AuthGuard, DatePipe],
-  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent, YesNoComponent],
+  entryComponents: [
+    CreateProcessComponent,
+    CreateTeamComponent,
+    CreateTicketComponent,
+    CreateEmployeeComponent,
+    YesNoComponent,
+    CreateSubprocessComponent,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

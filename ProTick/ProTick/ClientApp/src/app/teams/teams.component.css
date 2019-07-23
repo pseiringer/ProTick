@@ -61,7 +61,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   flex: 0 0 150px;
 }
 
-mat-cell{
+mat-cell {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
