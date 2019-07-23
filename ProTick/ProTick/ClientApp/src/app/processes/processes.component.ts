@@ -3,9 +3,11 @@ import { ProcessService } from '../core/process/process.service';
 import { ParentChildRelationService } from '../core/parent-child-relation/parent-child-relation.service';
 import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
+
 import { ParentChildRelation } from '../../classes/ParentChildRelation';
 import { CreateProcessComponent } from '../create-process/create-process.component';
 import { CreateSubprocessComponent } from '../create-subprocess/create-subprocess.component';
+
 import { MatDialog } from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 

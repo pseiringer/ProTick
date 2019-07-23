@@ -72,8 +72,10 @@ namespace ProTick.Controllers
         {
             var team = db.Team.FirstOrDefault(x => x.TeamID == t.TeamID);
 
-            if (team.Description != team.Description)
-                team.Description = team.Description;
+            if (team.Description != t.Description)
+                team.Description = t.Description;
+            if (team.Abbreviation != t.Abbreviation)
+                team.Abbreviation = t.Abbreviation;
 
             db.SaveChanges();
             return converter.TeamToDTO(team);

@@ -57,10 +57,18 @@ namespace ProTick.Controllers
                 emp.FirstName = e.FirstName;
             if (emp.LastName != e.LastName)
                 emp.LastName = e.LastName;
+            if (emp.Email != e.Email)
+                emp.Email = e.Email;
+            if (emp.PhoneNumber != e.PhoneNumber)
+                emp.PhoneNumber = e.PhoneNumber;
             if (emp.HireDate != e.HireDate)
                 emp.HireDate = e.HireDate;
             if (emp.DateOfBirth != e.DateOfBirth)
                 emp.DateOfBirth = e.DateOfBirth;
+            if (emp.Username != e.Username)
+                emp.Username = e.Username;
+            if (emp.Password != e.Password)
+                emp.Password = e.Password;
             if (emp.Address != e.Address)
                 emp.Address = e.Address;
 

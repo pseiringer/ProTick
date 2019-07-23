@@ -22,6 +22,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CoreModule } from './core/core.module';
 
 import { ProcessesComponent } from './processes/processes.component';
+
 import { CreateProcessComponent } from './create-process/create-process.component';
 import { CreateSubprocessComponent } from './create-subprocess/create-subprocess.component';
 
@@ -34,8 +35,8 @@ import { LoginComponent } from './login/login.component';
 import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
-import { CreateTeamComponent } from './create-team/create-team.component';
-import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { CreateTeamComponent } from './teams/create-team/create-team.component';
+import { CreateEmployeeComponent } from './teams/create-employee/create-employee.component';
 
 import { YesNoComponent } from './yes-no/yes-no.component';
 import { FinishTicketComponent } from './tickets/finish-ticket/finish-ticket.component';
