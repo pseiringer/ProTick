@@ -15,6 +15,10 @@ export class EmployeeService {
     return this.http.get<Employee[]>('http://localhost:8080/ProTick/Employee');
   }
 
+  getEmployee(id: number): Observable<Employee> {
+    return this.http.get<Employee>('http://localhost:8080/ProTick/Employee/' + id);
+  }
+
   getEmployeeTeamssByEmployeeID(id: number): Observable<EmployeeTeam[]> {
     return this.http.get<EmployeeTeam[]>('http://localhost:8080/ProTick/Employee/' + id + '/EmployeeTeams');
   }

@@ -47,7 +47,7 @@ export class CreateEmployeeComponent implements OnInit {
 
   ngOnInit() {
     this.getTeams();
-    this.data.teamID = 1;
+    this.data.teamID = this.allTeams[0].teamID;
     this.data.selTeams = [];
 
     this.personalFormGroup = this._formBuilder.group({
