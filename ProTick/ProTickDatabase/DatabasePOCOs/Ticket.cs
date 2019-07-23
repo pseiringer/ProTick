@@ -8,7 +8,7 @@ namespace ProTickDatabase.DatabasePOCOs
     {
         public int TicketID { get; set; }
         public string Description { get; set; }
-        //public string Note { get; set; }
+        public string Note { get; set; }
 
         public virtual Subprocess Subprocess { get; set; }
         public virtual State State { get; set; }

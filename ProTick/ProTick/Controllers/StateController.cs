@@ -36,6 +36,12 @@ namespace ProTick.Controllers
             return converter.StateToDTO(dbm.FindStateByID(id));
         }
 
+        [HttpGet("{id}/Tickets")]
+        public IEnumerable<TicketDTO> GetTicketsByStateID(int id)
+        {
+            return dbm.FindAllTicketsByStateID(id).Select(x => converter.TicketToDTO(x)).ToList();
+        }
+
         [HttpPost]
         public StateDTO PostState([FromBody] StateDTO state)
         {

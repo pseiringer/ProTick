@@ -1,0 +1,31 @@
+<form [formGroup]="finishTicketForm">
+  <p mat-dialog-title>Ticket Weitergeben</p>
+  <mat-dialog-content>
+    <label>
+      <p>ID: {{ticketID}}</p>
+    </label>
+    <br />
+    <label>
+      <p>Beschreibung: {{description}}</p>
+    </label>
+    <br />
+    <mat-form-field>
+      <input matInput formControlName="note" placeholder="Notiz" />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Subprozess</mat-label>
+      <mat-select [(ngModel)]="selectedSubprocess" formControlName="subprocessID">
+        <mat-option [value]="-1">---</mat-option>
+        <mat-option *ngFor="let subprocess of allSubprocesses" [value]="subprocess.processID">
+          {{subprocess.description}}
+        </mat-option>
+      </mat-select>
+      <mat-error>{{error}}</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onCancelClicked()">Abbrechen</button>
+    <button mat-button [disabled]="!finishTicketForm.valid" (click)="onSaveClicked()">Speichern</button>
+  </mat-dialog-actions>
+</form>

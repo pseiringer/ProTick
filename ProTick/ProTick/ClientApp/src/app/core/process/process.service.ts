@@ -11,8 +11,12 @@ export class ProcessService {
 
   constructor(private http: HttpClient) { }
 
-  getProcesses() : Observable<Process[]> {
+  getProcesses(): Observable<Process[]> {
     return this.http.get<Process[]>(this.url + '/Process');
+  }
+
+  getProcessesWithSubprocess(hasSubprocess: boolean): Observable<Process[]> {
+    return this.http.get<Process[]>(this.url + '/Process/hasSubprocess=' + hasSubprocess);
   }
 
   getSubprocesses(): Observable<Subprocess[]> {
