@@ -1,5 +1,6 @@
 
 <div class="ticket-list">
+
   <h1>Tickets</h1>
 
   <mat-form-field>
@@ -30,45 +31,42 @@
     <mat-icon>add_circle</mat-icon>
   </button>
 
-  <div class="mat-elevation-z8">
-    <mat-table #table multiTemplateDataRows [dataSource]="displayedTickets" matSort >
+  <div class="mat-elevation-z8 table_container">
+    <table mat-table #table multiTemplateDataRows [dataSource]="displayedTickets">
 
       <ng-container matColumnDef="ticketID">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.ticketID}} </mat-cell>
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element">{{element.ticketID}} </td>
       </ng-container>
 
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Beschreibung </mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.description}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef> Beschreibung </th>
+        <td mat-cell *matCellDef="let element">{{element.description}}</td>
       </ng-container>
 
       <ng-container matColumnDef="stateDescription">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.stateDescription}} </mat-cell>
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element">{{element.stateDescription}} </td>
       </ng-container>
 
       <ng-container matColumnDef="subprocessDescription">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Subprozess </mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.subprocessDescription}} </mat-cell>
+        <th mat-header-cell *matHeaderCellDef> Subprozess </th>
+        <td mat-cell *matCellDef="let element">{{element.subprocessDescription}} </td>
       </ng-container>
 
       <ng-container matColumnDef="teamDescription">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Team </mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.teamDescription}} </mat-cell>
+        <th mat-header-cell *matHeaderCellDef> Team </th>
+        <td mat-cell *matCellDef="let element">{{element.teamDescription}} </td>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
-
-      <ng-container matColumnDef="options" >
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row" >
-          <button [disabled]="row.subprocessID === -1" mat-icon-button *ngIf="row.stateDescription === openDescription" (click)="onBegin(row)">
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button [disabled]="row.subprocessID === -1" mat-icon-button *ngIf="row.stateDescription === openDescription" (click)="onBegin($event, row)">
             <mat-icon>play_arrow</mat-icon>
           </button>
-          <button [disabled]="row.subprocessID === -1"  mat-icon-button *ngIf="row.stateDescription === inProgressDescription || row.stateDescription === finishedDescription" (click)="onFinished(row)">
+          <button [disabled]="row.subprocessID === -1" mat-icon-button *ngIf="row.stateDescription === inProgressDescription || row.stateDescription === finishedDescription" (click)="onFinished(row)">
             <mat-icon>done</mat-icon>
           </button>
           <button mat-icon-button (click)="onEdit(row)">
@@ -77,8 +75,45 @@
           <button mat-icon-button (click)="onDelete(row.ticketID)">
             <mat-icon>delete</mat-icon>
           </button>
-        </mat-cell>
+        </td>
       </ng-container>
-    </mat-table>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="6">
+          <div class="example-element-detail"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+           
+            <div class="details_div">
+              <div class="wrapper_div">
+                <div class="floating_div_small">
+                  <div class="desc_element">Prozess</div>
+                  <div class="example-element">
+                    {{element.processDescription}}
+                  </div>
+                </div>
+
+                <div class="floating_div_big">
+                  <div class="desc_element">Notiz</div>
+                  <div class="example-element">
+                    {{element.note}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+
+
+    </table>
   </div>
 </div>

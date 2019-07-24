@@ -83,15 +83,6 @@ mat-cell {
   color:aqua;
 }*/
 
-.tabs {
-  display: flex;
-  min-height: 100vh;
-}
-
-.team_tab, .employee_tab {
-  margin: 3%;
-  margin-top: 1%;
-}
 
 body {
   display: inherit;

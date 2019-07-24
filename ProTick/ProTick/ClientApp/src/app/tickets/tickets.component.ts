@@ -13,12 +13,21 @@ import { YesNoComponent } from '../yes-no/yes-no.component';
 import { ForwardTicketComponent, Functionality } from './forward-ticket/forward-ticket.component';
 import { StaticDatabaseObjectsService } from '../core/static-database-objects/static-database-objects.service';
 import { AuthGuard } from '../../classes/Authentication/AuthGuard';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.css'],
-  providers: [TicketService, StateService, ProcessService, TeamService, StaticDatabaseObjectsService]
+  providers: [TicketService, StateService, ProcessService, TeamService, StaticDatabaseObjectsService],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed, void', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class TicketsComponent implements OnInit {
 
@@ -42,6 +51,8 @@ export class TicketsComponent implements OnInit {
 
   displayedColumns: string[] = ['ticketID', 'description', 'stateDescription', 'subprocessDescription', 'teamDescription', 'options'];
 
+  expandedElement: FullTicket | null;
+
   ticketDoneString: string = "";
 
   constructor(private ticketService: TicketService,
@@ -62,7 +73,9 @@ export class TicketsComponent implements OnInit {
   }
     
 
-  onBegin(ticket: Ticket) {
+  onBegin(ev: Event, ticket: Ticket) {
+    ev.stopPropagation();
+
     const id = ticket.ticketID;
     console.log(ticket);
     const dialogRef = this.dialog.open(ForwardTicketComponent, {
@@ -213,8 +226,6 @@ export class TicketsComponent implements OnInit {
     this.ticketService.getTicket()
       .subscribe(data => {
         //TODO error handling
-        console.log("allTickets");
-        console.log(data);
         this.fillTickets(data); 
       });
   }
@@ -241,6 +252,7 @@ export class TicketsComponent implements OnInit {
         ticketID: undefined,
         description: undefined,
         note: undefined,
+        processDescription: undefined,
         stateID: undefined,
         stateDescription: undefined,
         subprocessID: undefined,
@@ -252,7 +264,6 @@ export class TicketsComponent implements OnInit {
       fullTicket.ticketID = d.ticketID
       fullTicket.description = d.description;
       fullTicket.note = d.note;
-
       fullTicket.stateID = d.stateID;
       this.stateService.getState(d.stateID)
         .subscribe(state => {
@@ -273,8 +284,13 @@ export class TicketsComponent implements OnInit {
                 this.teamService.getTeam(subprocess.teamID)
                   .subscribe(team => {
                     fullTicket.teamDescription = team.description;
-                    this.allTickets.push(fullTicket);
-                    this.renderTable();
+                    this.processService.getProcess(subprocess.processID)
+                      .subscribe(process => {
+                        fullTicket.processDescription = process.description;
+                        this.allTickets.push(fullTicket);
+                        console.log(fullTicket);
+                        this.renderTable();
+                      });                   
                   });
               });
           }

@@ -10,7 +10,6 @@ using ProTickDatabase.DatabasePOCOs;
 using ProTick.Singletons;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -25,16 +24,19 @@ namespace ProTick.Controllers
         private ProTickDatabaseContext db;
         private IResourceDTOConverter converter;
         private IDatabaseQueryManager dbm;
+        private IHasher hasher;
 
         public AuthenticationController(IConfiguration conf, 
             [FromServices] ProTickDatabaseContext db,
             [FromServices] IResourceDTOConverter converter,
-            [FromServices] IDatabaseQueryManager dbm)
+            [FromServices] IDatabaseQueryManager dbm,
+            [FromServices] IHasher hasher)
         {
             this.configuration = conf;
             this.db = db;
             this.converter = converter;
             this.dbm = dbm;
+            this.hasher = hasher;
         }
 
         [HttpPost, Route("Login")]
@@ -45,9 +47,9 @@ namespace ProTick.Controllers
             
             var emp = dbm.FindEmployeeByUsername(loginUser.Username);
 
-            //TODO encrypt password
-
-            if (emp != null && emp.Password == loginUser.Password)
+            var pass = hasher.HashPassword(loginUser.Password);
+            
+            if (emp != null && emp.Password == pass)
             {
 
                 var jwtAuthentication = configuration.GetSection("JwtAuthentication");
@@ -57,7 +59,7 @@ namespace ProTick.Controllers
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new GenericIdentity(emp.Username, "Token"),
                     new[] {
-                        new Claim("ID", emp.LastName)
+                        new Claim("Role", "Manager")
                     }
                     );
 
