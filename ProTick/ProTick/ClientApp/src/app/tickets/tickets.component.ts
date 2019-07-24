@@ -9,15 +9,25 @@ import { FullTicket } from '../../classes/FullTicket';
 import { Team } from '../../classes/Team';
 import { State } from '../../classes/State';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
-import { FinishTicketComponent } from './finish-ticket/finish-ticket.component';
 import { YesNoComponent } from '../yes-no/yes-no.component';
-
+import { ForwardTicketComponent, Functionality } from './forward-ticket/forward-ticket.component';
+import { StaticDatabaseObjectsService } from '../core/static-database-objects/static-database-objects.service';
+import { AuthGuard } from '../../classes/Authentication/AuthGuard';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.css'],
-  providers: [TicketService, StateService, ProcessService, TeamService]
+  providers: [TicketService, StateService, ProcessService, TeamService, StaticDatabaseObjectsService],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed, void', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class TicketsComponent implements OnInit {
 
@@ -35,14 +45,23 @@ export class TicketsComponent implements OnInit {
 
   newTicket: Ticket;
 
+  openDescription: string;
+  inProgressDescription: string;
+  finishedDescription: string;
+
   displayedColumns: string[] = ['ticketID', 'description', 'stateDescription', 'subprocessDescription', 'teamDescription', 'options'];
 
+  expandedElement: FullTicket | null;
+
+  ticketDoneString: string = "";
 
   constructor(private ticketService: TicketService,
     private processService: ProcessService,
     private teamService: TeamService,
     private stateService: StateService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private staticDatabaseObjectService: StaticDatabaseObjectsService,
+    private authGuard: AuthGuard) { }
 
 
   ngOnInit() {
@@ -52,22 +71,53 @@ export class TicketsComponent implements OnInit {
 
     //this.renderTable();
   }
-  
+    
 
-  onFinished(ticket: Ticket) {
+  onBegin(ev: Event, ticket: Ticket) {
+    ev.stopPropagation();
+
+    const id = ticket.ticketID;
     console.log(ticket);
-    const dialogRef = this.dialog.open(FinishTicketComponent, {
+    const dialogRef = this.dialog.open(ForwardTicketComponent, {
       data: {
-        ticketID: ticket.ticketID,
-        description: ticket.description,
-        note: ticket.note,
-        stateID: ticket.stateID,
-        subprocessID: ticket.subprocessID
+        ticket: {
+          ticketID: id,
+          description: ticket.description,
+          note: ticket.note,
+          stateID: ticket.stateID,
+          subprocessID: ticket.subprocessID
+        },
+        functionality: Functionality.Begin
       }
-    });
+      });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(JSON.stringify(result));
+      if (result !== undefined)
+        this.ticketService.putTicket(id, result)
+          .subscribe(_ => this.reloadTickets())
+    });
+  }
+
+  onFinished(ticket: Ticket) {
+    const id = ticket.ticketID;
+    console.log(ticket);
+    const dialogRef = this.dialog.open(ForwardTicketComponent, {
+      data: {
+        ticket: {
+          ticketID: id,
+          description: ticket.description,
+          note: ticket.note,
+          stateID: ticket.stateID,
+          subprocessID: ticket.subprocessID
+        },
+        functionality: Functionality.Finish
+      }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined)
+        this.ticketService.putTicket(id, result)
+          .subscribe(_ => this.reloadTickets())
     });
   }
 
@@ -88,8 +138,6 @@ export class TicketsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        console.log(JSON.stringify(result));
-
         this.ticketService.postTicket(result)
           .subscribe(data => {            
             //TODO error handling
@@ -116,7 +164,6 @@ export class TicketsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        console.log(JSON.stringify(result));
         this.ticketService.putTicket(id, result)
           .subscribe(data => {
             //TODO error handling
@@ -127,25 +174,25 @@ export class TicketsComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    const dialogRef = this.dialog.open(YesNoComponent, {
-      data: {
-        title: "Delete",
-        text: "Do you really want to delete Ticket "+id,
-        no: "No",
-        yes: "Yes"
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-      if (result === true) {
-        this.ticketService.deleteTicket(id)
-          .subscribe(data => {
-            //TODO error handling
-            this.reloadTickets();
-            console.log('Team deleted.');
-          });
-      }
-    });
+    if (this.authGuard.canActivate()) {
+      const dialogRef = this.dialog.open(YesNoComponent, {
+        data: {
+          title: "Delete",
+          text: "Do you really want to delete Ticket "+id,
+          no: "No",
+          yes: "Yes"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === true) {
+          this.ticketService.deleteTicket(id)
+            .subscribe(data => {
+              //TODO error handling
+              this.reloadTickets();
+            });
+        }
+      });
+    }
   }
 
 
@@ -155,6 +202,13 @@ export class TicketsComponent implements OnInit {
       .subscribe(data => {
         //TODO Error handling
         this.allStates = data;
+
+        this.openDescription = this.allStates
+          .find(x => x.stateID === this.staticDatabaseObjectService.getStates().Open).description;
+        this.inProgressDescription = this.allStates
+          .find(x => x.stateID === this.staticDatabaseObjectService.getStates().InProgress).description;
+        this.finishedDescription = this.allStates
+          .find(x => x.stateID === this.staticDatabaseObjectService.getStates().Finished).description;
       });
   }
 
@@ -198,6 +252,7 @@ export class TicketsComponent implements OnInit {
         ticketID: undefined,
         description: undefined,
         note: undefined,
+        processDescription: undefined,
         stateID: undefined,
         stateDescription: undefined,
         subprocessID: undefined,
@@ -209,27 +264,40 @@ export class TicketsComponent implements OnInit {
       fullTicket.ticketID = d.ticketID
       fullTicket.description = d.description;
       fullTicket.note = d.note;
-
       fullTicket.stateID = d.stateID;
       this.stateService.getState(d.stateID)
         .subscribe(state => {
           fullTicket.stateDescription = state.description;
-          fullTicket.subprocessID = d.ticketID;
-          this.processService.getSubprocessById(d.subprocessID)
-            .subscribe(subprocess => {
-              fullTicket.subprocessDescription = subprocess.description;
-              fullTicket.teamID = subprocess.teamID;
-              this.teamService.getTeam(subprocess.teamID)
-                .subscribe(team => {
-                  fullTicket.teamDescription = team.description;
-                  console.log(fullTicket);
-                  this.allTickets.push(fullTicket);
-                  this.renderTable();
-                });
-            });
+          fullTicket.subprocessID = d.subprocessID;
+          if (fullTicket.subprocessID == -1) {
+            fullTicket.subprocessDescription = this.ticketDoneString;
+            fullTicket.teamID = -1;
+            fullTicket.teamDescription = this.ticketDoneString;
+            this.allTickets.push(fullTicket);
+            this.renderTable();
+          }
+          else {
+            this.processService.getSubprocessById(d.subprocessID)
+              .subscribe(subprocess => {
+                fullTicket.subprocessDescription = subprocess.description;
+                fullTicket.teamID = subprocess.teamID;
+                this.teamService.getTeam(subprocess.teamID)
+                  .subscribe(team => {
+                    fullTicket.teamDescription = team.description;
+                    this.processService.getProcess(subprocess.processID)
+                      .subscribe(process => {
+                        fullTicket.processDescription = process.description;
+                        this.allTickets.push(fullTicket);
+                        console.log(fullTicket);
+                        this.renderTable();
+                      });                   
+                  });
+              });
+          }
         });
     })       
   }
+
 
   getTicketsByStateID(stateID) {
     this.selectedState = stateID;
@@ -241,4 +309,8 @@ export class TicketsComponent implements OnInit {
     this.renderTable();
   }
 
+
+  ticketFinished(ticket): boolean {
+    return ticket.subprocessID === -1;
+  }
 }

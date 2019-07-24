@@ -12,6 +12,10 @@ export class ProcessService {
 
   constructor(private http: HttpClient) { }
 
+  getProcess(processID: number) {
+    return this.http.get<Process>(this.url + `/Process/${processID}`);
+  }
+
   getProcesses(): Observable<Process[]> {
     return this.http.get<Process[]>(this.url + '/Process');
   }

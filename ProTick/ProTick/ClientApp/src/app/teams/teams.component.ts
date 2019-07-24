@@ -264,7 +264,7 @@ export class TeamsComponent implements OnInit {
         this.emp.email = result.email;
         this.emp.dateOfBirth = this.datepipe.transform(result.dateOfBirth, "yyyy-MM-dd hh:mm:ss");
         this.emp.hireDate = this.datepipe.transform(result.hireDate, "yyyy-MM-dd hh:mm:ss");
-        this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName).toLowerCase();
+        this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName.substr(0, 15)).toLowerCase();
 
         this.address.city = result.city;
         this.address.country = result.country;

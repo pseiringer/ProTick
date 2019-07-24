@@ -17,12 +17,14 @@ namespace ProTick.Controllers
         private ProTickDatabaseContext db;
         private IResourceDTOConverter converter;
         private IDatabaseQueryManager dbm;
+        private IHasher hasher;
 
-        public EmployeeController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
+        public EmployeeController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm, [FromServices] IHasher hasher)
         {
             this.db = db;
             this.converter = converter;
             this.dbm = dbm;
+            this.hasher = hasher;
         }
 
         [HttpGet]
@@ -46,7 +48,15 @@ namespace ProTick.Controllers
         [HttpPost]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
-            var a = db.Employee.Add(converter.DTOToEmployee(e));
+            var newEmp = converter.DTOToEmployee(e);
+            var passwordString = (e.FirstName.Substring(0, 1));
+            if (e.LastName.Length >= 15)
+                passwordString += e.LastName.Substring(0, 15);
+            else
+                passwordString += e.LastName;
+
+            newEmp.Password = hasher.HashPassword(passwordString.ToLower());
+            var a = db.Employee.Add(newEmp);
 
             db.SaveChanges();
 
