@@ -27,7 +27,7 @@ namespace ProTick.Singletons
 
         public EmployeeDTO EmployeeToDTO(Employee a)
         {
-            return new EmployeeDTO { AddressID = a.Address.AddressID, DateOfBirth = a.DateOfBirth.ToShortDateString(), EmployeeID = a.EmployeeID, FirstName = a.FirstName, Email = a.Email, PhoneNumber = a.PhoneNumber, HireDate = a.HireDate.ToShortDateString(), LastName = a.LastName, Username = a.Username, Password = a.Password};
+            return new EmployeeDTO { AddressID = a.Address.AddressID, DateOfBirth = a.DateOfBirth.ToShortDateString(), EmployeeID = a.EmployeeID, FirstName = a.FirstName, Email = a.Email, PhoneNumber = a.PhoneNumber, HireDate = a.HireDate.ToShortDateString(), LastName = a.LastName, Username = a.Username};
         }
 
         public EmployeeTeamDTO EmployeeTeamToDTO(EmployeeTeam a)
@@ -86,7 +86,7 @@ namespace ProTick.Singletons
 
         public Employee DTOToEmployee(EmployeeDTO a)
         {            
-            return new Employee { Address = dbm.FindAddressByID(a.AddressID), DateOfBirth = DateTime.Parse(a.DateOfBirth), PhoneNumber = a.PhoneNumber, Email = a.Email, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = DateTime.Parse(a.HireDate), Password = a.Password, Username = a.Username, LastName = a.LastName };
+            return new Employee { Address = dbm.FindAddressByID(a.AddressID), DateOfBirth = DateTime.Parse(a.DateOfBirth), PhoneNumber = a.PhoneNumber, Email = a.Email, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = DateTime.Parse(a.HireDate), Username = a.Username, LastName = a.LastName };
         }
 
         public EmployeeTeam DTOToEmployeeTeam(EmployeeTeamDTO a)

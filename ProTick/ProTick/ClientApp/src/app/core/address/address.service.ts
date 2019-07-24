@@ -32,7 +32,7 @@ export class AddressService {
 
   putAddress(id: number, add: Address): Observable<Address> {
     console.log(add);
-    return this.http.put<Employee>('http://localhost:8080/ProTick/Address/' + id, add, {
+    return this.http.put<Address>('http://localhost:8080/ProTick/Address/' + id, add, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
