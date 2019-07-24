@@ -36,7 +36,18 @@ namespace ProTick.Controllers
         {
             return dbm.FindAllSubprocesses(true).Select(x => converter.SubprocessToDTO(x)).ToList();
         }
-        
+
+        [HttpGet("{id}/Children")]
+        public IEnumerable<SubprocessDTO> GetChildrenOfSubprocess([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return dbm.FindAllChildrenBySubprocessID(id)
+                .Select(x => 
+                {
+                    if (x != null) return converter.SubprocessToDTO(x);
+                    return null;
+                })
+                .ToList();
+        }
 
         [HttpPost]
         public SubprocessDTO NewSubprocess([FromServices] ProTickDatabaseContext db, [FromBody] SubprocessDTO s)

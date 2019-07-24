@@ -52,24 +52,32 @@ namespace ProTick.Controllers
             var editTicket = dbm.FindTicketByID(id);
 
             bool changesMade = false;
-            if (editTicket.Description != ticket.Description)
+            if (ticket.Description != null && ticket.Description != "" && editTicket.Description != ticket.Description)
             {
                 editTicket.Description = ticket.Description;
                 changesMade = true;
             }
-            if (editTicket.Note != ticket.Note)
+            if (ticket.Note != null && ticket.Note != "" && editTicket.Note != ticket.Note)
             {
                 editTicket.Note = ticket.Note;
                 changesMade = true;
             }
-            if (editTicket.State.StateID != ticket.StateID)
+            if (ticket.StateID > 0 && editTicket.State.StateID != ticket.StateID)
             {
                 editTicket.State = dbm.FindStateByID(ticket.StateID);
                 changesMade = true;
             }
-            if (editTicket.Subprocess.SubprocessID != ticket.SubprocessID)
+            if (ticket.SubprocessID > 0 && 
+                ((editTicket.Subprocess != null 
+                    && editTicket.Subprocess.SubprocessID != ticket.SubprocessID) 
+                    || editTicket.Subprocess == null))
             {
                 editTicket.Subprocess = dbm.FindSubprocessByID(ticket.SubprocessID);
+                changesMade = true;
+            }
+            else if (ticket.SubprocessID == -1 && editTicket.Subprocess != null)
+            {
+                editTicket.Subprocess = null;
                 changesMade = true;
             }
 

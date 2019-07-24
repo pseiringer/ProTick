@@ -31,7 +31,7 @@
   </button>
 
   <div class="mat-elevation-z8">
-    <mat-table #table multiTemplateDataRows [dataSource]="displayedTickets" matSort>
+    <mat-table #table multiTemplateDataRows [dataSource]="displayedTickets" matSort >
 
       <ng-container matColumnDef="ticketID">
         <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
@@ -60,12 +60,15 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
 
-      <ng-container matColumnDef="options">
+      <ng-container matColumnDef="options" >
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <button mat-icon-button (click)="onFinished(row)">
+        <mat-cell *matCellDef="let row" >
+          <button [disabled]="row.subprocessID === -1" mat-icon-button *ngIf="row.stateDescription === openDescription" (click)="onBegin(row)">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+          <button [disabled]="row.subprocessID === -1"  mat-icon-button *ngIf="row.stateDescription === inProgressDescription || row.stateDescription === finishedDescription" (click)="onFinished(row)">
             <mat-icon>done</mat-icon>
           </button>
           <button mat-icon-button (click)="onEdit(row)">

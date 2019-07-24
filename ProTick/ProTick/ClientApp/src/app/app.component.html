@@ -1,10 +1,11 @@
 <div class='container-fluid'>
   <div class='row'>
-    <div class='nav' *ngIf="this.auth.tokenExists()">
+    <div class='nav' *ngIf="this.auth.canActivate()">
       <app-nav-menu></app-nav-menu> 
     </div>
-    <div [ngClass]="{ 'body-content': this.auth.tokenExists(), 'centered': !this.auth.tokenExists() }">
+    <div [ngClass]="{ 'body-content': this.auth.canActivate(), 'centered': !this.auth.canActivate() }">
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
+

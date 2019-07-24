@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { ParentChildRelation } from '../../../classes/ParentChildRelation';
+import { Subprocess } from '../../../classes/Subprocess';
 
 @Injectable()
 export class ParentChildRelationService {
@@ -19,6 +20,15 @@ export class ParentChildRelationService {
   getParentChildRelationByID(id: number): Observable<ParentChildRelation[]> {
     const token = localStorage.getItem('jwt');
     return this.http.get<ParentChildRelation[]>('http://localhost:8080/ProTick/ParentChildRelation/' + id, {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    });
+  }
+
+  getChildrenBySubprocessID(subprocessID: number): Observable<Subprocess[]> {
+    const token = localStorage.getItem('jwt');
+    return this.http.get<Subprocess[]>('http://localhost:8080/ProTick/Subprocess/' + subprocessID + '/Children', {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + token
       })

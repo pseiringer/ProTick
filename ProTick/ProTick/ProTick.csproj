@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\core\static-database-objects\" />
     <Folder Include="ClientApp\src\app\core\parent-child-relation\" />
   </ItemGroup>
 

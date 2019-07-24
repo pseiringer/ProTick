@@ -72,7 +72,10 @@ namespace ProTick.Singletons
 
         public TicketDTO TicketToDTO(Ticket a)
         {
-            return new TicketDTO { Description = a.Description, Note = a.Note, SubprocessID = a.Subprocess.SubprocessID, StateID = a.State.StateID, TicketID = a.TicketID };
+            int subprocessID = -1;
+            if (a.Subprocess != null) subprocessID = a.Subprocess.SubprocessID;
+
+            return new TicketDTO { Description = a.Description, Note = a.Note, SubprocessID = subprocessID, StateID = a.State.StateID, TicketID = a.TicketID };
         }
 
         #endregion
