@@ -30,6 +30,11 @@ export class EmployeeTeamService {
     return this.http.delete<EmployeeTeam>('http://localhost:8080/ProTick/EmployeeTeam/' + id);
   }
 
+  deleteEmployeeTeamByTeamAndEmployeeID(tId: number, eId: number): Observable<EmployeeTeam> {
+    //console.log(id);
+
+    return this.http.delete<EmployeeTeam>('http://localhost:8080/ProTick/EmployeeTeam/' + tId + '/' + eId);
+  }
 
 
 }

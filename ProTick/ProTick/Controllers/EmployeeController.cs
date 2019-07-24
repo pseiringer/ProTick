@@ -31,6 +31,18 @@ namespace ProTick.Controllers
             return dbm.FindAllEmployees(true).Select(x => converter.EmployeeToDTO(x)).ToList();
         }
 
+        [HttpGet("{id}")]
+        public EmployeeDTO GetEmployee(int id)
+        {
+            return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
+        }
+
+        [HttpGet("{id}/Teams")]
+        public IEnumerable<TeamDTO> GetTeamsByEmployeeID([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return dbm.FindAllEmployeeTeams(true).Where(x => x.Employee.EmployeeID == id).SelectMany(x => dbm.FindAllTeams(true).Where(y => x.Team.TeamID == y.TeamID)).Distinct().Select(x => converter.TeamToDTO(x)).ToList();
+        }
+
         [HttpPost]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
@@ -42,22 +54,32 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public EmployeeDTO EditEmployee(int id, [FromBody] Employee e)
+        public EmployeeDTO EditEmployee(int id, [FromBody] EmployeeDTO changedE)
         {
-            var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == e.EmployeeID);
+            var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == changedE.EmployeeID);
+            var e = converter.DTOToEmployee(changedE);
 
             if (emp.FirstName != e.FirstName)
                 emp.FirstName = e.FirstName;
             if (emp.LastName != e.LastName)
                 emp.LastName = e.LastName;
+            if (emp.Email != e.Email)
+                emp.Email = e.Email;
+            if (emp.PhoneNumber != e.PhoneNumber)
+                emp.PhoneNumber = e.PhoneNumber;
             if (emp.HireDate != e.HireDate)
                 emp.HireDate = e.HireDate;
             if (emp.DateOfBirth != e.DateOfBirth)
                 emp.DateOfBirth = e.DateOfBirth;
+            if (emp.Username != e.Username)
+                emp.Username = e.Username;
+            if (emp.Password != e.Password)
+                emp.Password = e.Password;
             if (emp.Address != e.Address)
                 emp.Address = e.Address;
 
             db.SaveChanges();
+            Console.WriteLine(emp == null);
             return converter.EmployeeToDTO(emp);
         }
 

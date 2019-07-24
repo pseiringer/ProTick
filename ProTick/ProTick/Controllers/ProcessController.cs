@@ -49,6 +49,12 @@ namespace ProTick.Controllers
             return dbm.FindAllSubprocesses(true).Where(x => x.Process.ProcessID == id).Select(x => converter.SubprocessToDTO(x)).ToList();
         }
 
+        [HttpGet("{id}/ParentChildRelations")]
+        public IEnumerable<ParentChildRelationDTO> GetParentChildRelationsByProcessID([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return dbm.FindAllParentChildRelationsOfProcess(id).Select(x => converter.ParentChildRelationToDTO(x)).ToList();
+        }
+
         [HttpPost]
         public ProcessDTO NewProcess([FromServices] ProTickDatabaseContext db, [FromBody] ProcessDTO p)
         {

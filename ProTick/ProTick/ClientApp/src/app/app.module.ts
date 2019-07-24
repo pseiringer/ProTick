@@ -22,7 +22,9 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CoreModule } from './core/core.module';
 
 import { ProcessesComponent } from './processes/processes.component';
-import { CreateProcessComponent } from './create-process/create-process.component';
+
+import { CreateProcessComponent } from './processes/create-process/create-process.component';
+import { CreateSubprocessComponent } from './create-subprocess/create-subprocess.component';
 
 import { TicketsComponent } from './tickets/tickets.component';
 import { CreateTicketComponent } from './tickets/create-ticket/create-ticket.component';
@@ -33,12 +35,11 @@ import { LoginComponent } from './login/login.component';
 import { JwtHelper } from 'angular2-jwt';
 import { AuthGuard } from '../classes/Authentication/AuthGuard';
 
-import { CreateTeamComponent } from './create-team/create-team.component';
-import { CreateEmployeeComponent } from './create-employee/create-employee.component';
+import { CreateTeamComponent } from './teams/create-team/create-team.component';
+import { CreateEmployeeComponent } from './teams/create-employee/create-employee.component';
 
 import { YesNoComponent } from './yes-no/yes-no.component';
 import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.component';
-
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.
     CreateTicketComponent,
     YesNoComponent,
     CreateEmployeeComponent,
+    CreateSubprocessComponent,
     ForwardTicketComponent,
   ],
   imports: [
@@ -86,6 +88,7 @@ import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
       { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
       { path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
+      { path: 'create-subprocess', component: CreateSubprocessComponent, canActivate: [AuthGuard] },
       { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
       { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
       { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
@@ -93,7 +96,15 @@ import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.
     ])
   ],
   providers: [JwtHelper, AuthGuard, DatePipe],
-  entryComponents: [CreateProcessComponent, CreateTeamComponent, CreateTicketComponent, CreateEmployeeComponent, YesNoComponent, ForwardTicketComponent],
+  entryComponents: [
+  CreateProcessComponent, 
+  CreateTeamComponent, 
+  CreateTicketComponent, 
+  CreateEmployeeComponent, 
+  YesNoComponent,
+  CreateSubprocessComponent,  
+  ForwardTicketComponent
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

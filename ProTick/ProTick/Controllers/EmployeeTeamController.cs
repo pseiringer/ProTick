@@ -70,5 +70,12 @@ namespace ProTick.Controllers
             db.EmployeeTeam.Remove(db.EmployeeTeam.First(x => x.EmployeeTeamID == id));
             db.SaveChanges();
         }
+
+        [HttpDelete("{tId}/{eId}")]
+        public void DeleteEmployeeTeamByTeamAndEmpId(int tId, int eId)
+        {
+            db.EmployeeTeam.Remove(db.EmployeeTeam.First(x => x.Team.TeamID == tId && x.Employee.EmployeeID == eId));
+            db.SaveChanges();
+        }
     }
 }
