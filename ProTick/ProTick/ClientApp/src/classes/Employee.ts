@@ -7,6 +7,5 @@ export interface Employee {
   dateOfBirth: string,
   hireDate: string,
   username: string,
-  password: string,
   addressID: number
 }

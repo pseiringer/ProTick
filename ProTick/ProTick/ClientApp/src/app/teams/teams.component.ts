@@ -25,7 +25,6 @@ export interface EmployeeAddress {
   dateOfBirth: string,
   hireDate: string,
   username: string,
-  password: string,
   addressID: number,
   street: string,
   streetNumber: string,
@@ -79,7 +78,6 @@ export class TeamsComponent implements OnInit {
     dateOfBirth: undefined,
     hireDate: undefined,
     username: undefined,
-    password: undefined,
     addressID: undefined
   }
 
@@ -175,7 +173,6 @@ export class TeamsComponent implements OnInit {
         dateOfBirth: undefined,
         hireDate: undefined,
         username: undefined,
-        password: undefined,
         addressID: undefined,
         street: undefined,
         streetNumber: undefined,
@@ -191,7 +188,6 @@ export class TeamsComponent implements OnInit {
       empAdd.email = emp.email;
       empAdd.hireDate = emp.hireDate;
       empAdd.username = emp.username;
-      empAdd.password = emp.password;
       empAdd.addressID = emp.addressID;
 
       this._addressService.getAddress(emp.addressID)
@@ -269,7 +265,6 @@ export class TeamsComponent implements OnInit {
         this.emp.dateOfBirth = this.datepipe.transform(result.dateOfBirth, "yyyy-MM-dd hh:mm:ss");
         this.emp.hireDate = this.datepipe.transform(result.hireDate, "yyyy-MM-dd hh:mm:ss");
         this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName).toLowerCase();
-        this.emp.password = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName).toLowerCase();
 
         this.address.city = result.city;
         this.address.country = result.country;
@@ -401,7 +396,6 @@ export class TeamsComponent implements OnInit {
             dateOfBirth: emp.dateOfBirth,
             hireDate: emp.hireDate,
             username: emp.username,
-            password: emp.password,
             addressID: emp.addressID,
             street: add.street,
             streetNumber: add.streetNumber,
@@ -522,7 +516,6 @@ export class TeamsComponent implements OnInit {
     this.emp.dateOfBirth = undefined;
     this.emp.hireDate = undefined;
     this.emp.username = undefined;
-    this.emp.password = undefined;
     this.emp.addressID = undefined;
 
     console.log('Emp Properties cleared.');

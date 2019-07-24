@@ -37,11 +37,14 @@
             <td mat-cell *matCellDef="let element" [attr.colspan]="3">
               <div class="example-element-detail"
                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                <div class="example-element-description">
-                  {{element.description}}
+                <div class="floating_div">
+                  <div class="desc_element">Teamname</div>
+                  <div class="example-element-description">
+                    {{element.description}}
+                  </div>
+                  </div>
                 </div>
-              </div>
-            </td>
+</td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
