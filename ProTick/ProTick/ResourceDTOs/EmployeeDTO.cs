@@ -20,8 +20,6 @@ namespace ProTick.ResourceDTOs
 
         public string Username { get; set; }
 
-        public string Password { get; set; }
-
         public int AddressID { get; set; }
 
     }

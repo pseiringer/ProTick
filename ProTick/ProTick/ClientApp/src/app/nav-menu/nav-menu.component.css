@@ -54,3 +54,12 @@ div.protick-underline {
 .align-left {
   text-align: left;
 }
+
+img {
+  height: 30px;
+  margin-right: 60px;
+}
+
+.wrap_div{
+  width: 200px;
+}
