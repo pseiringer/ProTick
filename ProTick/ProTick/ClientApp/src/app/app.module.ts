@@ -39,7 +39,7 @@ import { CreateTeamComponent } from './teams/create-team/create-team.component';
 import { CreateEmployeeComponent } from './teams/create-employee/create-employee.component';
 
 import { YesNoComponent } from './yes-no/yes-no.component';
-import { FinishTicketComponent } from './tickets/finish-ticket/finish-ticket.component';
+import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +58,7 @@ import { FinishTicketComponent } from './tickets/finish-ticket/finish-ticket.com
     YesNoComponent,
     CreateEmployeeComponent,
     CreateSubprocessComponent,
-    FinishTicketComponent,
+    ForwardTicketComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -97,13 +97,13 @@ import { FinishTicketComponent } from './tickets/finish-ticket/finish-ticket.com
   ],
   providers: [JwtHelper, AuthGuard, DatePipe],
   entryComponents: [
-    CreateProcessComponent,
-    CreateTeamComponent,
-    CreateTicketComponent,
-    CreateEmployeeComponent,
-    YesNoComponent,
-    CreateSubprocessComponent,
-	FinishTicketComponent,
+  CreateProcessComponent, 
+  CreateTeamComponent, 
+  CreateTicketComponent, 
+  CreateEmployeeComponent, 
+  YesNoComponent,
+  CreateSubprocessComponent,  
+  ForwardTicketComponent
   ],
   bootstrap: [AppComponent],
 })

@@ -49,7 +49,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public AddressDTO EditAddress(int id, [FromBody] Address a)
+        public AddressDTO EditAddress(int id, [FromBody] AddressDTO a)
         {
             var add = db.Address.FirstOrDefault(x => x.AddressID == a.AddressID);
 

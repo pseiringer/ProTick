@@ -1,4 +1,4 @@
-<h6>Neuer Mitarbeiter</h6>
+<h6>{{_header}}</h6>
 
 <mat-vertical-stepper [linear]="true" #stepper>
   <!--persönliche Daten-->
@@ -6,34 +6,34 @@
     <form [formGroup]="personalFormGroup">
       <ng-template matStepLabel>Persönliche Daten</ng-template>
       <mat-form-field [hideRequiredMarker]="true">
-        <input matInput [(ngModel)]="data.firstName" placeholder="Vorname" formControlName="firstNameCtrl" required>
+        <input matInput [(ngModel)]="data.firstName" placeholder="Vorname" formControlName="firstNameCtrl">
         <mat-error>{{error}}</mat-error>
       </mat-form-field>
       <br />
       <mat-form-field [hideRequiredMarker]="true">
-        <input matInput [(ngModel)]="data.lastName" placeholder="Nachname" formControlName="lastNameCtrl" required>
+        <input matInput [(ngModel)]="data.lastName" placeholder="Nachname" formControlName="lastNameCtrl">
         <mat-error>{{error}}</mat-error>
       </mat-form-field>
       <br />
       <mat-form-field [hideRequiredMarker]="true">
-        <input matInput [(ngModel)]="data.phoneNumber" placeholder="Tel." formControlName="phoneNumberCtrl" required>
+        <input matInput [(ngModel)]="data.phoneNumber" placeholder="Tel." formControlName="phoneNumberCtrl">
         <mat-error>{{error}}</mat-error>
       </mat-form-field>
       <br />
       <mat-form-field [hideRequiredMarker]="true">
-        <input matInput [(ngModel)]="data.email" placeholder="E-Mail" formControlName="emailCtrl" required>
+        <input matInput [(ngModel)]="data.email" placeholder="E-Mail" formControlName="emailCtrl">
         <mat-error>Ungültige E-Mail-Adresse!</mat-error>
       </mat-form-field>
       <br />
       <mat-form-field [hideRequiredMarker]="true">
-        <input matInput [(ngModel)]="data.dateOfBirth" [matDatepicker]="pickBirthDate" placeholder="Geburtsdatum" formControlName="birthDateCtrl" required>
-        <mat-error>{{error}}</mat-error>
+        <input matInput [value]="birthDate.value" [(ngModel)]="data.dateOfBirth" [matDatepicker]="pickBirthDate" placeholder="Geburtsdatum" formControlName="birthDateCtrl">
+        <mat-error >{{error}}</mat-error>
         <mat-datepicker-toggle matSuffix [for]="pickBirthDate"></mat-datepicker-toggle>
-        <mat-datepicker #pickBirthDate></mat-datepicker>
+        <mat-datepicker [startAt]="birthDate.value" #pickBirthDate></mat-datepicker>
       </mat-form-field>
       <br />
       <mat-form-field [hideRequiredMarker]="true">
-        <input matInput [(ngModel)]="data.hireDate" [matDatepicker]="pickHireDate" placeholder="Einstellungsdatum" formControlName="hireDateCtrl" required>
+        <input matInput [value]="hireDate.value" [(ngModel)]="data.hireDate" [matDatepicker]="pickHireDate" placeholder="Einstellungsdatum" formControlName="hireDateCtrl">
         <mat-error>{{error}}</mat-error>
         <mat-datepicker-toggle matSuffix [for]="pickHireDate"></mat-datepicker-toggle>
         <mat-datepicker #pickHireDate></mat-datepicker>
@@ -114,7 +114,7 @@
 
       <div mat-dialog-actions>
         <button mat-button (click)="onNoClickEmp()">Abbrechen</button>
-        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Mitarbeiter erstellen</button>
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{_buttonText}}</button>
       </div>
 
   </mat-step>

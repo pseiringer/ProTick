@@ -17,12 +17,14 @@ namespace ProTick.Controllers
         private ProTickDatabaseContext db;
         private IResourceDTOConverter converter;
         private IDatabaseQueryManager dbm;
+        private IHasher hasher;
 
-        public EmployeeController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
+        public EmployeeController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm, [FromServices] IHasher hasher)
         {
             this.db = db;
             this.converter = converter;
             this.dbm = dbm;
+            this.hasher = hasher;
         }
 
         [HttpGet]
@@ -37,11 +39,24 @@ namespace ProTick.Controllers
             return converter.EmployeeToDTO(dbm.FindEmployeeByID(id));
         }
 
+        [HttpGet("{id}/Teams")]
+        public IEnumerable<TeamDTO> GetTeamsByEmployeeID([FromServices] ProTickDatabaseContext db, int id)
+        {
+            return dbm.FindAllEmployeeTeams(true).Where(x => x.Employee.EmployeeID == id).SelectMany(x => dbm.FindAllTeams(true).Where(y => x.Team.TeamID == y.TeamID)).Distinct().Select(x => converter.TeamToDTO(x)).ToList();
+        }
 
         [HttpPost]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
-            var a = db.Employee.Add(converter.DTOToEmployee(e));
+            var newEmp = converter.DTOToEmployee(e);
+            var passwordString = (e.FirstName.Substring(0, 1));
+            if (e.LastName.Length >= 15)
+                passwordString += e.LastName.Substring(0, 15);
+            else
+                passwordString += e.LastName;
+
+            newEmp.Password = hasher.HashPassword(passwordString.ToLower());
+            var a = db.Employee.Add(newEmp);
 
             db.SaveChanges();
 
@@ -49,9 +64,10 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public EmployeeDTO EditEmployee(int id, [FromBody] Employee e)
+        public EmployeeDTO EditEmployee(int id, [FromBody] EmployeeDTO changedE)
         {
-            var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == e.EmployeeID);
+            var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == changedE.EmployeeID);
+            var e = converter.DTOToEmployee(changedE);
 
             if (emp.FirstName != e.FirstName)
                 emp.FirstName = e.FirstName;
@@ -73,6 +89,7 @@ namespace ProTick.Controllers
                 emp.Address = e.Address;
 
             db.SaveChanges();
+            Console.WriteLine(emp == null);
             return converter.EmployeeToDTO(emp);
         }
 

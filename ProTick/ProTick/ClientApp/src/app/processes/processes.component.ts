@@ -5,7 +5,9 @@ import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
 
 import { ParentChildRelation } from '../../classes/ParentChildRelation';
-import { CreateProcessComponent } from './create-process/create-process.component';
+
+import { CreateProcessComponent } from '../processes/create-process/create-process.component';
+
 import { CreateSubprocessComponent } from '../create-subprocess/create-subprocess.component';
 
 import { MatDialog } from '@angular/material';
@@ -148,6 +150,6 @@ export class ProcessesComponent implements OnInit {
   }
 
   deleteSubprocessWhenDropped(event: CdkDragDrop<string[]>) {
-    this.deleteSubprocess(event.container.data[event.previousIndex].subprocessID);
+    //this.deleteSubprocess(event.container.data[event.previousIndex].subprocessID);
   }
 }

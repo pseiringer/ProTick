@@ -36,10 +36,6 @@ export class CreateTicketComponent implements OnInit {
   allStates: State[] = [];
   selectedState: number = undefined;
 
-  //ticketForm = new FormGroup({
-  //  description: new FormControl('')
-  //});
-
   ticketForm = this.fb.group({
     description: ['', Validators.required],
     note: [''],
@@ -66,9 +62,13 @@ export class CreateTicketComponent implements OnInit {
       if (this.isEdit === true) {
         this.ticketForm.controls['subprocessID'].enable();
         this.ticketForm.controls['stateID'].enable();
+
+        if (this.data.ticket.subprocessID !== -1)
+          this.selectedSubprocess = this.data.ticket.subprocessID;
+
+        this.selectedSubprocess = this.data.ticket.subprocessID;
       }
     }
-
     
 
     this.processService.getProcessesWithSubprocess(true).subscribe(data => {

@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TeamService } from '../../core/team/team.service';
 import { Team } from '../../../classes/Team';
+import * as moment from 'moment';
 import { MatDialogRef, MAT_DIALOG_DATA, MatListModule, MatStepperModule } from '@angular/material';
 
 
 
 export interface CreateEmployeeDialogData {
+  employeeID: number,
   firstName: string,
   lastName: string,
   dateOfBirth: string,
@@ -44,23 +46,42 @@ export class CreateEmployeeComponent implements OnInit {
   addressFormGroup: FormGroup;
   teamFormGroup: FormGroup;
 
+  hireDate = new FormControl(new Date());
+  birthDate = new FormControl(new Date());
+
   allTeams: any = [];
   selTeam: Team;
 
   error: string = 'Feld darf nicht leer sein!';
-  
+
+  _header: string;
+  _buttonText: string;
 
   ngOnInit() {
+    
+
+    if (this.data.employeeID !== undefined) {
+      this._header = "Mitarbeiter bearbeiten";
+      this._buttonText = "Ändern"
+      this.birthDate = new FormControl(new Date(moment(this.data.dateOfBirth, 'DD.MM.YYYY').format('MM.DD.YYYY')));
+      this.hireDate = new FormControl(new Date(moment(this.data.hireDate, 'DD.MM.YYYY').format('MM.DD.YYYY')));
+    }
+    else {
+      this._header = "Neuer Mitarbeiter";
+      this._buttonText = "Erstellen";
+      this.data.selTeams = [];
+    }
+
     this.getTeams();
-    this.data.selTeams = [];
+    const d = new Date();
 
     this.personalFormGroup = this._formBuilder.group({
       firstNameCtrl: ['', Validators.required],
       lastNameCtrl: ['', Validators.required],
       phoneNumberCtrl: ['', Validators.required],
       emailCtrl: ['', Validators.email],
-      hireDateCtrl: ['', Validators.required],
-      birthDateCtrl: ['', Validators.required]
+      hireDateCtrl: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(10)])],
+      birthDateCtrl: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(10)])]
     });
     this.addressFormGroup = this._formBuilder.group({
       streetCtrl: ['', Validators.required],
@@ -73,6 +94,10 @@ export class CreateEmployeeComponent implements OnInit {
       {
 
       });
+
+
+    //this.personalFormGroup.patchValue({ hireDateControl: new Date() });
+    //this.personalFormGroup.controls['hireDateCtrl'].patchValue({ year: d.getFullYear(), month: d.getMonth(), day: d.getDate() });
   }
 
 

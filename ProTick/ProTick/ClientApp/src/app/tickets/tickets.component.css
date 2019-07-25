@@ -1,14 +1,14 @@
+.table_container {
+  height: 77vh;
+  overflow: auto;
+}
 
 .ticket-list {
   margin: 3%;
   margin-top: 1%;
 }
 
-table {
-  width: 100%;
-}
-
-.mat-column-ticketID {
+.mat-column-ticketid {
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 5% !important;
@@ -90,4 +90,78 @@ table {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: unset;
+}
+
+tr.mat-row.example-detail-row {
+  height: 0;
+}
+
+tr.mat-row {
+  height: 48px;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #777;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+th.mat-header-cell {
+  border-bottom-color: #f2a718;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+  border-top-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element {
+  padding: 14px;
+}
+
+.desc_element {
+  font-size: 8pt;
+  padding-left: 14px;
+  color: #f2a718;
+}
+
+.details_div {
+  width: 100%;
+}
+
+.wrapper_div {
+  width: 100%;
+}
+
+.floating_div_small {
+  float: left;
+  width: 30%;
+}
+
+.floating_div_big {
+  float: left;
+  width: 70%;
+}
+
+
+mat-cell {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+body {
+  display: inherit;
 }

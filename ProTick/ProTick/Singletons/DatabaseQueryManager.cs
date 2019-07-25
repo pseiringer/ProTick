@@ -261,6 +261,16 @@ namespace ProTick.Singletons
             }
         }
 
+
+        public List<Subprocess> FindAllChildrenBySubprocessID(int id)
+        {
+            return db.ParentChildRelation.Where(x => x.Parent.SubprocessID == id)
+                        .Select(x => x.Child)
+                        .Include(x => x.Process)
+                        .Include(x => x.Team)
+                        .ToList();
+		}
+		
         public List<ParentChildRelation> FindAllParentChildRelationsOfProcess(int ProcessID)
         {
             return db.ParentChildRelation
