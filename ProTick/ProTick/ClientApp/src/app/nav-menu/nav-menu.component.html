@@ -19,7 +19,7 @@
     </a>
   </li>
 
-  <li [routerLinkActive]='["link-active"]' class="nav-item">
+  <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf="this.authGuard.isAdmin()">
     <a [routerLink]='["/processes"]' class="nav-link">
       <i class="fa fa-cog"></i>
       <span> Prozesse</span>

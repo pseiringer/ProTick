@@ -34,11 +34,9 @@ namespace ProTick.Singletons
         List<Process> FindAllProcesses();
         List<Process> FindAllProcesses(bool includeReferences);
         List<Process> FindAllProcessesWithSubprocess(bool hasSubprocess);
-
         State FindStateByID(int id);
         List<State> FindAllStates();
         List<State> FindAllStates(bool includeReferences);
-
         Subprocess FindSubprocessByID(int id);
         List<Subprocess> FindAllSubprocesses();
         List<Subprocess> FindAllSubprocesses(bool includeReferences);
@@ -47,12 +45,14 @@ namespace ProTick.Singletons
         Team FindTeamByID(int id);
         List<Team> FindAllTeams();
         List<Team> FindAllTeams(bool includeReferences);
+        List<Team> FindAllTeamsByUsername(string user);
 
         Ticket FindTicketByID(int id);
         List<Ticket> FindAllTickets();
         List<Ticket> FindAllTickets(bool includeReferences);
         List<Ticket> FindAllTicketsByTeamID(int id);
         List<Ticket> FindAllTicketsByStateID(int id);
+        List<Ticket> FindAllTicketsByUsername(string username);
 
 
         Employee FindEmployeeByUsername(string username);

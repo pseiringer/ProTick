@@ -57,11 +57,11 @@ namespace ProTick.Controllers
                 var handler = new JwtSecurityTokenHandler();
 
                 ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(emp.Username, "Token"),
-                    new[] {
-                        new Claim("Role", "Manager")
+                    new Claim [] {
+                        new Claim(ClaimTypes.NameIdentifier, emp.Username),
+                        new Claim(ClaimTypes.Role, StaticRoles.Employee)
                     }
-                    );
+                );
 
                 var keyByteArray = System.Text.Encoding.UTF8.GetBytes(jwtAuthentication.GetValue<string>("SecurityKey"));
                 var signinKey = new SymmetricSecurityKey(keyByteArray);
@@ -71,7 +71,7 @@ namespace ProTick.Controllers
                     Audience = jwtAuthentication.GetValue<string>("ValidAudience"),
                     SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
                     Subject = identity,
-                    Expires = DateTime.Now.AddMinutes(50),
+                    Expires = DateTime.Now.AddHours(1),
                     NotBefore = DateTime.Now
                 });
 
@@ -81,6 +81,53 @@ namespace ProTick.Controllers
 
             return Unauthorized();
 
+        }
+
+
+        [HttpPut, Route("Users/{username}"), Authorize]
+        public IActionResult PutUser(string username, [FromBody] LoginUserDTO editedLoginUser)
+        {
+            var emp = dbm.FindEmployeeByUsername(username);
+
+
+            string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            bool canEdit = false;
+
+            if (loggedInRole != null && loggedInRole != string.Empty)
+            {
+                if (loggedInRole == StaticRoles.Admin) canEdit = true;
+                if (loggedInUser != null && loggedInUser != string.Empty)
+                {
+                    if (loggedInUser == username) canEdit = true;
+                }
+            }
+
+            if (canEdit)
+            {
+                bool changesMade = false;
+
+                if (editedLoginUser.Username != null && editedLoginUser.Username != "" && emp.Username != editedLoginUser.Username)
+                {
+                    emp.Username = editedLoginUser.Username;
+                    changesMade = true;
+                }
+
+                string hashedPass = hasher.HashPassword(editedLoginUser.Password);
+
+                if (hashedPass != null && hashedPass != "" && emp.Password != hashedPass)
+                {
+                    emp.Password = hashedPass;
+                    changesMade = true;
+                }
+
+                if (changesMade) db.SaveChanges();
+
+                return Ok( emp );
+            }
+
+            return Unauthorized();
         }
     }
 }
