@@ -159,14 +159,14 @@ namespace ProTick.Singletons
 
         public List<Employee> FindAllEmployees(bool includeReferences)
         {
-            if (includeReferences) return db.Employee.Include(x => x.Address).ToList();
+            if (includeReferences) return db.Employee.Include(x => x.Address).Include(x => x.Role).ToList();
             return db.Employee.ToList();
         }
         
 
         public List<EmployeeTeam> FindAllEmployeeTeams(bool includeReferences)
         {
-            if (includeReferences) return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).Include(x => x.Role).ToList();
+            if (includeReferences) return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).ToList();
             return db.EmployeeTeam.ToList();
         }
 

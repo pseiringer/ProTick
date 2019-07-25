@@ -57,8 +57,6 @@ namespace ProTick.Controllers
                 empTeam.Employee = e.Employee;
             if (empTeam.Team != e.Team)
                 empTeam.Team = e.Team;
-            if (empTeam.Role != e.Role)
-                empTeam.Role = e.Role;
 
             db.SaveChanges();
             return converter.EmployeeTeamToDTO(empTeam);
