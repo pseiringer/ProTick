@@ -5,7 +5,7 @@ import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
 
 import { ParentChildRelation } from '../../classes/ParentChildRelation';
-import { CreateProcessComponent } from '../create-process/create-process.component';
+import { CreateProcessComponent } from './create-process/create-process.component';
 import { CreateSubprocessComponent } from '../create-subprocess/create-subprocess.component';
 
 import { MatDialog } from '@angular/material';
@@ -22,6 +22,7 @@ export class ProcessesComponent implements OnInit {
 
   private processes: Process[] = [];
   private subprocesses: Subprocess[] = [];
+  private sortedSubprocesses: Subprocess[] = [];
   private parentChildRelations: ParentChildRelation[] = [];
 
   private _processID: number;
@@ -44,7 +45,17 @@ export class ProcessesComponent implements OnInit {
     childID: undefined
   }
 
-  constructor(private _processService: ProcessService, private _parentChildRelationService: ParentChildRelationService, public dialog: MatDialog) { }
+  xSubprocess: Subprocess = {
+    subprocessID: undefined,
+    description: undefined,
+    teamID: undefined,
+    processID: undefined
+  };
+
+
+  constructor(private _processService: ProcessService,
+    private _parentChildRelationService: ParentChildRelationService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getProcesses();
@@ -57,16 +68,30 @@ export class ProcessesComponent implements OnInit {
 
   getSubprocessesByProcessID(_processID): void {
     this._processService.getSubprocessesByProcessID(_processID)
-      .subscribe(data => this.subprocesses = data);
-
-    console.log(this.subprocesses);
+      .subscribe(data => { this.subprocesses = data; console.log(this.subprocesses); });
   }
 
   getParentChildRelationsByProcessID(_processID): void {
     this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
-      .subscribe(data => this.parentChildRelations = data);
+      .subscribe(data => { this.parentChildRelations = data; console.log(this.parentChildRelations); });
+  }
 
-    console.log(this.parentChildRelations);
+  sortSubprocesses(): void {
+    for (let i = 0; i < this.parentChildRelations.length; i++) {
+      if (this.parentChildRelations[i].parentID != -1 && this.parentChildRelations[i].childID != -1) {
+        console.log(this.parentChildRelations[i].parentID);
+
+        this._processService.getSubprocessById(this.parentChildRelations[i].parentID)
+          .subscribe(data => { this.xSubprocess = data; console.log(this.xSubprocess); });
+      }
+
+      if (this.parentChildRelations[i].childID == -1) {
+        console.log(this.parentChildRelations[i].parentID);
+
+        this._processService.getSubprocessById(this.parentChildRelations[i].parentID)
+          .subscribe(data => { this.xSubprocess = data; console.log(this.xSubprocess); });
+      }
+    }
   }
 
   deleteSubprocess(subprocessID: number): void {
