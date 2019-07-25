@@ -87,6 +87,8 @@ namespace ProTick.Controllers
                 emp.Password = e.Password;
             if (emp.Address != e.Address)
                 emp.Address = e.Address;
+            if (emp.Role != e.Role)
+                emp.Role = e.Role;
 
             db.SaveChanges();
             Console.WriteLine(emp == null);

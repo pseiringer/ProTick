@@ -22,7 +22,7 @@ namespace ProTick.Singletons
 
         ParentChildRelationDTO ParentChildRelationToDTO(ParentChildRelation a);
 
-        RoleDTO PrivilegeToDTO(Role a);
+        RoleDTO RoleToDTO(Role a);
 
         ProcessDTO ProcessToDTO(Process a);
 
@@ -46,7 +46,7 @@ namespace ProTick.Singletons
 
         ParentChildRelation DTOToParentChildRelation(ParentChildRelationDTO a);
 
-        Role DTOToPrivilege(RoleDTO a);
+        Role DTOToRole(RoleDTO a);
 
         Process DTOToProcess(ProcessDTO a);
 

@@ -25,6 +25,7 @@ export interface EmployeeAddress {
   dateOfBirth: string,
   hireDate: string,
   username: string,
+  roleID: number,
   addressID: number,
   street: string,
   streetNumber: string,
@@ -78,13 +79,13 @@ export class TeamsComponent implements OnInit {
     dateOfBirth: undefined,
     hireDate: undefined,
     username: undefined,
-    addressID: undefined
+    addressID: undefined,
+    roleID: undefined
   }
 
   et: EmployeeTeam = {
     employeeTeamID: undefined,
     employeeID: undefined,
-    roleID: undefined,
     teamID: undefined
   }
 
@@ -113,16 +114,13 @@ export class TeamsComponent implements OnInit {
     private _employeeService: EmployeeService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    console.log("onInit");
 
     this.getTeams();
     this.getEmployees();
-    console.log(this.allEmployeeAddresses);
     this._teamID = 0;
   }
 
   changeTab() {
-    console.log("changeTab");
     this.getEmployees();
   }
 
@@ -137,8 +135,6 @@ export class TeamsComponent implements OnInit {
         this.allEmployees = data;
         this.getEmployeeAddresses();
         this.empTable.renderRows();
-        console.log("reloaded rows");
-        console.log(this.allEmployeeAddresses);
       });
   }
 
@@ -151,12 +147,8 @@ export class TeamsComponent implements OnInit {
         .subscribe(data => {
           this.allEmployees = data;
           this.getEmployeeAddresses();
-          console.log("getEmpsByTeamID");
-
-          console.log(this.allEmployeeAddresses);
 
           this.empTable.renderRows();
-          console.log("reloaded rows");
         });
     }
   }
@@ -173,6 +165,7 @@ export class TeamsComponent implements OnInit {
         dateOfBirth: undefined,
         hireDate: undefined,
         username: undefined,
+        roleID: undefined,
         addressID: undefined,
         street: undefined,
         streetNumber: undefined,
@@ -188,21 +181,31 @@ export class TeamsComponent implements OnInit {
       empAdd.email = emp.email;
       empAdd.hireDate = emp.hireDate;
       empAdd.username = emp.username;
+      empAdd.roleID = emp.roleID;
       empAdd.addressID = emp.addressID;
+      if (empAdd.addressID > 0) {
 
-      this._addressService.getAddress(emp.addressID)
-        .subscribe(data => {
-          empAdd.street = data.street;
-          empAdd.city = data.city;
-          empAdd.country = data.country;
-          empAdd.postalCode = data.postalCode;
-          empAdd.streetNumber = data.streetNumber;
 
-          this.allEmployeeAddresses.push(empAdd);
 
-          this.empTable.renderRows();
+        this._addressService.getAddress(emp.addressID)
+          .subscribe(data => {
+            empAdd.street = data.street;
+            empAdd.city = data.city;
+            empAdd.country = data.country;
+            empAdd.postalCode = data.postalCode;
+            empAdd.streetNumber = data.streetNumber;
 
-        });
+            this.allEmployeeAddresses.push(empAdd);
+
+            this.empTable.renderRows();
+
+          });
+      }
+      else {
+        this.allEmployeeAddresses.push(empAdd);
+        this.empTable.renderRows();
+      }
+
     });
   }
 
@@ -212,7 +215,6 @@ export class TeamsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
 
       if (result !== undefined) {
         this.team.description = result.description;
@@ -223,11 +225,9 @@ export class TeamsComponent implements OnInit {
             this.team = data;
 
             if (result.selEmps.length > 0) {
-              console.log("emps nicht leer");
               result.selEmps.forEach((emp) => {
                 this.et.employeeID = emp.employeeID;
                 this.et.teamID = this.team.teamID;
-                this.et.roleID = 1;
 
                 this._employeeTeamService.postEmployeeTeam(this.et)
                   .subscribe(data => this.et = data);
@@ -255,7 +255,6 @@ export class TeamsComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
 
       if (result !== undefined) {
         this.emp.firstName = result.firstName;
@@ -265,44 +264,69 @@ export class TeamsComponent implements OnInit {
         this.emp.dateOfBirth = this.datepipe.transform(result.dateOfBirth, "yyyy-MM-dd hh:mm:ss");
         this.emp.hireDate = this.datepipe.transform(result.hireDate, "yyyy-MM-dd hh:mm:ss");
         this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName.substr(0, 15)).toLowerCase();
-
-        this.address.city = result.city;
-        this.address.country = result.country;
-        this.address.postalCode = result.postalCode;
-        this.address.street = result.street;
-        this.address.streetNumber = result.streetNumber;
-
-        this._addressService.postAddress(this.address)    //add address
-          .subscribe(data => {
-            console.log(data);
-            this.address = data;
-
-            this.emp.addressID = this.address.addressID;  //add new addressID to emp
-
-            this._employeeService.postEmployee(this.emp)  //add emp
-              .subscribe(data => {
-                console.log(data);
-                this.emp = data;
-
-                if (result.selTeams.length > 0) {
-                  console.log("teams nicht leer");
-                  result.selTeams.forEach((team) => {
-                    this.et.employeeID = this.emp.employeeID;
-                    this.et.teamID = team.teamID;
-                    this.et.roleID = 1;
-
-                    this._employeeTeamService.postEmployeeTeam(this.et)
-                      .subscribe(data => this.et = data);
-                  });
-                }
-
-                this.clearEmp();
-                this.clearET();
-                this.getEmployees();
-              });
+        this.emp.roleID = 1;
 
 
-          })
+        if (result.city === undefined && result.country === undefined && result.postalCode === undefined && result.street === undefined && result.streetNumber === undefined) {
+          this._employeeService.postEmployee(this.emp)  //add emp
+            .subscribe(data => {
+              this.emp = data;
+
+              if (result.selTeams.length > 0) {
+                result.selTeams.forEach((team) => {
+                  this.et.employeeID = this.emp.employeeID;
+                  this.et.teamID = team.teamID;
+
+                  this._employeeTeamService.postEmployeeTeam(this.et)
+                    .subscribe(data => this.et = data);
+                });
+              }
+
+              this.clearEmp();
+              this.clearET();
+              this.getEmployees();
+            });
+        }
+        else {
+          this.address.city = result.city;
+          this.address.country = result.country;
+          this.address.postalCode = result.postalCode;
+          this.address.street = result.street;
+          this.address.streetNumber = result.streetNumber;
+
+
+          this._addressService.postAddress(this.address)    //add address
+            .subscribe(data => {
+              this.address = data;
+
+              this.emp.addressID = this.address.addressID;  //add new addressID to emp
+
+              this._employeeService.postEmployee(this.emp)  //add emp
+                .subscribe(data => {
+                  this.emp = data;
+
+                  if (result.selTeams.length > 0) {
+                    result.selTeams.forEach((team) => {
+                      this.et.employeeID = this.emp.employeeID;
+                      this.et.teamID = team.teamID;
+
+                      this._employeeTeamService.postEmployeeTeam(this.et)
+                        .subscribe(data => this.et = data);
+                    });
+                  }
+
+                  this.clearEmp();
+                  this.clearET();
+                  this.getEmployees();
+                });
+
+
+            })
+
+        }
+
+
+
       }
     }
     );
@@ -316,8 +340,7 @@ export class TeamsComponent implements OnInit {
     this._teamService.getEmployeesByTeamID(team.teamID).subscribe(data => {
       selectedEmps = data;
       selectedEmps.forEach(x => temp.push(x));
-
-      console.log(selectedEmps);
+      
 
       const dialogRef = this.dialog.open(CreateTeamComponent, {
         data: {
@@ -329,18 +352,13 @@ export class TeamsComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
 
         if (result !== undefined) {
-          console.log(result);
 
           this._teamService.putTeam(result.teamID, result)
             .subscribe(data => {
               this.team = data;
-
-
-              console.log(temp);
-              console.log(result.selEmps);
+              
 
               temp.forEach(emp => {
                 if (result.selEmps.some(e => e.employeeID === emp.employeeID) == false) {
@@ -354,7 +372,6 @@ export class TeamsComponent implements OnInit {
                   let et: EmployeeTeam = {
                     employeeTeamID: undefined,
                     employeeID: emp.employeeID,
-                    roleID: 1,
                     teamID: result.teamID
                   }
                   this._employeeTeamService.postEmployeeTeam(et)
@@ -379,13 +396,8 @@ export class TeamsComponent implements OnInit {
     this._employeeService.getTeamsByEmployeeID(emp.employeeID).subscribe(data => {
       selectedTeams = data;
       selectedTeams.forEach(x => temp.push(x));
-
-      console.log(selectedTeams);
-
-      this._addressService.getAddress(emp.addressID).subscribe(addData => {
-        let add: Address = addData;
-
-
+      
+      if (emp.addressID <= 0) {
         const dialogRef = this.dialog.open(CreateEmployeeComponent, {
           data: {
             employeeID: emp.employeeID,
@@ -397,58 +409,161 @@ export class TeamsComponent implements OnInit {
             hireDate: emp.hireDate,
             username: emp.username,
             addressID: emp.addressID,
-            street: add.street,
-            streetNumber: add.streetNumber,
-            postalCode: add.postalCode,
-            country: add.country,
-            city: add.city,
+            street: undefined,
+            streetNumber: undefined,
+            postalCode: undefined,
+            country: undefined,
+            city: undefined,
             selTeams: selectedTeams
           }
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed');
 
           if (result !== undefined) {
-            console.log(result);
+            if (result.city !== undefined || result.country !== undefined || result.postalCode !== undefined || result.street !== undefined || result.streetNumber !== undefined) {
 
-            this._employeeService.putEmployee(result.employeeID, result)
-              .subscribe(data => {
-                this.emp = data;
+              this.address.addressID = undefined;
+              this.address.street = result.street;
+              this.address.city = result.city;
+              this.address.streetNumber = result.streetNumber;
+              this.address.country = result.country;
+              this.address.postalCode = result.postalCode;
 
-                this._addressService.putAddress(result.addressID, result)
-                  .subscribe(addData => {
-                    console.log(temp);
-                    console.log(result.selTeams);
 
-                    temp.forEach(team => {
-                      if (result.selTeams.some(t => t.teamID === team.teamID) == false) {
-                        this._employeeTeamService.deleteEmployeeTeamByTeamAndEmployeeID(team.teamID, result.employeeID)
-                          .subscribe();
-                      }
+              this._addressService.postAddress(this.address)
+                .subscribe(add => {
+                  this.address = add;
+                  result.addressID = this.address.addressID;
+
+                  this._employeeService.putEmployee(result.employeeID, result)
+                    .subscribe(data => {
+                      this.emp = data;
+                      
+
+                          temp.forEach(team => {
+                            if (result.selTeams.some(t => t.teamID === team.teamID) == false) {
+                              this._employeeTeamService.deleteEmployeeTeamByTeamAndEmployeeID(team.teamID, result.employeeID)
+                                .subscribe();
+                            }
+                          });
+
+                          result.selTeams.forEach(team => {
+                            if (temp.some(t => t.teamID === team.teamID) == false) {
+                              let et: EmployeeTeam = {
+                                employeeTeamID: undefined,
+                                employeeID: result.employeeID,
+                                teamID: team.teamID
+                              }
+                              this._employeeTeamService.postEmployeeTeam(et)
+                                .subscribe(data => et = data);
+                            }
+                          });
+
+                          this.clearEmp();
+                          this.clearET();
+                          this.getEmployees();
+                        
                     });
+                })
+            }
+            else {
+              this._employeeService.putEmployee(result.employeeID, result)
+                .subscribe(data => {
+                  this.emp = data;
 
-                    result.selTeams.forEach(team => {
-                      if (temp.some(t => t.teamID === team.teamID) == false) {
-                        let et: EmployeeTeam = {
-                          employeeTeamID: undefined,
-                          employeeID: result.employeeID,
-                          roleID: 1,
-                          teamID: team.teamID
+                      temp.forEach(team => {
+                        if (result.selTeams.some(t => t.teamID === team.teamID) == false) {
+                          this._employeeTeamService.deleteEmployeeTeamByTeamAndEmployeeID(team.teamID, result.employeeID)
+                            .subscribe();
                         }
-                        this._employeeTeamService.postEmployeeTeam(et)
-                          .subscribe(data => et = data);
-                      }
-                    });
+                      });
 
-                    this.clearEmp();
-                    this.clearET();
-                    this.getEmployees();
-                  });
-              });
+                      result.selTeams.forEach(team => {
+                        if (temp.some(t => t.teamID === team.teamID) == false) {
+                          let et: EmployeeTeam = {
+                            employeeTeamID: undefined,
+                            employeeID: result.employeeID,
+                            teamID: team.teamID
+                          }
+                          this._employeeTeamService.postEmployeeTeam(et)
+                            .subscribe(data => et = data);
+                        }
+                      });
+
+                      this.clearEmp();
+                      this.clearET();
+                      this.getEmployees();
+                });
+            }
           }
         });
-      });
+      }
+      else {
+        this._addressService.getAddress(emp.addressID).subscribe(addData => {
+          let add: Address = addData;
+
+          const dialogRef = this.dialog.open(CreateEmployeeComponent, {
+            data: {
+              employeeID: emp.employeeID,
+              firstName: emp.firstName,
+              lastName: emp.lastName,
+              phoneNumber: emp.phoneNumber,
+              email: emp.email,
+              dateOfBirth: emp.dateOfBirth,
+              hireDate: emp.hireDate,
+              username: emp.username,
+              addressID: emp.addressID,
+              street: add.street,
+              streetNumber: add.streetNumber,
+              postalCode: add.postalCode,
+              country: add.country,
+              city: add.city,
+              selTeams: selectedTeams
+            }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+
+            if (result !== undefined) {
+
+              this._employeeService.putEmployee(result.employeeID, result)
+                .subscribe(data => {
+                  this.emp = data;
+
+
+
+                  this._addressService.putAddress(result.addressID, result)
+                    .subscribe(addData => {
+
+                      temp.forEach(team => {
+                        if (result.selTeams.some(t => t.teamID === team.teamID) == false) {
+                          this._employeeTeamService.deleteEmployeeTeamByTeamAndEmployeeID(team.teamID, result.employeeID)
+                            .subscribe();
+                        }
+                      });
+
+                      result.selTeams.forEach(team => {
+                        if (temp.some(t => t.teamID === team.teamID) == false) {
+                          let et: EmployeeTeam = {
+                            employeeTeamID: undefined,
+                            employeeID: result.employeeID,
+                            teamID: team.teamID
+                          }
+                          this._employeeTeamService.postEmployeeTeam(et)
+                            .subscribe(data => et = data);
+                        }
+                      });
+
+                      this.clearEmp();
+                      this.clearET();
+                      this.getEmployees();
+                    });
+                });
+            }
+          });
+        });
+      }
     });
   }
 
@@ -465,12 +580,10 @@ export class TeamsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       if (result === true) {
         this._teamService.deleteTeam(id)
           .subscribe(data => { this.getTeams(); });
-
-        console.log('Team deleted.');
+        
       }
     });
   }
@@ -489,7 +602,6 @@ export class TeamsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       if (result === true) {
         this._employeeService.deleteEmployee(id)
           .subscribe(data => { this.getEmployees(); });
@@ -503,8 +615,7 @@ export class TeamsComponent implements OnInit {
     this.team.teamID = undefined;
     this.team.description = undefined;
     this.team.abbreviation = undefined;
-
-    console.log('Team Properties cleared.');
+    
   }
 
   clearEmp() {
@@ -516,14 +627,12 @@ export class TeamsComponent implements OnInit {
     this.emp.dateOfBirth = undefined;
     this.emp.hireDate = undefined;
     this.emp.username = undefined;
+    this.emp.roleID = undefined;
     this.emp.addressID = undefined;
-
-    console.log('Emp Properties cleared.');
   }
 
   clearET() {
     this.et.employeeID = undefined;
-    this.et.roleID = undefined;
     this.et.teamID = undefined;
     this.et.employeeTeamID = undefined;
   }
