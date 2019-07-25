@@ -25,6 +25,15 @@ export class TicketService {
     });
   }
 
+  getTicketsByUsername(user: string): Observable<Ticket[]> {
+    const token = localStorage.getItem('jwt');
+    return this.http.get<Ticket[]>('http://localhost:8080/ProTick/Ticket/Username/' + user, {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    });
+  }
+
   getTicketsByStateID(id: number): Observable<Ticket[]> {
     const token = localStorage.getItem('jwt');
     return this.http.get<Ticket[]>('http://localhost:8080/ProTick/State/' + id + '/Tickets', {

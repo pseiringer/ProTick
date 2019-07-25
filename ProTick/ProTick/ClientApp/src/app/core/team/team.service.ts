@@ -17,6 +17,15 @@ export class TeamService {
     return this.http.get<Team>('http://localhost:8080/ProTick/Team/' + id);
   }
 
+  getTeamsByUsername(user: string): Observable<Team[]> {
+    const token = localStorage.getItem('jwt');
+    return this.http.get<Team[]>('http://localhost:8080/ProTick/Team/Username/' + user, {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token
+      })
+    });
+  }
+
   postTeam(team: Team): Observable<Team> {
     console.log(team);
 
@@ -26,6 +35,7 @@ export class TeamService {
       })
     });
   }
+
 
   getEmployeesByTeamID(id: number): Observable<Employee[]> {
     return this.http.get<Employee[]>('http://localhost:8080/ProTick/Team/' + id + '/Employees');
