@@ -27,7 +27,7 @@ export class LoginComponent {
         "Content-Type": "application/json"
       })
     }).subscribe(response => {
-      let token = (<any>response).token;
+        let token = (<any>response).token;
       localStorage.setItem("jwt", token);
       this.invalidLogin = false;
       this.router.navigate(["/tickets"]);

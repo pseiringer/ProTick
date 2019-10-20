@@ -30,7 +30,7 @@ namespace ProTick.Singletons
 
         public Employee FindEmployeeByID(int id)
         {
-            var employee = db.Employee.Include(x => x.Address).FirstOrDefault(x => x.EmployeeID == id);
+            var employee = db.Employee.Include(x => x.Address).Include(x => x.Role).FirstOrDefault(x => x.EmployeeID == id);
             if (employee == null) throw new DatabaseEntryNotFoundException($"Employee with ID ({id}) was not found");
             return employee;
         }

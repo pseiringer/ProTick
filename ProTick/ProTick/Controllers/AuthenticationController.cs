@@ -48,7 +48,7 @@ namespace ProTick.Controllers
             var emp = dbm.FindEmployeeByUsername(loginUser.Username);
 
             var pass = hasher.HashPassword(loginUser.Password);
-            
+
             if (emp != null && emp.Password == pass)
             {
 
@@ -56,10 +56,13 @@ namespace ProTick.Controllers
 
                 var handler = new JwtSecurityTokenHandler();
 
+                string role = StaticRoles.Employee;
+                if (emp.Role.Title == StaticRoles.Admin) role = StaticRoles.Admin;
+
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new Claim [] {
                         new Claim(ClaimTypes.NameIdentifier, emp.Username),
-                        new Claim(ClaimTypes.Role, StaticRoles.Employee)
+                        new Claim(ClaimTypes.Role, role)
                     }
                 );
 

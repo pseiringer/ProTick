@@ -16,8 +16,8 @@ namespace ProTickDatabase.DatabasePOCOs
 
         public string Email { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-        public DateTime HireDate { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public DateTime? HireDate { get; set; }
 
         public string Username { get; set; }
 
@@ -26,6 +26,7 @@ namespace ProTickDatabase.DatabasePOCOs
         public Role Role { get; set; }
 
         public virtual Address Address { get; set; }
+        public virtual Role Role { get; set; }
 
     }
 }
