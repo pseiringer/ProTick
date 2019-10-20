@@ -13,6 +13,8 @@ import { CreateSubprocessComponent } from '../create-subprocess/create-subproces
 import { MatDialog } from '@angular/material';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
+import * as go from "gojs";
+
 @Component({
   selector: 'app-processes',
   templateUrl: './processes.component.html',
@@ -151,5 +153,44 @@ export class ProcessesComponent implements OnInit {
 
   deleteSubprocessWhenDropped(event: CdkDragDrop<string[]>) {
     //this.deleteSubprocess(event.container.data[event.previousIndex].subprocessID);
+  }
+
+  init() {
+    var $ = go.GraphObject.make;  // for conciseness in defining templates
+
+    var myDiagram = $(go.Diagram, "myDiagramDiv",  // create a Diagram for the DIV HTML element
+      {
+        "undoManager.isEnabled": true  // enable undo & redo
+      });
+
+    // define a simple Node template
+    myDiagram.nodeTemplate =
+      $(go.Node, "Auto",  // the Shape will go around the TextBlock
+        $(go.Shape, "RoundedRectangle", { strokeWidth: 0, fill: "white" },
+          // Shape.fill is bound to Node.data.color
+          new go.Binding("fill", "color")),
+        $(go.TextBlock,
+          { margin: 8 },  // some room around the text
+          // TextBlock.text is bound to Node.data.key
+          new go.Binding("text", "key"))
+      );
+
+    // but use the default Link template, by not setting Diagram.linkTemplate
+
+    // create the model data that will be represented by Nodes and Links
+    myDiagram.model = new go.GraphLinksModel(
+      [
+        { key: "Alpha", color: "#f2a718" },
+        { key: "BOOOOOOOOOOOOOOOOOOOOOOOOB", color: "#f2a718" },
+        { key: "Gamma", color: "#f2a718" },
+        { key: "Delta", color: "#f2a718" }
+      ],
+      [
+        { from: "Alpha", to: "Beta" },
+        { from: "Alpha", to: "Gamma" },
+        { from: "Beta", to: "Beta" },
+        { from: "Gamma", to: "Delta" },
+        { from: "Delta", to: "Alpha" }
+      ]);
   }
 }

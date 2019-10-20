@@ -8,9 +8,19 @@
   overflow: auto;
 }
 
+.mat-tab-group {
+  display: unset;
+  flex-direction: column;
+}
+
 table {
   width: 100%;
   border-collapse: unset;
+}
+
+.team_tab, .employee_tab {
+  margin: 30px;
+  margin-top: 10px;
 }
 
 tr.mat-row.example-detail-row {

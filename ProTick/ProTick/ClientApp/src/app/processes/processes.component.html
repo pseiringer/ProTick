@@ -1,6 +1,21 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <script src="go-debug.js"></script>
+  <script src="PATH_TO/jsplumb.min.js "></script>
+</head>
+<body onload="init()">
+  <div id="sample">
+    <div id="myDiagramDiv" style="border: solid 1px black; width:400px; height:400px"></div>
+    <button (click)="init()">click me</button>
+  </div>
+</body>
+</html>
 
-<body>
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->
+
+<!--<body>
   <button mat-raised-button (click)="openCreateProcessDialog()">Prozess erstellen</button>
 
   <br />
@@ -30,7 +45,7 @@
 
   <button (click)="sortSubprocesses();">SORT THE HELL OUTA ME!!1</button>
 
-  <!--<div *ngIf="checkIfSubprocessesEmpty()" style="background-color: red; color: white; padding: 10px; width: 500px;">Warnung, keine Subprozesse enthalten! Andere Funktionen können diesen Prozess möglicherweise nicht verwenden!</div>-->
+  <div *ngIf="checkIfSubprocessesEmpty()" style="background-color: red; color: white; padding: 10px; width: 500px;">Warnung, keine Subprozesse enthalten! Andere Funktionen können diesen Prozess möglicherweise nicht verwenden!</div>
 
   <br />
 
@@ -47,4 +62,4 @@
        (cdkDropListDropped)="deleteSubprocessWhenDropped($event)">
   </div>
 
-</body>
+</body>-->
