@@ -212,7 +212,7 @@ namespace ProTick.Singletons
 
         public Employee FindEmployeeByUsername(string username)
         {
-            return db.Employee.FirstOrDefault(x => x.Username == username);
+            return db.Employee.Include(x=> x.Role).FirstOrDefault(x => x.Username == username);
         }
 
         public List<EmployeeTeam> FindEmployeeTeamsByEmployeeID(int id)
