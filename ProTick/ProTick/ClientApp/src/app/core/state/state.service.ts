@@ -2,56 +2,37 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { State } from '../../../classes/State';
+import { JwtHeader } from '../../../classes/Authentication/JwtHeader';
 
 @Injectable()
 export class StateService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private jwtHeader: JwtHeader) { }
 
   getStates(): Observable<State[]> {
-    const token = localStorage.getItem('jwt');
-    return this.http.get<State[]>('http://localhost:8080/ProTick/State', {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token
-      })
-    });
+      return this.http.get<State[]>('http://localhost:8080/ProTick/State',
+          { headers: this.jwtHeader.getJwtHeader() });
   }
 
   getState(id: number): Observable<State> {
-    const token = localStorage.getItem('jwt');
-    return this.http.get<State>('http://localhost:8080/ProTick/State/' + id, {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token
-      })
-    });
+      return this.http.get<State>('http://localhost:8080/ProTick/State/' + id,
+          { headers: this.jwtHeader.getJwtHeader() });
   }
 
   postState(state: State): Observable<State> {
-    const token = localStorage.getItem('jwt');
-    return this.http.post<State>('http://localhost:8080/ProTick/State', state, {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      })
-    });
+      return this.http.post<State>('http://localhost:8080/ProTick/State',
+          state,
+          { headers: this.jwtHeader.getJwtHeaderWithContent('application/json') });
   }
 
   putStates(id: number, state: State): Observable<State> {
-    const token = localStorage.getItem('jwt');
     console.log(state);
-    return this.http.put<State>('http://localhost:8080/ProTick/State/' + id, state, {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      })
-    });
+      return this.http.put<State>('http://localhost:8080/ProTick/State/' + id,
+          state,
+          { headers: this.jwtHeader.getJwtHeaderWithContent('application/json') });
   }
 
   deleteStates(id: number): void {
-    const token = localStorage.getItem('jwt');
-    this.http.delete('http://localhost:8080/ProTick/State/' + id, {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token
-      })
-    });
+      this.http.delete('http://localhost:8080/ProTick/State/' + id,
+          { headers: this.jwtHeader.getJwtHeader() });
   }
 }
