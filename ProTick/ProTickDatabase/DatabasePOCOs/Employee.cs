@@ -23,8 +23,8 @@ namespace ProTickDatabase.DatabasePOCOs
 
         public string Password { get; set; }
 
-        public virtual Address Address { get; set; }
         public virtual Role Role { get; set; }
 
+        public virtual Address Address { get; set; }
     }
 }

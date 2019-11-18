@@ -75,6 +75,8 @@ export class CreateEmployeeComponent implements OnInit {
       this._header = "Neuer Mitarbeiter";
       this._buttonText = "Erstellen";
       this.data.selTeams = [];
+      this.data.hireDate = this.hireDate.value;
+      this.data.dateOfBirth = this.birthDate.value;
     }
 
     this.getTeams();
@@ -101,9 +103,6 @@ export class CreateEmployeeComponent implements OnInit {
 
       });
 
-
-    //this.personalFormGroup.patchValue({ hireDateControl: new Date() });
-    //this.personalFormGroup.controls['hireDateCtrl'].patchValue({ year: d.getFullYear(), month: d.getMonth(), day: d.getDate() });
   }
 
   getRoles() {

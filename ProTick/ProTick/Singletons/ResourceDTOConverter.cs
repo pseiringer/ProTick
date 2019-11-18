@@ -93,7 +93,8 @@ namespace ProTick.Singletons
 
         public Employee DTOToEmployee(EmployeeDTO a)
         {
-            if (a.AddressID == null || a.AddressID <= 0)
+            Console.WriteLine("-------------" + a.RoleID);
+            if (a.AddressID <= 0)
                 return new Employee { Address = null, Role = dbm.FindRoleByID(a.RoleID), DateOfBirth = DateTime.Parse(a.DateOfBirth), PhoneNumber = a.PhoneNumber, Email = a.Email, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = DateTime.Parse(a.HireDate), Username = a.Username, LastName = a.LastName };
             else
                 return new Employee { Address = dbm.FindAddressByID(a.AddressID.Value), DateOfBirth = DateTime.Parse(a.DateOfBirth), PhoneNumber = a.PhoneNumber, Email = a.Email, EmployeeID = a.EmployeeID, FirstName = a.FirstName, HireDate = DateTime.Parse(a.HireDate), Username = a.Username, LastName = a.LastName, Role = dbm.FindRoleByID(a.RoleID) };
