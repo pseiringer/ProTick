@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProTick.ResourceDTOs;
 using ProTick.Singletons;
@@ -10,7 +11,7 @@ using ProTickDatabase.DatabasePOCOs;
 
 namespace ProTick.Controllers
 {
-    [Route("ProTick/[controller]")]
+    [Route("ProTick/[controller]"), Authorize]
     public class EmployeeTeamController : Controller
     {
         private ProTickDatabaseContext db;

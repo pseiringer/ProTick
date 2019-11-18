@@ -56,12 +56,9 @@ namespace ProTick.Controllers
 
                 var handler = new JwtSecurityTokenHandler();
 
-                string role = StaticRoles.Employee;
-
-                
-
-                Console.WriteLine(emp.Password);
-                if (emp.Role.Title == StaticRoles.Admin) role = StaticRoles.Admin;
+                //string role = StaticRoles.Employee;
+                //if (emp.Role.Title == StaticRoles.Admin) role = StaticRoles.Admin;
+                string role = emp.Role.Title;
 
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new Claim [] {
