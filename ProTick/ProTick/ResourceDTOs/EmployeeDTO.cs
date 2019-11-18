@@ -23,7 +23,6 @@ namespace ProTick.ResourceDTOs
         public int RoleID { get; set; }
 
         public int AddressID { get; set; }
-        public int RoleID { get; set; }
 
     }
 }

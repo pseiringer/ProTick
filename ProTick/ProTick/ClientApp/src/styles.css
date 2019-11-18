@@ -6,3 +6,15 @@ html, body, .container-fluid {
   margin: 0;
   padding: 0;
 }
+
+.mat-tab-label:nth-of-type(1) {
+  border-right: ridge;
+}
+
+.mat-tab-label:nth-of-type(2) {
+  border-left: thin;
+}
+
+.mat-tab-label-active {
+  background-color: #e6e6e6;
+}

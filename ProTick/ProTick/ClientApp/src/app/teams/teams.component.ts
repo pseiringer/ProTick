@@ -414,6 +414,7 @@ export class TeamsComponent implements OnInit {
             postalCode: undefined,
             country: undefined,
             city: undefined,
+            roleID: undefined,
             selTeams: selectedTeams
           }
         });
@@ -514,6 +515,7 @@ export class TeamsComponent implements OnInit {
               hireDate: emp.hireDate,
               username: emp.username,
               addressID: emp.addressID,
+              roleID: emp.roleID,
               street: add.street,
               streetNumber: add.streetNumber,
               postalCode: add.postalCode,
@@ -530,8 +532,6 @@ export class TeamsComponent implements OnInit {
               this._employeeService.putEmployee(result.employeeID, result)
                 .subscribe(data => {
                   this.emp = data;
-
-
 
                   this._addressService.putAddress(result.addressID, result)
                     .subscribe(addData => {
