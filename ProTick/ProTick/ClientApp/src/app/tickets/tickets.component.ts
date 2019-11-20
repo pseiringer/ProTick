@@ -69,6 +69,9 @@ export class TicketsComponent implements OnInit {
     this.reloadTeams();
     this.reloadStates();
 
+    //console.log(this.authGuard.getRole());
+    //console.log(this.authGuard.isAdmin());
+
     //this.renderTable();
   }
     
@@ -214,20 +217,35 @@ export class TicketsComponent implements OnInit {
 
   reloadTeams() {
     this.allTeams = [];
-    this.teamService.getTeams()
-      .subscribe(data => {
-        //TODO Error handling
-        this.allTeams = data;
-      });
+    if (this.authGuard.isAdmin())
+      this.teamService.getTeams()
+        .subscribe(data => {
+          //TODO Error handling
+          this.allTeams = data;
+        });
+    else
+      this.teamService.getTeamsByUsername(this.authGuard.getUsername())
+        .subscribe(data => {
+          //TODO Error handling
+          this.allTeams = data;
+        });
+    
   }
 
   reloadTickets() {
     this.allTickets = [];
-    this.ticketService.getTicket()
-      .subscribe(data => {
-        //TODO error handling
-        this.fillTickets(data); 
-      });
+    if (this.authGuard.isAdmin())
+      this.ticketService.getTicket()
+        .subscribe(data => {
+          //TODO error handling
+          this.fillTickets(data); 
+        });
+    else
+      this.ticketService.getTicketsByUsername(this.authGuard.getUsername())
+        .subscribe(data => {
+          //TODO Error handling
+          this.fillTickets(data);
+        });
   }
   
 
@@ -288,7 +306,6 @@ export class TicketsComponent implements OnInit {
                       .subscribe(process => {
                         fullTicket.processDescription = process.description;
                         this.allTickets.push(fullTicket);
-                        console.log(fullTicket);
                         this.renderTable();
                       });                   
                   });

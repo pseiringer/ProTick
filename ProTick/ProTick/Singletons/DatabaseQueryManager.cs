@@ -30,7 +30,7 @@ namespace ProTick.Singletons
 
         public Employee FindEmployeeByID(int id)
         {
-            var employee = db.Employee.Include(x => x.Address).FirstOrDefault(x => x.EmployeeID == id);
+            var employee = db.Employee.Include(x => x.Address).Include(x => x.Role).FirstOrDefault(x => x.EmployeeID == id);
             if (employee == null) throw new DatabaseEntryNotFoundException($"Employee with ID ({id}) was not found");
             return employee;
         }
@@ -159,14 +159,14 @@ namespace ProTick.Singletons
 
         public List<Employee> FindAllEmployees(bool includeReferences)
         {
-            if (includeReferences) return db.Employee.Include(x => x.Address).ToList();
+            if (includeReferences) return db.Employee.Include(x => x.Address).Include(x => x.Role).ToList();
             return db.Employee.ToList();
         }
         
 
         public List<EmployeeTeam> FindAllEmployeeTeams(bool includeReferences)
         {
-            if (includeReferences) return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).Include(x => x.Role).ToList();
+            if (includeReferences) return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).ToList();
             return db.EmployeeTeam.ToList();
         }
 
@@ -212,12 +212,12 @@ namespace ProTick.Singletons
 
         public Employee FindEmployeeByUsername(string username)
         {
-            return db.Employee.FirstOrDefault(x => x.Username == username);
+            return db.Employee.Include(x => x.Role).FirstOrDefault(x => x.Username == username);
         }
 
         public List<EmployeeTeam> FindEmployeeTeamsByEmployeeID(int id)
         {
-            return db.EmployeeTeam.Include(x => x.Employee).Where(x => x.Employee.EmployeeID == id).ToList();
+            return db.EmployeeTeam.Include(x => x.Employee).Include(x => x.Team).Where(x => x.Employee.EmployeeID == id).ToList();
         }
 
         public List<EmployeeTeam> FindEmployeeTeamsByTeamID(int id)
@@ -278,6 +278,23 @@ namespace ProTick.Singletons
                 .Include(x => x.Child)
                 .Where(x => x.Parent.Process.ProcessID == ProcessID || x.Child.Process.ProcessID == ProcessID)
                 .ToList();
+        }
+
+        public List<Ticket> FindAllTicketsByUsername(string username)
+        {
+            var empID = FindEmployeeByUsername(username).EmployeeID;
+            var empTeams = FindEmployeeTeamsByEmployeeID(empID).Select(x => x.Team.TeamID);
+            return db.Ticket
+                .Include(x => x.Subprocess)
+                .Include(x => x.State)
+                .Where(x => empTeams.Contains(x.Subprocess.Team.TeamID))
+                .ToList();
+        }
+
+        public List<Team> FindAllTeamsByUsername(string username)
+        {
+            var empID = FindEmployeeByUsername(username).EmployeeID;
+            return FindEmployeeTeamsByEmployeeID(empID).Select(x => x.Team).ToList();
         }
     }
 }

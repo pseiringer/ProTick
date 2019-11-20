@@ -9,6 +9,7 @@ using ProTickDatabase;
 using ProTickDatabase.DatabasePOCOs;
 using ProTick.Singletons;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ProTick.Controllers
 {
@@ -26,11 +27,24 @@ namespace ProTick.Controllers
             this.dbm = dbm;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = StaticRoles.Admin)]
         public IEnumerable<TicketDTO> GetAllTickets()
         {
             return dbm.FindAllTickets(true).Select(x => converter.TicketToDTO(x)).ToList();
         }
+        
+
+        [HttpGet("Username/{user}")]
+        public IEnumerable<TicketDTO> GetTicketsByUsername(string user)
+        {
+            string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            if (loggedInUser == user || loggedInRole == StaticRoles.Admin)
+                return dbm.FindAllTicketsByUsername(user).Select(x => converter.TicketToDTO(x)).ToList();
+
+            return new List<TicketDTO>();
+        }
+
 
         [HttpGet("{id}")]
         public TicketDTO GetTicketByID(int id)
@@ -38,7 +52,7 @@ namespace ProTick.Controllers
             return converter.TicketToDTO(dbm.FindTicketByID(id));
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public TicketDTO PostTicket([FromBody] TicketDTO ticket)
         {
             var newTicket = db.Ticket.Add(converter.DTOToTicket(ticket));
@@ -46,7 +60,7 @@ namespace ProTick.Controllers
             return converter.TicketToDTO(newTicket.Entity);
         }
         
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public TicketDTO PutTicket(int id, [FromBody] TicketDTO ticket)
         {
             var editTicket = dbm.FindTicketByID(id);
@@ -85,7 +99,7 @@ namespace ProTick.Controllers
             return converter.TicketToDTO(editTicket);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteTicket(int id)
         {
             var removeTicket = dbm.FindTicketByID(id);

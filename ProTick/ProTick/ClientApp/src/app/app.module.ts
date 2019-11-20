@@ -39,6 +39,7 @@ import { CreateEmployeeComponent } from './teams/create-employee/create-employee
 
 import { YesNoComponent } from './yes-no/yes-no.component';
 import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.component';
+import { JwtHeader } from '../classes/Authentication/JwtHeader';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,7 @@ import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.
       { path: 'login', component: LoginComponent },
     ])
   ],
-  providers: [JwtHelper, AuthGuard, DatePipe],
+  providers: [JwtHelper, AuthGuard, DatePipe, JwtHeader],
   entryComponents: [
   CreateProcessComponent, 
   CreateTeamComponent, 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProTick.ResourceDTOs;
@@ -11,7 +12,7 @@ using ProTickDatabase.DatabasePOCOs;
 
 namespace ProTick.Controllers
 {
-    [Route("ProTick/[controller]")]
+    [Route("ProTick/[controller]"), Authorize]
     public class EmployeeController : Controller
     {
         private ProTickDatabaseContext db;
@@ -87,6 +88,8 @@ namespace ProTick.Controllers
                 emp.Password = e.Password;
             if (emp.Address != e.Address)
                 emp.Address = e.Address;
+            if (emp.Role != e.Role)
+                emp.Role = e.Role;
 
             db.SaveChanges();
             Console.WriteLine(emp == null);

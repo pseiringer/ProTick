@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProTick.ResourceDTOs;
 using ProTick.Singletons;
@@ -11,7 +13,7 @@ using ProTickDatabase.DatabasePOCOs;
 namespace ProTick.Controllers
 {
 
-    [Route("ProTick/[controller]")]
+    [Route("ProTick/[controller]"), Authorize]
     public class TeamController : Controller
     {
         private ProTickDatabaseContext db;
@@ -36,6 +38,17 @@ namespace ProTick.Controllers
         public IEnumerable<TeamDTO> GetTeams()
         {
             return dbm.FindAllTeams(true).Select(x => converter.TeamToDTO(x)).ToList();
+        }
+
+        [HttpGet("Username/{user}")]
+        public IEnumerable<TeamDTO> getTeamsByUsername(string user)
+        {
+            string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            if (loggedInUser == user || loggedInRole == StaticRoles.Admin)
+                return dbm.FindAllTeamsByUsername(user).Select(x => converter.TeamToDTO(x)).ToList();
+
+            return new List<TeamDTO>();
         }
 
         [HttpGet("{id}/Tickets")]

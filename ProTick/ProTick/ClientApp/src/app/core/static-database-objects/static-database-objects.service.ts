@@ -16,9 +16,8 @@ export class StaticDatabaseObjectsService {
   };
   getRoles() {
     return {
-      Role1: 1,
-      Role2: 2,
-      Role3: 3
+      Admin: "Admin",
+      Employee: "Employee"
     };
   };
 }

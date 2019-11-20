@@ -1,16 +1,16 @@
 .table_container_teams {
-  height: 80vh;
+  height: 79vh;
   overflow: auto;
 }
 
 .table_container_emps {
-  height: 76vh;
+  height: 75vh;
   overflow: auto;
 }
 
-.mat-tab-group {
-  display: unset;
-  flex-direction: column;
+.team_tab,.employee_tab {
+  margin: 40px;
+  margin-top: 20px;
 }
 
 table {
@@ -93,7 +93,12 @@ mat-cell {
   color:aqua;
 }*/
 
+.mat-tab-body{
+  height: 100%;
+}
+
 
 body {
   display: inherit;
+  margin-left: 100px;
 }

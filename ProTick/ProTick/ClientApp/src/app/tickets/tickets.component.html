@@ -27,7 +27,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-icon-button (click)="onAdd()">
+  <button mat-icon-button (click)="onAdd()" *ngIf="this.authGuard.isAdmin()">
     <mat-icon>add_circle</mat-icon>
   </button>
 
@@ -63,16 +63,22 @@
       <ng-container matColumnDef="options">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let row">
-          <button [disabled]="row.subprocessID === -1" mat-icon-button *ngIf="row.stateDescription === openDescription" (click)="onBegin($event, row)">
+          <button [disabled]="row.subprocessID === -1"
+                  mat-icon-button
+                  *ngIf="row.stateDescription === openDescription"
+                  (click)="onBegin($event, row)">
             <mat-icon>play_arrow</mat-icon>
           </button>
-          <button [disabled]="row.subprocessID === -1" mat-icon-button *ngIf="row.stateDescription === inProgressDescription || row.stateDescription === finishedDescription" (click)="onFinished(row)">
+          <button [disabled]="row.subprocessID === -1"
+                  mat-icon-button
+                  *ngIf="row.stateDescription === inProgressDescription || row.stateDescription === finishedDescription"
+                  (click)="onFinished(row)">
             <mat-icon>done</mat-icon>
           </button>
-          <button mat-icon-button (click)="onEdit(row)">
+          <button mat-icon-button (click)="onEdit(row)" *ngIf="this.authGuard.IsAdmin">
             <mat-icon>build</mat-icon>
           </button>
-          <button mat-icon-button (click)="onDelete(row.ticketID)">
+          <button mat-icon-button (click)="onDelete(row.ticketID)" *ngIf="this.authGuard.IsAdmin">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

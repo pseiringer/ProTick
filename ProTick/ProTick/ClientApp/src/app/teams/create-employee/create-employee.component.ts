@@ -4,6 +4,8 @@ import { TeamService } from '../../core/team/team.service';
 import { Team } from '../../../classes/Team';
 import * as moment from 'moment';
 import { MatDialogRef, MAT_DIALOG_DATA, MatListModule, MatStepperModule } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { RoleService } from '../../core/role/role.service';
 
 
 
@@ -17,6 +19,7 @@ export interface CreateEmployeeDialogData {
   email: string,
   username: string,
   password: string,
+  roleID: number,
   addressID: number,
   teamID: number,
   selTeams: Team[],
@@ -31,13 +34,14 @@ export interface CreateEmployeeDialogData {
   selector: 'app-create-employee',
   templateUrl: './create-employee.component.html',
   styleUrls: ['./create-employee.component.css'],
-  providers: [TeamService],
+  providers: [TeamService, RoleService],
 })
 export class CreateEmployeeComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CreateEmployeeComponent>,
     private _teamService: TeamService,
+    private _roleService: RoleService,
     @Inject(MAT_DIALOG_DATA)
     public data: CreateEmployeeDialogData) { }
 
@@ -50,6 +54,7 @@ export class CreateEmployeeComponent implements OnInit {
   birthDate = new FormControl(new Date());
 
   allTeams: any = [];
+  allRoles: any = [];
   selTeam: Team;
 
   error: string = 'Feld darf nicht leer sein!';
@@ -70,9 +75,12 @@ export class CreateEmployeeComponent implements OnInit {
       this._header = "Neuer Mitarbeiter";
       this._buttonText = "Erstellen";
       this.data.selTeams = [];
+      this.data.hireDate = this.hireDate.value;
+      this.data.dateOfBirth = this.birthDate.value;
     }
 
     this.getTeams();
+    this.getRoles();
     const d = new Date();
 
     this.personalFormGroup = this._formBuilder.group({
@@ -80,26 +88,30 @@ export class CreateEmployeeComponent implements OnInit {
       lastNameCtrl: ['', Validators.required],
       phoneNumberCtrl: ['', Validators.required],
       emailCtrl: ['', Validators.email],
-      hireDateCtrl: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(10)])],
-      birthDateCtrl: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(10)])]
+      birthDateCtrl: [''],
+      hireDateCtrl: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(10)])]
     });
     this.addressFormGroup = this._formBuilder.group({
-      streetCtrl: ['', Validators.required],
-      streetNumberCtrl: ['', Validators.required],
-      postalCodeCtrl: ['', Validators.required],
-      cityCtrl: ['', Validators.required],
-      countryCtrl: ['', Validators.required]
+      streetCtrl: [''],
+      streetNumberCtrl: [''],
+      postalCodeCtrl: [''],
+      cityCtrl: [''],
+      countryCtrl: ['']
     });
     this.teamFormGroup = this._formBuilder.group(
       {
 
       });
 
-
-    //this.personalFormGroup.patchValue({ hireDateControl: new Date() });
-    //this.personalFormGroup.controls['hireDateCtrl'].patchValue({ year: d.getFullYear(), month: d.getMonth(), day: d.getDate() });
   }
 
+  getRoles() {
+    this._roleService.getRoles()
+      .subscribe(data => {
+        this.allRoles = data;
+        this.data.roleID = this.allRoles[0].roleID;
+      })
+  }
 
   getTeams() {
     this._teamService.getTeams()

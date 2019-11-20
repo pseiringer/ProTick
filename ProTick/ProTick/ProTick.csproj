@@ -28,6 +28,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\tickets\create-ticket\create-ticket.component.html~RFab45748.TMP" />
     <None Remove="ClientApp\src\classes\Authentication\AuthGuard.ts" />
+    <None Remove="ClientApp\src\classes\Authentication\JwtHeader.ts" />
     <None Remove="ClientApp\src\classes\FullTicket.ts" />
     <None Remove="ClientApp\src\classes\State.ts" />
   </ItemGroup>
@@ -37,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\classes\Authentication\JwtHeader.ts" />
     <TypeScriptCompile Include="ClientApp\src\classes\Authentication\AuthGuard.ts" />
     <TypeScriptCompile Include="ClientApp\src\classes\FullTicket.ts" />
     <TypeScriptCompile Include="ClientApp\src\classes\State.ts" />
