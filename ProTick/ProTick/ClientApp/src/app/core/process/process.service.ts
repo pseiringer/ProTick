@@ -9,7 +9,8 @@ import { JwtHeader } from '../../../classes/Authentication/JwtHeader';
 @Injectable()
 export class ProcessService {
 
-  url: string = 'http://localhost:8080/ProTick';
+    url: string = 'http://localhost:8080/ProTick';
+
 
   constructor(private http: HttpClient, private jwtHeader: JwtHeader) { }
 
@@ -18,10 +19,11 @@ export class ProcessService {
           { headers: this.jwtHeader.getJwtHeader() });
   }
 
-  getProcesses(): Observable<Process[]> {
-    return this.http.get<Process[]>(this.url + '/Process');
-  }
-
+    getProcesses(): Observable<Process[]> {
+        return this.http.get<Process[]>(this.url + '/Process',
+          { headers: this.jwtHeader.getJwtHeader() });
+    }
+  
   getProcessesWithSubprocess(hasSubprocess: boolean): Observable<Process[]> {
       return this.http.get<Process[]>(this.url + '/Process/hasSubprocess=' + hasSubprocess,
           { headers: this.jwtHeader.getJwtHeader() });
@@ -48,18 +50,23 @@ export class ProcessService {
   }
 
   postProcess(process: Process): Observable<Process> {
-    console.log(process);
-
+      console.log(process);
       return this.http.post<Process>(this.url + '/Process',
           process,
           { headers: this.jwtHeader.getJwtHeaderWithContent('application/json') });
   }
 
   postSubprocess(subprocess: Subprocess): Observable<Subprocess> {
-    console.log(subprocess);
-
+      console.log(subprocess);
       return this.http.post<Subprocess>(this.url + '/Subprocess',
           subprocess,
           { headers: this.jwtHeader.getJwtHeaderWithContent('application/json') });
   }
+
+  putSubprocess(subprocess: Subprocess, id: number): Observable<Subprocess> {
+        console.log(subprocess + ' ' + id);
+        return this.http.put<Subprocess>(this.url + '/Subprocess/' + id,
+          subprocess,
+          { headers: this.jwtHeader.getJwtHeaderWithContent('application/json') });
+    }
 }

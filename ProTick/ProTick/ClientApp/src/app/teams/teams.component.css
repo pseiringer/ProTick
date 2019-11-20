@@ -18,6 +18,11 @@ table {
   border-collapse: unset;
 }
 
+.team_tab, .employee_tab {
+  margin: 30px;
+  margin-top: 10px;
+}
+
 tr.mat-row.example-detail-row {
   height: 0;
 }

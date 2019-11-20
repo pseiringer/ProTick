@@ -1,155 +1,187 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
 import { ProcessService } from '../core/process/process.service';
+import { TeamService } from '../core/team/team.service';
 import { ParentChildRelationService } from '../core/parent-child-relation/parent-child-relation.service';
+
 import { Process } from '../../classes/Process';
 import { Subprocess } from '../../classes/Subprocess';
-
+import { Team } from '../../classes/Team';
+import { FullSubprocess } from '../../classes/FullSubprocess';
 import { ParentChildRelation } from '../../classes/ParentChildRelation';
 
 import { CreateProcessComponent } from '../processes/create-process/create-process.component';
-
 import { CreateSubprocessComponent } from '../create-subprocess/create-subprocess.component';
 
-import { MatDialog } from '@angular/material';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatDialog, MatTable } from '@angular/material';
+import { isNullOrUndefined } from 'util';
 
 @Component({
-  selector: 'app-processes',
-  templateUrl: './processes.component.html',
-  styleUrls: ['./processes.component.css'],
-  providers: [ProcessService, ParentChildRelationService],
+    selector: 'app-processes',
+    templateUrl: './processes.component.html',
+    styleUrls: ['./processes.component.css'],
+    providers: [ProcessService, ParentChildRelationService, TeamService],
 })
 
 export class ProcessesComponent implements OnInit {
 
-  private processes: Process[] = [];
-  private subprocesses: Subprocess[] = [];
-  private sortedSubprocesses: Subprocess[] = [];
-  private parentChildRelations: ParentChildRelation[] = [];
+    @ViewChild(MatTable, { static: true, read: MatTable }) table: MatTable<any>;
 
-  private _processID: number;
+    private processes: Process[] = [];
+    private subprocesses: Subprocess[] = [];
+    private parentChildRelations: ParentChildRelation[] = [];
+    private displayedSubprocesses: FullSubprocess[] = [];
+    private teams: Team[] = [];
 
-  process: Process = {
-    processID: undefined,
-    description: undefined
-  };
+    private selectedProcess: number;
 
-  subprocess: Subprocess = {
-    subprocessID: undefined,
-    description: undefined,
-    teamID: undefined,
-    processID: undefined
-  };
+    private _processID: number;
 
-  parentChildRelation: ParentChildRelation = {
-    parentChildRelationID: undefined,
-    parentID: undefined,
-    childID: undefined
-  }
+    process: Process = {
+        processID: undefined,
+        description: undefined
+    };
 
-  xSubprocess: Subprocess = {
-    subprocessID: undefined,
-    description: undefined,
-    teamID: undefined,
-    processID: undefined
-  };
+    subprocess: Subprocess = {
+        subprocessID: undefined,
+        description: undefined,
+        teamID: undefined,
+        processID: undefined
+    };
 
-
-  constructor(private _processService: ProcessService,
-    private _parentChildRelationService: ParentChildRelationService,
-    public dialog: MatDialog) { }
-
-  ngOnInit() {
-    this.getProcesses();
-  }
-
-  getProcesses(): void {
-    this._processService.getProcesses()
-      .subscribe(data => this.processes = data);
-  }
-
-  getSubprocessesByProcessID(_processID): void {
-    this._processService.getSubprocessesByProcessID(_processID)
-      .subscribe(data => { this.subprocesses = data; console.log(this.subprocesses); });
-  }
-
-  getParentChildRelationsByProcessID(_processID): void {
-    this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
-      .subscribe(data => { this.parentChildRelations = data; console.log(this.parentChildRelations); });
-  }
-
-  sortSubprocesses(): void {
-    for (let i = 0; i < this.parentChildRelations.length; i++) {
-      if (this.parentChildRelations[i].parentID != -1 && this.parentChildRelations[i].childID != -1) {
-        console.log(this.parentChildRelations[i].parentID);
-
-        this._processService.getSubprocessById(this.parentChildRelations[i].parentID)
-          .subscribe(data => { this.xSubprocess = data; console.log(this.xSubprocess); });
-      }
-
-      if (this.parentChildRelations[i].childID == -1) {
-        console.log(this.parentChildRelations[i].parentID);
-
-        this._processService.getSubprocessById(this.parentChildRelations[i].parentID)
-          .subscribe(data => { this.xSubprocess = data; console.log(this.xSubprocess); });
-      }
+    parentChildRelation: ParentChildRelation = {
+        parentChildRelationID: undefined,
+        parentID: undefined,
+        childID: undefined
     }
-  }
 
-  deleteSubprocess(subprocessID: number): void {
-    this._processService.deleteSubprocess(subprocessID)
-      .subscribe(x => { this.getSubprocessesByProcessID(this._processID); });
-  }
+    fullSubprocess: FullSubprocess = {
+        subprocessID: undefined,
+        description: undefined,
+        teamID: undefined,
+        teamName: undefined,
+        processID: undefined,
+        processName: undefined
+    }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.subprocesses, event.previousIndex, event.currentIndex);
-    console.log(this.subprocesses);
-    console.log(this.parentChildRelations);
-  }
+    displayedColumns: string[] = ['subprocessID', 'description', 'teamName'];
 
-  saveSubprocesses(): void {
-    
-  }
+    constructor(private _processService: ProcessService,
+        private _parentChildRelationService: ParentChildRelationService,
+        private _teamService: TeamService,
+        public dialog: MatDialog) { }
 
-  openCreateProcessDialog(): void {
-    const dialogRef = this.dialog.open(CreateProcessComponent, {
-      data: { description: this.process.description }
-    });
+    ngOnInit() {
+        this._teamService.getTeams().subscribe(data => { this.teams = data; this.getProcesses(); });
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    getProcesses(): void {
+        this._processService.getProcesses()
+            .subscribe(data => {
+                this.processes = data;
+                if (this.processes.length > 0) this.selectedProcess = this.processes[0].processID;
+                this.getSubprocessesByProcessID(this.selectedProcess);
+            });
+    }
 
-      this.process.description = result;
+    getSubprocessesByProcessID(_processID): void {
+        console.log('selectionChange');
+        this._processService.getSubprocessesByProcessID(_processID)
+            .subscribe(data => {
+                this.subprocesses = data;
+                this.reloadFullSubprocesses();
+            });
+    }
 
-      this._processService.postProcess(this.process)
-        .subscribe(x => { this.getProcesses(); });
+    reloadFullSubprocesses() {
+        console.log('reloadFullSubprocesses');
+        this.displayedSubprocesses = [];
 
-      this.process.description = undefined;
-    });
-  }
+        this.subprocesses.forEach(x => {
+            let teamName = '';
+            let processName = '';
 
-  openCreateSubprocessDialog(): void {
-    const dialogRef = this.dialog.open(CreateSubprocessComponent, {
-      data: { description: this.subprocess.description, teamID: this.subprocess.teamID, processID: this.subprocess.processID }
-    });
+            this._teamService.getTeam(x.teamID).subscribe(y => {
+                teamName = y.abbreviation;
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+                this._processService.getProcess(x.processID).subscribe(z => {
+                    processName = z.description;
 
-      this.subprocess.description = result.description;
-      this.subprocess.teamID = result.teamID;
-      this.subprocess.processID = result.processID;
+                    const fullSubprocess: FullSubprocess = {
+                        subprocessID: undefined,
+                        description: undefined,
+                        teamID: undefined,
+                        teamName: undefined,
+                        processID: undefined,
+                        processName: undefined
+                    };
 
-      this._processService.postSubprocess(this.subprocess)
-        .subscribe(x => { this.getSubprocessesByProcessID(this._processID); });
+                    fullSubprocess.subprocessID = x.subprocessID;
+                    fullSubprocess.description = x.description;
+                    fullSubprocess.teamID = x.teamID;
+                    fullSubprocess.teamName = teamName;
+                    fullSubprocess.processID = x.processID;
+                    fullSubprocess.processName = processName;
 
-      this.subprocess.description = undefined;
-      this.subprocess.teamID = undefined;
-      this.subprocess.processID = undefined;
-    });
-  }
+                    this.displayedSubprocesses.push(fullSubprocess);
+                    this.table.renderRows();
+                });
+            });
+        });
+    }
 
-  deleteSubprocessWhenDropped(event: CdkDragDrop<string[]>) {
-    //this.deleteSubprocess(event.container.data[event.previousIndex].subprocessID);
-  }
+    getParentChildRelationsByProcessID(_processID): void {
+        this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
+            .subscribe(data => this.parentChildRelations = data);
+    }
+
+    openCreateProcessDialog(): void {
+        const dialogRef = this.dialog.open(CreateProcessComponent, {
+            data: { description: this.process.description }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+
+            this.process.description = result;
+
+            this._processService.postProcess(this.process)
+                .subscribe(x => { this.getProcesses(); });
+
+            this.process.description = undefined;
+        });
+    }
+
+    openCreateSubprocessDialog(): void {
+        const dialogRef = this.dialog.open(CreateSubprocessComponent, {
+            data: { description: this.subprocess.description, teamID: this.subprocess.teamID, processID: this.subprocess.processID }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+
+            this.subprocess.description = result.description;
+            this.subprocess.teamID = result.teamID;
+            this.subprocess.processID = result.processID;
+
+            this._processService.postSubprocess(this.subprocess)
+                .subscribe(x => { this.getSubprocessesByProcessID(this._processID); });
+
+            this.subprocess.description = undefined;
+            this.subprocess.teamID = undefined;
+            this.subprocess.processID = undefined;
+        });
+    }
+
+    attributeChanged(subprocessID: number, attribute: string, value: string): void {
+        console.log('attChanged ' + subprocessID + value);
+        let changeSubprocess = this.subprocesses.find(x => x.subprocessID === subprocessID);
+
+        if (isNullOrUndefined(changeSubprocess)) return;
+
+        changeSubprocess[attribute] = value;
+
+        this._processService.putSubprocess(changeSubprocess, subprocessID)
+              .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcess));
+    }
 }
