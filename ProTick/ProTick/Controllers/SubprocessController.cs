@@ -64,7 +64,7 @@ namespace ProTick.Controllers
         [HttpPut("{id}")]
         public SubprocessDTO EditSubprocess([FromServices] ProTickDatabaseContext db, int id, [FromBody] Subprocess s)
         {
-            var sp = db.Subprocess.FirstOrDefault(x => x.SubprocessID == s.SubprocessID);
+            var sp = dbm.FindSubprocessByID(id);
 
             if (sp.Description != s.Description)
                 sp.Description = s.Description;

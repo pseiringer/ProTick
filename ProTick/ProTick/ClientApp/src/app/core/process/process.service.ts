@@ -8,55 +8,65 @@ import { ParentChildRelation } from '../../../classes/ParentChildRelation';
 @Injectable()
 export class ProcessService {
 
-  url: string = 'http://localhost:8080/ProTick';
+    url: string = 'http://localhost:8080/ProTick';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  getProcess(processID: number) {
-    return this.http.get<Process>(this.url + `/Process/${processID}`);
-  }
+    getProcess(processID: number) {
+        return this.http.get<Process>(this.url + `/Process/${processID}`);
+    }
 
-  getProcesses(): Observable<Process[]> {
-    return this.http.get<Process[]>(this.url + '/Process');
-  }
+    getProcesses(): Observable<Process[]> {
+        return this.http.get<Process[]>(this.url + '/Process');
+    }
 
-  getProcessesWithSubprocess(hasSubprocess: boolean): Observable<Process[]> {
-    return this.http.get<Process[]>(this.url + '/Process/hasSubprocess=' + hasSubprocess);
-  }
+    getProcessesWithSubprocess(hasSubprocess: boolean): Observable<Process[]> {
+        return this.http.get<Process[]>(this.url + '/Process/hasSubprocess=' + hasSubprocess);
+    }
 
-  getSubprocesses(): Observable<Subprocess[]> {
-    return this.http.get<Subprocess[]>(this.url + '/Subprocess');
-  }
+    getSubprocesses(): Observable<Subprocess[]> {
+        return this.http.get<Subprocess[]>(this.url + '/Subprocess');
+    }
 
-  getSubprocessById(subprocessID: number): Observable<Subprocess> {
-    return this.http.get<Subprocess>(this.url + `/Subprocess/${subprocessID}`);
-  }
+    getSubprocessById(subprocessID: number): Observable<Subprocess> {
+        return this.http.get<Subprocess>(this.url + `/Subprocess/${subprocessID}`);
+    }
 
-  getSubprocessesByProcessID(processID: number): Observable<Subprocess[]> {
-    return this.http.get<Subprocess[]>(this.url + `/Process/${processID}/Subprocesses`);
-  }
+    getSubprocessesByProcessID(processID: number): Observable<Subprocess[]> {
+        return this.http.get<Subprocess[]>(this.url + `/Process/${processID}/Subprocesses`);
+    }
 
-  deleteSubprocess(subprocessID: number): Observable<Subprocess> {
-    return this.http.delete<Subprocess>(this.url + `/Subprocess/${subprocessID}`);
-  }
+    deleteSubprocess(subprocessID: number): Observable<Subprocess> {
+        return this.http.delete<Subprocess>(this.url + `/Subprocess/${subprocessID}`);
+    }
 
-  postProcess(process: Process): Observable<Process> {
-    console.log(process);
+    postProcess(process: Process): Observable<Process> {
+        console.log(process);
 
-    return this.http.post<Process>(this.url + '/Process', process, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
-  }
+        return this.http.post<Process>(this.url + '/Process', process, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        });
+    }
 
-  postSubprocess(subprocess: Subprocess): Observable<Subprocess> {
-    console.log(subprocess);
+    postSubprocess(subprocess: Subprocess): Observable<Subprocess> {
+        console.log(subprocess);
 
-    return this.http.post<Subprocess>(this.url + '/Subprocess', subprocess, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
-  }
+        return this.http.post<Subprocess>(this.url + '/Subprocess', subprocess, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        });
+    }
+
+    putSubprocess(subprocess: Subprocess, id: number): Observable<Subprocess> {
+        console.log(subprocess + ' ' + id);
+
+        return this.http.put<Subprocess>(this.url + '/Subprocess/' + id, subprocess, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        });
+    }
 }
