@@ -63,14 +63,28 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}")]
-        public SubprocessDTO EditSubprocess([FromServices] ProTickDatabaseContext db, int id, [FromBody] Subprocess s)
+        public SubprocessDTO EditSubprocess([FromServices] ProTickDatabaseContext db, int id, [FromBody] SubprocessDTO s)
         {
             var sp = dbm.FindSubprocessByID(id);
 
-            if (sp.Description != s.Description)
+            bool changesMade = false;
+            if (s.Description != null && s.Description != "" && sp.Description != s.Description)
+            {
                 sp.Description = s.Description;
+                changesMade = true;
+            }
+            if (s.ProcessID > 0 && sp.Process.ProcessID != s.ProcessID)
+            {
+                sp.Process = dbm.FindProcessByID(s.ProcessID);
+                changesMade = true;
+            }
+            if (s.TeamID > 0 && sp.Team.TeamID != s.TeamID)
+            {
+                sp.Team = dbm.FindTeamByID(s.TeamID);
+                changesMade = true;
+            }
 
-            db.SaveChanges();
+            if (changesMade) db.SaveChanges();
             return converter.SubprocessToDTO(sp);
         }
 
