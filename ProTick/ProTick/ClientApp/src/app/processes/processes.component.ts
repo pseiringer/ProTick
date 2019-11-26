@@ -143,6 +143,8 @@ export class ProcessesComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
 
+            if (isNullOrUndefined(result)) return;
+
             this.process.description = result;
 
             this._processService.postProcess(this.process)
@@ -154,11 +156,13 @@ export class ProcessesComponent implements OnInit {
 
     openCreateSubprocessDialog(): void {
         const dialogRef = this.dialog.open(CreateSubprocessComponent, {
-            data: { description: this.subprocess.description, teamID: this.subprocess.teamID, processID: this.subprocess.processID }
+            data: { description: this.subprocess.description, teamID: this.subprocess.teamID, processID: this.selectedProcess }
         });
 
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
+
+            if (isNullOrUndefined(result)) return;
 
             this.subprocess.description = result.description;
             this.subprocess.teamID = result.teamID;
@@ -182,6 +186,6 @@ export class ProcessesComponent implements OnInit {
         changeSubprocess[attribute] = value;
 
         this._processService.putSubprocess(changeSubprocess, subprocessID)
-              .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcess));
+            .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcess));
     }
 }
