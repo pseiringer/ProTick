@@ -15,6 +15,7 @@ import { CreateSubprocessComponent } from '../create-subprocess/create-subproces
 
 import { MatDialog, MatTable } from '@angular/material';
 import { isNullOrUndefined } from 'util';
+import { Observable, forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-processes',
@@ -25,12 +26,18 @@ import { isNullOrUndefined } from 'util';
 
 export class ProcessesComponent implements OnInit {
 
-    @ViewChild(MatTable, { static: true, read: MatTable }) table: MatTable<any>;
+    //@ViewChild(MatTable, { static: true, read: MatTable }) table: MatTable<any>;
+    //@ViewChild(MatTable, { static: true, read: MatTable }) tableFirst: MatTable<any>;
+
+
+    @ViewChild('table', { static: true, read: MatTable }) table: MatTable<any>;
+    @ViewChild('tableFirst', { static: true, read: MatTable }) tableFirst: MatTable<any>;
 
     private processes: Process[] = [];
     private subprocesses: Subprocess[] = [];
     private parentChildRelations: ParentChildRelation[] = [];
     private displayedSubprocesses: FullSubprocess[] = [];
+    private firstSubprocess: FullSubprocess[] = [];
     private teams: Team[] = [];
 
     private selectedProcess: number;
@@ -64,7 +71,11 @@ export class ProcessesComponent implements OnInit {
         processName: undefined
     }
 
-    displayedColumns: string[] = ['subprocessID', 'description', 'teamName'];
+    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'optionButtons'];
+
+    firstDisplayedColumns: string[] = ['firstSubprocessID', 'firstDescription', 'firstTeamName', 'childProcesses'];
+
+    serviceWorking: boolean = false;
 
     constructor(private _processService: ProcessService,
         private _parentChildRelationService: ParentChildRelationService,
@@ -89,13 +100,21 @@ export class ProcessesComponent implements OnInit {
         this._processService.getSubprocessesByProcessID(_processID)
             .subscribe(data => {
                 this.subprocesses = data;
-                this.reloadFullSubprocesses();
+
+                this.getParentChildRelationsByProcessID(_processID);
             });
+    }
+
+    getParentChildRelationsByProcessID(_processID: number): void {
+        this.parentChildRelations = [];
+        this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
+            .subscribe(x => { this.parentChildRelations = x; this.reloadFullSubprocesses(); this.serviceWorking = false; });
     }
 
     reloadFullSubprocesses() {
         console.log('reloadFullSubprocesses');
         this.displayedSubprocesses = [];
+        this.firstSubprocess = [];
 
         this.subprocesses.forEach(x => {
             let teamName = '';
@@ -123,16 +142,16 @@ export class ProcessesComponent implements OnInit {
                     fullSubprocess.processID = x.processID;
                     fullSubprocess.processName = processName;
 
-                    this.displayedSubprocesses.push(fullSubprocess);
-                    this.table.renderRows();
+                    if (this.parentChildRelations.findIndex(a => a.parentID === -1 && a.childID === x.subprocessID) >= 0) {
+                        this.firstSubprocess = [fullSubprocess];
+                        this.tableFirst.renderRows();
+                    } else {
+                        this.displayedSubprocesses.push(fullSubprocess);
+                        this.table.renderRows();
+                    }
                 });
             });
         });
-    }
-
-    getParentChildRelationsByProcessID(_processID): void {
-        this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
-            .subscribe(data => this.parentChildRelations = data);
     }
 
     openCreateProcessDialog(): void {
@@ -187,5 +206,126 @@ export class ProcessesComponent implements OnInit {
 
         this._processService.putSubprocess(changeSubprocess, subprocessID)
             .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcess));
+    }
+
+    useAsFirst(subprocessID: number): void {
+        if (this.serviceWorking) return;
+        this.serviceWorking = true;
+
+        var first = this.parentChildRelations.find(x => x.parentID === -1);
+
+        if (isNullOrUndefined(first)) {
+            const newFirst: ParentChildRelation = {
+                parentChildRelationID: undefined,
+                parentID: undefined,
+                childID: undefined
+            };
+
+            newFirst.parentID = -1;
+            newFirst.childID = subprocessID;
+
+            var children = this.parentChildRelations.filter(x => x.parentID === subprocessID);
+
+            var newChild: ParentChildRelation = null;
+
+            if (children.length <= 0 && this.subprocesses.length > 1) {
+                newChild = {
+                    parentChildRelationID: undefined,
+                    parentID: undefined,
+                    childID: undefined
+                };
+
+                newChild.parentID = subprocessID;
+                newChild.childID = (this.subprocesses.filter(x => x.subprocessID !== subprocessID)[0]).subprocessID;
+            }
+
+            var oldParents = this.parentChildRelations.filter(x => x.parentID !== -1 && x.childID === subprocessID);
+
+
+            // Delete Old Parents (ForkJoin), Post New First, If (newChild != null): Post, Finally: GetParentChildRelationsByProcessID
+
+            const calls = [];
+            oldParents.forEach(x => {
+                calls.push(this._parentChildRelationService.deleteParentChildRelation(x.parentChildRelationID));
+            });
+
+            if (calls.length > 0) {
+                forkJoin(calls).subscribe(x => {
+                    this._parentChildRelationService.postParentChildRelation(newFirst).subscribe(x => {
+                        if (!isNullOrUndefined(newChild)) {
+                            this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
+                                this.getParentChildRelationsByProcessID(this.selectedProcess);
+                            });
+                        } else {
+                            this.getParentChildRelationsByProcessID(this.selectedProcess);
+                        }
+                    });
+                });
+            } else {
+                this._parentChildRelationService.postParentChildRelation(newFirst).subscribe(x => {
+                    if (!isNullOrUndefined(newChild)) {
+                        this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
+                            this.getParentChildRelationsByProcessID(this.selectedProcess);
+                        });
+                    } else {
+                        this.getParentChildRelationsByProcessID(this.selectedProcess);
+                    }
+                });
+            }
+        } else {
+            var previousFirstID = -1;
+            var alreadyHasChildren = false;
+
+            previousFirstID = first.childID;
+            first.childID = subprocessID;
+
+            const newChild: ParentChildRelation = {
+                parentChildRelationID: undefined,
+                parentID: undefined,
+                childID: undefined
+            };
+
+            newChild.parentID = subprocessID;
+            newChild.childID = previousFirstID;
+
+            var oldParents = this.parentChildRelations.filter(x => x.parentID !== -1 && x.childID === subprocessID);
+
+            // Delete Old Parents (ForkJoin), Update First, Create New Child, Finally: GetParentChildRelationsByProcessID
+
+            const calls = [];
+            oldParents.forEach(x => {
+                calls.push(this._parentChildRelationService.deleteParentChildRelation(x.parentChildRelationID));
+            });
+
+            if (calls.length > 0) {
+                forkJoin(calls).subscribe(x => {
+                    this._parentChildRelationService.putParentChildRelation(first.parentChildRelationID, first).subscribe(x => {
+                        this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
+                            this.getParentChildRelationsByProcessID(this.selectedProcess);
+                        });
+                    });
+                });
+            } else {
+                this._parentChildRelationService.putParentChildRelation(first.parentChildRelationID, first).subscribe(x => {
+                    this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
+                        this.getParentChildRelationsByProcessID(this.selectedProcess);
+                    });
+                });
+            }
+        }
+    }
+
+    getFormatedChildrenOf(fullSubprocess: FullSubprocess): string {
+        return this.getChildrenOfSubprocess(fullSubprocess.subprocessID)
+            .map(x => x.childID)
+            .join(',');
+    }
+
+    getChildrenOfSubprocess(subprocessID: number): ParentChildRelation[] {
+        return this.parentChildRelations.filter(x => x.parentID === subprocessID);
+    }
+
+    editChildProcesses(fullSubprocess: FullSubprocess): void {
+        console.log(fullSubprocess);
     }
 }
