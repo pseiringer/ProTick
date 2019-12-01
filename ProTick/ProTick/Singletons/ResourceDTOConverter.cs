@@ -112,7 +112,7 @@ namespace ProTick.Singletons
 
         public ParentChildRelation DTOToParentChildRelation(ParentChildRelationDTO a)
         {
-            return new ParentChildRelation { Child = dbm.FindSubprocessByID(a.ChildID), ParentChildRelationID = a.ParentChildRelationID, Parent = dbm.FindSubprocessByID(a.ParentID) };
+            return new ParentChildRelation { Child = a.ChildID > 0 ? dbm.FindSubprocessByID(a.ChildID) : null, ParentChildRelationID = a.ParentChildRelationID, Parent = a.ParentID > 0 ? dbm.FindSubprocessByID(a.ParentID) : null };
         }
 
 

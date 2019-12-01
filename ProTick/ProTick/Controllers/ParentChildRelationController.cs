@@ -51,12 +51,13 @@ namespace ProTick.Controllers
             var editParentChildRelation = dbm.FindParentChildRelationByID(id);
 
             bool changesMade = false;
-            if (editParentChildRelation.Parent.SubprocessID != ticket.ParentID)
+
+            if ((editParentChildRelation.Parent == null && ticket.ParentID != -1) || (editParentChildRelation.Parent != null && (editParentChildRelation.Parent.SubprocessID != ticket.ParentID)))
             {
                 editParentChildRelation.Parent = dbm.FindSubprocessByID(ticket.ParentID);
                 changesMade = true;
             }
-            if (editParentChildRelation.Child.SubprocessID != ticket.ChildID)
+            if ((editParentChildRelation.Child == null && ticket.ChildID != -1) || (editParentChildRelation.Child != null && (editParentChildRelation.Child.SubprocessID != ticket.ChildID)))
             {
                 editParentChildRelation.Child = dbm.FindSubprocessByID(ticket.ChildID);
                 changesMade = true;
