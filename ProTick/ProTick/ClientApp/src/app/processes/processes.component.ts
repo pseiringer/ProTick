@@ -11,11 +11,12 @@ import { FullSubprocess } from '../../classes/FullSubprocess';
 import { ParentChildRelation } from '../../classes/ParentChildRelation';
 
 import { CreateProcessComponent } from '../processes/create-process/create-process.component';
-import { CreateSubprocessComponent } from '../create-subprocess/create-subprocess.component';
+import { CreateSubprocessComponent } from '../processes/create-subprocess/create-subprocess.component';
 
 import { MatDialog, MatTable } from '@angular/material';
 import { isNullOrUndefined } from 'util';
 import { Observable, forkJoin } from 'rxjs';
+import { EditChildSubprocessesComponent } from './edit-child-subprocesses/edit-child-subprocesses.component';
 
 @Component({
     selector: 'app-processes',
@@ -325,7 +326,30 @@ export class ProcessesComponent implements OnInit {
         return this.parentChildRelations.filter(x => x.parentID === subprocessID);
     }
 
-    editChildProcesses(fullSubprocess: FullSubprocess): void {
+    openEditChildSubprocessesDialog(fullSubprocess: FullSubprocess): void {
         console.log(fullSubprocess);
+
+        var children = this.getChildrenOfSubprocess(fullSubprocess.subprocessID).filter(x => x.childID);
+
+        const dialogRef = this.dialog.open(EditChildSubprocessesComponent, {
+            data: {
+                subprocess: fullSubprocess,
+                children: children,
+                allSubprocesses: this.displayedSubprocesses
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+
+            if (isNullOrUndefined(result)) return;
+
+            this.process.description = result;
+
+            this._processService.postProcess(this.process)
+                .subscribe(x => { this.getProcesses(); });
+
+            this.process.description = undefined;
+        });
     }
 }

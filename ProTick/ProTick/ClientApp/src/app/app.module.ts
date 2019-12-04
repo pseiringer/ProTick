@@ -23,7 +23,7 @@ import { CoreModule } from './core/core.module';
 import { ProcessesComponent } from './processes/processes.component';
 
 import { CreateProcessComponent } from './processes/create-process/create-process.component';
-import { CreateSubprocessComponent } from './create-subprocess/create-subprocess.component';
+import { CreateSubprocessComponent } from './processes/create-subprocess/create-subprocess.component';
 
 import { TicketsComponent } from './tickets/tickets.component';
 import { CreateTicketComponent } from './tickets/create-ticket/create-ticket.component';
@@ -40,71 +40,77 @@ import { CreateEmployeeComponent } from './teams/create-employee/create-employee
 import { YesNoComponent } from './yes-no/yes-no.component';
 import { ForwardTicketComponent } from './tickets/forward-ticket/forward-ticket.component';
 import { JwtHeader } from '../classes/Authentication/JwtHeader';
+import { EditChildSubprocessesComponent } from './processes/edit-child-subprocesses/edit-child-subprocesses.component';
+
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
-    ProcessesComponent,
-    CreateProcessComponent,
-    TicketsComponent,
-    TeamsComponent,
-    LoginComponent,
-    CreateTeamComponent,
-    CreateTicketComponent,
-    YesNoComponent,
-    CreateEmployeeComponent,
-    CreateSubprocessComponent,
-    ForwardTicketComponent,
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    HttpModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CoreModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatListModule,
-    MatSelectModule,
-    MatStepperModule,
-    MatTooltipModule,
-    MatTabsModule,
-    MatTableModule,
-    MatNativeDateModule,
-    MatIconModule,
-    MatButtonModule,
-    BrowserAnimationsModule,
-    DragDropModule,
-    RouterModule.forRoot([
-      { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full'},
-      { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
-      { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
-      { path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
-      { path: 'create-subprocess', component: CreateSubprocessComponent, canActivate: [AuthGuard] },
-      { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
-      { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
-      { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
-      { path: 'login', component: LoginComponent },
-    ])
-  ],
-  providers: [JwtHelper, AuthGuard, DatePipe, JwtHeader],
-  entryComponents: [
-  CreateProcessComponent, 
-  CreateTeamComponent, 
-  CreateTicketComponent, 
-  CreateEmployeeComponent, 
-  YesNoComponent,
-  CreateSubprocessComponent,  
-  ForwardTicketComponent
-  ],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        NavMenuComponent,
+        HomeComponent,
+        CounterComponent,
+        FetchDataComponent,
+        ProcessesComponent,
+        CreateProcessComponent,
+        TicketsComponent,
+        TeamsComponent,
+        LoginComponent,
+        CreateTeamComponent,
+        CreateTicketComponent,
+        YesNoComponent,
+        CreateEmployeeComponent,
+        CreateSubprocessComponent,
+        ForwardTicketComponent,
+        EditChildSubprocessesComponent,
+    ],
+    imports: [
+        BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+        HttpClientModule,
+        HttpModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CoreModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatListModule,
+        MatSelectModule,
+        MatStepperModule,
+        MatTooltipModule,
+        MatTabsModule,
+        MatTableModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatButtonModule,
+        BrowserAnimationsModule,
+        DragDropModule,
+        MatCheckboxModule,
+        RouterModule.forRoot([
+            { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+            { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
+            { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
+            { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
+            { path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
+            { path: 'create-subprocess', component: CreateSubprocessComponent, canActivate: [AuthGuard] },
+            { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
+            { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
+            { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
+            { path: 'login', component: LoginComponent },
+        ])
+    ],
+    providers: [JwtHelper, AuthGuard, DatePipe, JwtHeader],
+    entryComponents: [
+        CreateProcessComponent,
+        CreateTeamComponent,
+        CreateTicketComponent,
+        CreateEmployeeComponent,
+        YesNoComponent,
+        CreateSubprocessComponent,
+        ForwardTicketComponent,
+        EditChildSubprocessesComponent
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule { }
