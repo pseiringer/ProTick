@@ -28,7 +28,7 @@ export class EditChildSubprocessesComponent implements OnInit {
 
     displayedColumns: string[] = ['childID', 'description', 'checkbox'];
 
-    //TODO: isChecked is always false
+    //TODO: isChecked is always false, x.subprocessID always -1
     ngOnInit(): void {
         this.dataSource = this.data.allSubprocesses.map(x => {
             return {
@@ -37,7 +37,6 @@ export class EditChildSubprocessesComponent implements OnInit {
                 isChecked: this.data.children.indexOf(x.subprocessID) > 0
             }
         });
-        console.log(this.dataSource[0].isChecked);
     }
 
     onNoClick(): void {
