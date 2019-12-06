@@ -9,7 +9,7 @@
 
       <ng-container matColumnDef="childID">
         <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element">{{element.childID}} </td>
+        <td mat-cell *matCellDef="let element"><span *ngIf="element.childID > 0">{{element.childID}}</span></td>
       </ng-container>
 
       <ng-container matColumnDef="description">
@@ -29,6 +29,6 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Abbrechen</button>
-    <button mat-button (click)="onYesClick()" cdkFocusInitial>Bestätigen</button>
+    <button mat-button (click)="onYesClick()" cdkFocusInitial [disabled]="!isValid()">Bestätigen</button>
   </div>
 </form>

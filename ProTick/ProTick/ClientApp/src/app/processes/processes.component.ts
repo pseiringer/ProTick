@@ -101,7 +101,6 @@ export class ProcessesComponent implements OnInit {
         this._processService.getSubprocessesByProcessID(_processID)
             .subscribe(data => {
                 this.subprocesses = data;
-
                 this.getParentChildRelationsByProcessID(_processID);
             });
     }
@@ -109,7 +108,11 @@ export class ProcessesComponent implements OnInit {
     getParentChildRelationsByProcessID(_processID: number): void {
         this.parentChildRelations = [];
         this._parentChildRelationService.getParentChildRelationByProcessID(_processID)
-            .subscribe(x => { this.parentChildRelations = x; this.reloadFullSubprocesses(); this.serviceWorking = false; });
+            .subscribe(x => {
+                this.parentChildRelations = x;
+                this.reloadFullSubprocesses();
+                this.serviceWorking = false;
+            });
     }
 
     reloadFullSubprocesses() {
@@ -189,7 +192,12 @@ export class ProcessesComponent implements OnInit {
             this.subprocess.processID = result.processID;
 
             this._processService.postSubprocess(this.subprocess)
-                .subscribe(x => { this.getSubprocessesByProcessID(this._processID); });
+                .subscribe(x => {
+                    this._parentChildRelationService.postParentChildRelation({ parentChildRelationID: 0, parentID: x.subprocessID, childID: -1 })
+                        .subscribe(x => {
+                            this.getSubprocessesByProcessID(this.selectedProcess);
+                        });
+                });
 
             this.subprocess.description = undefined;
             this.subprocess.teamID = undefined;
@@ -318,7 +326,8 @@ export class ProcessesComponent implements OnInit {
 
     getFormatedChildrenOf(fullSubprocess: FullSubprocess): string {
         return this.getChildrenOfSubprocess(fullSubprocess.subprocessID)
-            .map(x => x.childID)
+            .sort((a, b) => (b.childID > 0) ? a.childID - b.childID : -1)
+            .map(x => (x.childID < 0) ? 'Ende' : x.childID)
             .join(',');
     }
 
@@ -329,7 +338,7 @@ export class ProcessesComponent implements OnInit {
     openEditChildSubprocessesDialog(fullSubprocess: FullSubprocess): void {
         console.log(fullSubprocess);
 
-        var children = this.getChildrenOfSubprocess(fullSubprocess.subprocessID).filter(x => x.childID);
+        var children = this.getChildrenOfSubprocess(fullSubprocess.subprocessID).map(x => x.childID);
 
         const dialogRef = this.dialog.open(EditChildSubprocessesComponent, {
             data: {
@@ -344,12 +353,40 @@ export class ProcessesComponent implements OnInit {
 
             if (isNullOrUndefined(result)) return;
 
-            this.process.description = result;
+            var added: number[] = [];
+            var removed: number[] = [];
 
-            this._processService.postProcess(this.process)
-                .subscribe(x => { this.getProcesses(); });
+            result.forEach(x => {
+                if (x.isChecked) {
+                    if (children.indexOf(x.childID) < 0) added.push(x.childID);
+                } else {
+                    if (children.indexOf(x.childID) >= 0) removed.push(x.childID);
+                }
+            });
 
-            this.process.description = undefined;
+            const calls = [];
+            added.forEach(x => {
+                calls.push(this._parentChildRelationService.postParentChildRelation({
+                    parentChildRelationID: 0,
+                    parentID: fullSubprocess.subprocessID,
+                    childID: x
+                }));
+            });
+
+            removed.forEach(x => {
+                calls.push(this._parentChildRelationService.deleteParentChildRelation(
+                    this.parentChildRelations
+                        .find(y => y.parentID === fullSubprocess.subprocessID && y.childID === x)
+                        .parentChildRelationID
+                ));
+            });
+
+            if (calls.length > 0) {
+                forkJoin(calls).subscribe(x => {
+                    this.getParentChildRelationsByProcessID(this.selectedProcess);
+                });
+
+            }
         });
     }
 }

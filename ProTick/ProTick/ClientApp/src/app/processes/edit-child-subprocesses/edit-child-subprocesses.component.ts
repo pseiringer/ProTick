@@ -34,8 +34,14 @@ export class EditChildSubprocessesComponent implements OnInit {
             return {
                 childID: x.subprocessID,
                 description: x.description,
-                isChecked: this.data.children.indexOf(x.subprocessID) > 0
+                isChecked: this.data.children.indexOf(x.subprocessID) >= 0
             }
+        });
+
+        this.dataSource.push({
+            childID: -1,
+            description: 'Ende',
+            isChecked: this.data.children.indexOf(-1) >= 0
         });
     }
 
@@ -45,6 +51,13 @@ export class EditChildSubprocessesComponent implements OnInit {
 
     //TODO: check if valid
     onYesClick(): void {
-        this.dialogRef.close(this.data);
+        if (this.isValid()) this.dialogRef.close(this.dataSource);
+    }
+
+    isValid(): boolean {
+        for (var x of this.dataSource) {
+            if (x.isChecked) return true;
+        }
+        return false;
     }
 }
