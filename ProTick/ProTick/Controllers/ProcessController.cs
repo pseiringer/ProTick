@@ -59,6 +59,8 @@ namespace ProTick.Controllers
         [HttpPost]
         public ProcessDTO NewProcess([FromServices] ProTickDatabaseContext db, [FromBody] ProcessDTO p)
         {
+            Console.WriteLine(p);
+
             var a = db.Process.Add(converter.DTOToProcess(p));
 
             Console.WriteLine(p.Description);

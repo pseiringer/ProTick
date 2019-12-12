@@ -168,7 +168,9 @@ export class ProcessesComponent implements OnInit {
 
             if (isNullOrUndefined(result)) return;
 
-            this.process.description = result;
+            console.log(result);
+
+            this.process.description = result.description;
 
             this._processService.postProcess(this.process)
                 .subscribe(x => { this.getProcesses(); });
