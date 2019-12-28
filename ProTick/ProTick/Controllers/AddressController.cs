@@ -39,7 +39,7 @@ namespace ProTick.Controllers
             return converter.AddressToDTO(dbm.FindAddressByID(id));
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public AddressDTO NewEmployee([FromBody] AddressDTO a)
         {
             var add = db.Address.Add(converter.DTOToAddress(a));
@@ -49,7 +49,7 @@ namespace ProTick.Controllers
             return converter.AddressToDTO(add.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public AddressDTO EditAddress(int id, [FromBody] AddressDTO a)
         {
             var add = db.Address.FirstOrDefault(x => x.AddressID == a.AddressID);
@@ -69,7 +69,7 @@ namespace ProTick.Controllers
             return converter.AddressToDTO(add);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteAddress(int id)
         {
             db.Address.Remove(db.Address.First(x => x.AddressID == id));

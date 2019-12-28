@@ -70,7 +70,7 @@ namespace ProTick.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public TeamDTO NewTeam([FromBody] TeamDTO t)
         {
             var a = db.Team.Add(converter.DTOToTeam(t));
@@ -80,7 +80,7 @@ namespace ProTick.Controllers
             return converter.TeamToDTO(a.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public TeamDTO EditTeam(int id, [FromBody] TeamDTO t)
         {
             var team = db.Team.FirstOrDefault(x => x.TeamID == t.TeamID);
@@ -94,7 +94,7 @@ namespace ProTick.Controllers
             return converter.TeamToDTO(team);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteTeam(int id)
         {
             var et = dbm.FindEmployeeTeamsByTeamID(id);

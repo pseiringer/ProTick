@@ -56,7 +56,7 @@ namespace ProTick.Controllers
             return dbm.FindAllParentChildRelationsOfProcess(id).Select(x => converter.ParentChildRelationToDTO(x)).ToList();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public ProcessDTO NewProcess([FromServices] ProTickDatabaseContext db, [FromBody] ProcessDTO p)
         {
             Console.WriteLine(p);
@@ -70,7 +70,7 @@ namespace ProTick.Controllers
             return converter.ProcessToDTO(a.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public ProcessDTO EditProcess([FromServices] ProTickDatabaseContext db, int id, [FromBody] Process p)
         {
             var pr = db.Process.FirstOrDefault(x => x.ProcessID == p.ProcessID);
@@ -82,7 +82,7 @@ namespace ProTick.Controllers
             return converter.ProcessToDTO(pr);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteProcess([FromServices] ProTickDatabaseContext db, int id)
         {
             db.Process.Remove(db.Process.First(x => x.ProcessID == id));

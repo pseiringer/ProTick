@@ -46,7 +46,7 @@ namespace ProTick.Controllers
             return dbm.FindAllEmployeeTeams(true).Where(x => x.Employee.EmployeeID == id).SelectMany(x => dbm.FindAllTeams(true).Where(y => x.Team.TeamID == y.TeamID)).Distinct().Select(x => converter.TeamToDTO(x)).ToList();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
             var newEmp = converter.DTOToEmployee(e);
@@ -64,7 +64,7 @@ namespace ProTick.Controllers
             return converter.EmployeeToDTO(a.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public EmployeeDTO EditEmployee(int id, [FromBody] EmployeeDTO changedE)
         {
             var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == changedE.EmployeeID);
@@ -96,7 +96,7 @@ namespace ProTick.Controllers
             return converter.EmployeeToDTO(emp);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteEmployee(int id)
         {
             var emp = db.Employee.Include(x => x.Address).First(x => x.EmployeeID == id);

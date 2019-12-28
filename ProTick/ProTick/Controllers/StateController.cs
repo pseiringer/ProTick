@@ -42,7 +42,7 @@ namespace ProTick.Controllers
             return dbm.FindAllTicketsByStateID(id).Select(x => converter.TicketToDTO(x)).ToList();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public StateDTO PostState([FromBody] StateDTO state)
         {
             var newState = db.State.Add(converter.DTOToState(state));
@@ -50,7 +50,7 @@ namespace ProTick.Controllers
             return converter.StateToDTO(newState.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public StateDTO PutState(int id, [FromBody] StateDTO state)
         {
             var editState = dbm.FindStateByID(id);
@@ -66,7 +66,7 @@ namespace ProTick.Controllers
             return converter.StateToDTO(editState);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteState(int id)
         {
             var removeState = dbm.FindStateByID(id);

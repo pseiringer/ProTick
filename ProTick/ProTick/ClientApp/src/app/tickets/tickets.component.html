@@ -27,7 +27,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-icon-button (click)="onAdd()" *ngIf="this.authGuard.isAdmin()">
+  <button mat-icon-button (click)="onAdd()" *ngIf="userIsAdmin()">
     <mat-icon>add_circle</mat-icon>
   </button>
 
@@ -75,10 +75,10 @@
                   (click)="onFinished(row)">
             <mat-icon>done</mat-icon>
           </button>
-          <button mat-icon-button (click)="onEdit(row)" *ngIf="this.authGuard.IsAdmin">
+          <button mat-icon-button (click)="onEdit(row)" *ngIf="userIsAdmin()">
             <mat-icon>build</mat-icon>
           </button>
-          <button mat-icon-button (click)="onDelete(row.ticketID)" *ngIf="this.authGuard.IsAdmin">
+          <button mat-icon-button (click)="onDelete(row.ticketID)" *ngIf="userIsAdmin()">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
