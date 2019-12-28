@@ -39,7 +39,7 @@ namespace ProTick.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public EmployeeTeamDTO NewEmployeeTeam([FromBody] EmployeeTeamDTO e)
         {
             var a = db.EmployeeTeam.Add(converter.DTOToEmployeeTeam(e));
@@ -49,7 +49,7 @@ namespace ProTick.Controllers
             return converter.EmployeeTeamToDTO(a.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public EmployeeTeamDTO EditEmployeeTeam(int id, [FromBody] EmployeeTeam e)
         {
             var empTeam = db.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == e.EmployeeTeamID);
@@ -63,14 +63,14 @@ namespace ProTick.Controllers
             return converter.EmployeeTeamToDTO(empTeam);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteEmployeeTeam(int id)
         {
             db.EmployeeTeam.Remove(db.EmployeeTeam.First(x => x.EmployeeTeamID == id));
             db.SaveChanges();
         }
 
-        [HttpDelete("{tId}/{eId}")]
+        [HttpDelete("{tId}/{eId}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteEmployeeTeamByTeamAndEmpId(int tId, int eId)
         {
             db.EmployeeTeam.Remove(db.EmployeeTeam.First(x => x.Team.TeamID == tId && x.Employee.EmployeeID == eId));

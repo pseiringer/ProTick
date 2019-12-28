@@ -11,7 +11,7 @@ using ProTickDatabase;
 namespace ProTick.Controllers
 {
 
-    [Route("ProTick/[controller]"), Authorize]
+    [Route("ProTick/[controller]"), Authorize(Roles = StaticRoles.Admin)]
     public class ParentChildRelationController : Controller
     {
         private ProTickDatabaseContext db;

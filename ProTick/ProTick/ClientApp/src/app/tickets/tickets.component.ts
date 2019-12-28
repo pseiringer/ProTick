@@ -16,318 +16,322 @@ import { AuthGuard } from '../../classes/Authentication/AuthGuard';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-tickets',
-  templateUrl: './tickets.component.html',
-  styleUrls: ['./tickets.component.css'],
-  providers: [TicketService, StateService, ProcessService, TeamService, StaticDatabaseObjectsService],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed, void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-tickets',
+    templateUrl: './tickets.component.html',
+    styleUrls: ['./tickets.component.css'],
+    providers: [TicketService, StateService, ProcessService, TeamService, StaticDatabaseObjectsService],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed, void', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+            transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
 })
 export class TicketsComponent implements OnInit {
 
-  @ViewChild(MatTable, { static: true, read:MatTable }) table: MatTable<any>;
-  //@ViewChild(MatSort, { static: false }) sort: MatSort;
+    @ViewChild(MatTable, { static: true, read: MatTable }) table: MatTable<any>;
+    //@ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  allTeams: Team[] = [];
-  selectedTeam: number = 0;
-  allStates: State[] = [];
-  selectedState: number = 0;
-  allTickets: FullTicket[] = [];
-  displayedTickets: FullTicket[] = [];
+    allTeams: Team[] = [];
+    selectedTeam: number = 0;
+    allStates: State[] = [];
+    selectedState: number = 0;
+    allTickets: FullTicket[] = [];
+    displayedTickets: FullTicket[] = [];
 
-  //dataSource = new MatTableDataSource(this.displayedTickets);
+    //dataSource = new MatTableDataSource(this.displayedTickets);
 
-  newTicket: Ticket;
+    newTicket: Ticket;
 
-  openDescription: string;
-  inProgressDescription: string;
-  finishedDescription: string;
+    openDescription: string;
+    inProgressDescription: string;
+    finishedDescription: string;
 
-  displayedColumns: string[] = ['ticketID', 'description', 'stateDescription', 'subprocessDescription', 'teamDescription', 'options'];
+    displayedColumns: string[] = ['ticketID', 'description', 'stateDescription', 'subprocessDescription', 'teamDescription', 'options'];
 
-  expandedElement: FullTicket | null;
+    expandedElement: FullTicket | null;
 
-  ticketDoneString: string = "";
+    ticketDoneString: string = "";
 
-  constructor(private ticketService: TicketService,
-    private processService: ProcessService,
-    private teamService: TeamService,
-    private stateService: StateService,
-    public dialog: MatDialog,
-    private staticDatabaseObjectService: StaticDatabaseObjectsService,
-    private authGuard: AuthGuard) { }
+    constructor(private ticketService: TicketService,
+        private processService: ProcessService,
+        private teamService: TeamService,
+        private stateService: StateService,
+        public dialog: MatDialog,
+        private staticDatabaseObjectService: StaticDatabaseObjectsService,
+        private authGuard: AuthGuard) { }
 
 
-  ngOnInit() {
-    this.reloadTickets();
-    this.reloadTeams();
-    this.reloadStates();
+    ngOnInit() {
+        this.reloadTickets();
+        this.reloadTeams();
+        this.reloadStates();
 
-    //console.log(this.authGuard.getRole());
-    //console.log(this.authGuard.isAdmin());
+        //console.log(this.authGuard.getRole());
+        //console.log(this.authGuard.isAdmin());
 
-    //this.renderTable();
-  }
-    
+        //this.renderTable();
+    }
 
-  onBegin(ev: Event, ticket: Ticket) {
-    ev.stopPropagation();
 
-    const id = ticket.ticketID;
-    console.log(ticket);
-    const dialogRef = this.dialog.open(ForwardTicketComponent, {
-      data: {
-        ticket: {
-          ticketID: id,
-          description: ticket.description,
-          note: ticket.note,
-          stateID: ticket.stateID,
-          subprocessID: ticket.subprocessID
-        },
-        functionality: Functionality.Begin
-      }
-      });
+    onBegin(ev: Event, ticket: Ticket) {
+        ev.stopPropagation();
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined)
-        this.ticketService.putTicket(id, result)
-          .subscribe(_ => this.reloadTickets())
-    });
-  }
+        const id = ticket.ticketID;
+        console.log(ticket);
+        const dialogRef = this.dialog.open(ForwardTicketComponent, {
+            data: {
+                ticket: {
+                    ticketID: id,
+                    description: ticket.description,
+                    note: ticket.note,
+                    stateID: ticket.stateID,
+                    subprocessID: ticket.subprocessID
+                },
+                functionality: Functionality.Begin
+            }
+        });
 
-  onFinished(ticket: Ticket) {
-    const id = ticket.ticketID;
-    console.log(ticket);
-    const dialogRef = this.dialog.open(ForwardTicketComponent, {
-      data: {
-        ticket: {
-          ticketID: id,
-          description: ticket.description,
-          note: ticket.note,
-          stateID: ticket.stateID,
-          subprocessID: ticket.subprocessID
-        },
-        functionality: Functionality.Finish
-      }
-      });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result !== undefined)
+                this.ticketService.putTicket(id, result)
+                    .subscribe(_ => this.reloadTickets())
+        });
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined)
-        this.ticketService.putTicket(id, result)
-          .subscribe(_ => this.reloadTickets())
-    });
-  }
+    onFinished(ticket: Ticket) {
+        const id = ticket.ticketID;
+        console.log(ticket);
+        const dialogRef = this.dialog.open(ForwardTicketComponent, {
+            data: {
+                ticket: {
+                    ticketID: id,
+                    description: ticket.description,
+                    note: ticket.note,
+                    stateID: ticket.stateID,
+                    subprocessID: ticket.subprocessID
+                },
+                functionality: Functionality.Finish
+            }
+        });
 
-  onAdd(): void {
-    
-    const dialogRef = this.dialog.open(CreateTicketComponent, {
-      data: {
-        ticket: {
-          ticketID: undefined,
-          description: undefined,
-          note: undefined,
-          stateID: undefined,
-          subprocessID: undefined
-        },
-        isEdit: false
-      }
-    });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result !== undefined)
+                this.ticketService.putTicket(id, result)
+                    .subscribe(_ => this.reloadTickets())
+        });
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.ticketService.postTicket(result)
-          .subscribe(data => {            
-            //TODO error handling
-            this.reloadTickets();
-          });          
-      }
-    });
-  }
+    onAdd(): void {
 
-  onEdit(ticket: Ticket) {
-    const id = ticket.ticketID;
-    const dialogRef = this.dialog.open(CreateTicketComponent, {
-      data: {
-        ticket: {
-          ticketID: id,
-          description: ticket.description,
-          note: ticket.note,
-          stateID: ticket.stateID,
-          subprocessID: ticket.subprocessID
-        },
-        isEdit: true
-      }
-    });
+        const dialogRef = this.dialog.open(CreateTicketComponent, {
+            data: {
+                ticket: {
+                    ticketID: undefined,
+                    description: undefined,
+                    note: undefined,
+                    stateID: undefined,
+                    subprocessID: undefined
+                },
+                isEdit: false
+            }
+        });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.ticketService.putTicket(id, result)
-          .subscribe(data => {
-            //TODO error handling
-            this.reloadTickets();
-          });
-      }
-    });
-  }
+        dialogRef.afterClosed().subscribe(result => {
+            if (result !== undefined) {
+                this.ticketService.postTicket(result)
+                    .subscribe(data => {
+                        //TODO error handling
+                        this.reloadTickets();
+                    });
+            }
+        });
+    }
 
-  onDelete(id: number) {
-    if (this.authGuard.canActivate()) {
-      const dialogRef = this.dialog.open(YesNoComponent, {
-        data: {
-          title: "Delete",
-          text: "Do you really want to delete Ticket "+id,
-          no: "No",
-          yes: "Yes"
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result === true) {
-          this.ticketService.deleteTicket(id)
-            .subscribe(data => {
-              //TODO error handling
-              this.reloadTickets();
+    onEdit(ticket: Ticket) {
+        const id = ticket.ticketID;
+        const dialogRef = this.dialog.open(CreateTicketComponent, {
+            data: {
+                ticket: {
+                    ticketID: id,
+                    description: ticket.description,
+                    note: ticket.note,
+                    stateID: ticket.stateID,
+                    subprocessID: ticket.subprocessID
+                },
+                isEdit: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result !== undefined) {
+                this.ticketService.putTicket(id, result)
+                    .subscribe(data => {
+                        //TODO error handling
+                        this.reloadTickets();
+                    });
+            }
+        });
+    }
+
+    onDelete(id: number) {
+        if (this.authGuard.canActivate()) {
+            const dialogRef = this.dialog.open(YesNoComponent, {
+                data: {
+                    title: "Delete",
+                    text: "Do you really want to delete Ticket " + id,
+                    no: "No",
+                    yes: "Yes"
+                }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result === true) {
+                    this.ticketService.deleteTicket(id)
+                        .subscribe(data => {
+                            //TODO error handling
+                            this.reloadTickets();
+                        });
+                }
             });
         }
-      });
     }
-  }
 
 
-  reloadStates() {
-    this.allStates = [];
-    this.stateService.getStates()
-      .subscribe(data => {
-        //TODO Error handling
-        this.allStates = data;
+    reloadStates() {
+        this.allStates = [];
+        this.stateService.getStates()
+            .subscribe(data => {
+                //TODO Error handling
+                this.allStates = data;
 
-        this.openDescription = this.allStates
-          .find(x => x.stateID === this.staticDatabaseObjectService.getStates().Open).description;
-        this.inProgressDescription = this.allStates
-          .find(x => x.stateID === this.staticDatabaseObjectService.getStates().InProgress).description;
-        this.finishedDescription = this.allStates
-          .find(x => x.stateID === this.staticDatabaseObjectService.getStates().Finished).description;
-      });
-  }
+                this.openDescription = this.allStates
+                    .find(x => x.stateID === this.staticDatabaseObjectService.getStates().Open).description;
+                this.inProgressDescription = this.allStates
+                    .find(x => x.stateID === this.staticDatabaseObjectService.getStates().InProgress).description;
+                this.finishedDescription = this.allStates
+                    .find(x => x.stateID === this.staticDatabaseObjectService.getStates().Finished).description;
+            });
+    }
 
-  reloadTeams() {
-    this.allTeams = [];
-    if (this.authGuard.isAdmin())
-      this.teamService.getTeams()
-        .subscribe(data => {
-          //TODO Error handling
-          this.allTeams = data;
-        });
-    else
-      this.teamService.getTeamsByUsername(this.authGuard.getUsername())
-        .subscribe(data => {
-          //TODO Error handling
-          this.allTeams = data;
-        });
-    
-  }
+    reloadTeams() {
+        this.allTeams = [];
+        if (this.authGuard.isAdmin())
+            this.teamService.getTeams()
+                .subscribe(data => {
+                    //TODO Error handling
+                    this.allTeams = data;
+                });
+        else
+            this.teamService.getTeamsByUsername(this.authGuard.getUsername())
+                .subscribe(data => {
+                    //TODO Error handling
+                    this.allTeams = data;
+                });
 
-  reloadTickets() {
-    this.allTickets = [];
-    if (this.authGuard.isAdmin())
-      this.ticketService.getTicket()
-        .subscribe(data => {
-          //TODO error handling
-          this.fillTickets(data); 
-        });
-    else
-      this.ticketService.getTicketsByUsername(this.authGuard.getUsername())
-        .subscribe(data => {
-          //TODO Error handling
-          this.fillTickets(data);
-        });
-  }
-  
+    }
 
-  renderTable() {
-    this.displayedTickets = this.allTickets
-      .filter(x => {
-        if (this.selectedState !== 0 && this.selectedState !== x.stateID) return false;
-        if (this.selectedTeam !== 0 && this.selectedTeam !== x.teamID) return false;
-        return true;
-      })
-      .sort((x, y) => x.ticketID - y.ticketID);
+    reloadTickets() {
+        this.allTickets = [];
+        if (this.authGuard.isAdmin())
+            this.ticketService.getTicket()
+                .subscribe(data => {
+                    //TODO error handling
+                    this.fillTickets(data);
+                });
+        else
+            this.ticketService.getTicketsByUsername(this.authGuard.getUsername())
+                .subscribe(data => {
+                    //TODO Error handling
+                    this.fillTickets(data);
+                });
+    }
 
-    //this.dataSource = new MatTableDataSource(this.displayedTickets);
-    //this.dataSource.sort = this.sort;
 
-    this.table.renderRows();
-  }
-  
-  fillTickets(data: Ticket[]) {
-    data.forEach(d => {
-      const fullTicket: FullTicket = {
-        ticketID: undefined,
-        description: undefined,
-        note: undefined,
-        processDescription: undefined,
-        stateID: undefined,
-        stateDescription: undefined,
-        subprocessID: undefined,
-        subprocessDescription: undefined,
-        teamID: undefined,
-        teamDescription: undefined
-      };
+    renderTable() {
+        this.displayedTickets = this.allTickets
+            .filter(x => {
+                if (this.selectedState !== 0 && this.selectedState !== x.stateID) return false;
+                if (this.selectedTeam !== 0 && this.selectedTeam !== x.teamID) return false;
+                return true;
+            })
+            .sort((x, y) => x.ticketID - y.ticketID);
 
-      fullTicket.ticketID = d.ticketID
-      fullTicket.description = d.description;
-      fullTicket.note = d.note;
-      fullTicket.stateID = d.stateID;
-      this.stateService.getState(d.stateID)
-        .subscribe(state => {
-          fullTicket.stateDescription = state.description;
-          fullTicket.subprocessID = d.subprocessID;
-          if (fullTicket.subprocessID == -1) {
-            fullTicket.subprocessDescription = this.ticketDoneString;
-            fullTicket.teamID = -1;
-            fullTicket.teamDescription = this.ticketDoneString;
-            this.allTickets.push(fullTicket);
-            this.renderTable();
-          }
-          else {
-            this.processService.getSubprocessById(d.subprocessID)
-              .subscribe(subprocess => {
-                fullTicket.subprocessDescription = subprocess.description;
-                fullTicket.teamID = subprocess.teamID;
-                this.teamService.getTeam(subprocess.teamID)
-                  .subscribe(team => {
-                    fullTicket.teamDescription = team.description;
-                    this.processService.getProcess(subprocess.processID)
-                      .subscribe(process => {
-                        fullTicket.processDescription = process.description;
+        //this.dataSource = new MatTableDataSource(this.displayedTickets);
+        //this.dataSource.sort = this.sort;
+
+        this.table.renderRows();
+    }
+
+    fillTickets(data: Ticket[]) {
+        data.forEach(d => {
+            const fullTicket: FullTicket = {
+                ticketID: undefined,
+                description: undefined,
+                note: undefined,
+                processDescription: undefined,
+                stateID: undefined,
+                stateDescription: undefined,
+                subprocessID: undefined,
+                subprocessDescription: undefined,
+                teamID: undefined,
+                teamDescription: undefined
+            };
+
+            fullTicket.ticketID = d.ticketID
+            fullTicket.description = d.description;
+            fullTicket.note = d.note;
+            fullTicket.stateID = d.stateID;
+            this.stateService.getState(d.stateID)
+                .subscribe(state => {
+                    fullTicket.stateDescription = state.description;
+                    fullTicket.subprocessID = d.subprocessID;
+                    if (fullTicket.subprocessID == -1) {
+                        fullTicket.subprocessDescription = this.ticketDoneString;
+                        fullTicket.teamID = -1;
+                        fullTicket.teamDescription = this.ticketDoneString;
                         this.allTickets.push(fullTicket);
                         this.renderTable();
-                      });                   
-                  });
-              });
-          }
-        });
-    })       
-  }
+                    }
+                    else {
+                        this.processService.getSubprocessById(d.subprocessID)
+                            .subscribe(subprocess => {
+                                fullTicket.subprocessDescription = subprocess.description;
+                                fullTicket.teamID = subprocess.teamID;
+                                this.teamService.getTeam(subprocess.teamID)
+                                    .subscribe(team => {
+                                        fullTicket.teamDescription = team.description;
+                                        this.processService.getProcess(subprocess.processID)
+                                            .subscribe(process => {
+                                                fullTicket.processDescription = process.description;
+                                                this.allTickets.push(fullTicket);
+                                                this.renderTable();
+                                            });
+                                    });
+                            });
+                    }
+                });
+        })
+    }
 
 
-  getTicketsByStateID(stateID) {
-    this.selectedState = stateID;
-    this.renderTable();
-  }
+    getTicketsByStateID(stateID) {
+        this.selectedState = stateID;
+        this.renderTable();
+    }
 
-  getEmployeesByTeamID(teamID) {
-    this.selectedTeam = teamID;
-    this.renderTable();
-  }
+    getEmployeesByTeamID(teamID) {
+        this.selectedTeam = teamID;
+        this.renderTable();
+    }
 
 
-  ticketFinished(ticket): boolean {
-    return ticket.subprocessID === -1;
-  }
+    ticketFinished(ticket): boolean {
+        return ticket.subprocessID === -1;
+    }
+
+    userIsAdmin(): boolean {
+        return this.authGuard.isAdmin();
+    }
 }

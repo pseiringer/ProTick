@@ -50,7 +50,7 @@ namespace ProTick.Controllers
                 .ToList();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public SubprocessDTO NewSubprocess([FromServices] ProTickDatabaseContext db, [FromBody] SubprocessDTO s)
         {
             var a = db.Subprocess.Add(converter.DTOToSubprocess(s));
@@ -62,7 +62,7 @@ namespace ProTick.Controllers
             return converter.SubprocessToDTO(a.Entity);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public SubprocessDTO EditSubprocess([FromServices] ProTickDatabaseContext db, int id, [FromBody] SubprocessDTO s)
         {
             var sp = dbm.FindSubprocessByID(id);
@@ -88,7 +88,7 @@ namespace ProTick.Controllers
             return converter.SubprocessToDTO(sp);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteSubprocess([FromServices] ProTickDatabaseContext db, int id)
         {
             db.Subprocess.Remove(db.Subprocess.First(x => x.SubprocessID == id));
