@@ -106,7 +106,7 @@ tr.mat-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  background: #777;
+  background: #cfcfcf;
 }
 
 tr.example-element-row:not(.example-expanded-row):active {

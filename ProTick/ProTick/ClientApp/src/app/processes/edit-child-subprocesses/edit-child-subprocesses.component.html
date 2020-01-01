@@ -1,5 +1,11 @@
 <form>
-  <h6>{{data.subprocess.subprocessID}}: {{data.subprocess.description}}</h6>
+  <div>
+    <h6 style="display: inline-block">{{data.subprocess.subprocessID}}: {{data.subprocess.description}}</h6>
+
+    <button mat-button (click)="onNoClick()" style="display: inline-block; float: right">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
 
 
   <div class="mat-elevation-z8 table_container">

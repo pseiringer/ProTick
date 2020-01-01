@@ -1,5 +1,11 @@
 <form [formGroup]="ticketForm">
-  <p mat-dialog-title>Neues Ticket</p>
+  
+  <div>
+    <p mat-dialog-title style="display: inline-block">Neues Ticket</p>
+    <button mat-button (click)="onCancelClicked()" style="display: inline-block; float: right">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
   <mat-dialog-content>
     <div *ngIf="isEdit">
       <label>
