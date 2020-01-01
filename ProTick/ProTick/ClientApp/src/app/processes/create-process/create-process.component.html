@@ -1,4 +1,9 @@
 <form [formGroup]="processForm">
+  <div>
+    <button mat-button (click)="onNoClick()" style="display: inline-block; float: right">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
   <mat-form-field>
     <input matInput [(ngModel)]="data.description" formControlName="description" placeholder="Beschreibung" />
   </mat-form-field>

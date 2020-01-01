@@ -4198,23 +4198,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jonas\\.nuget\\packages\\": {},
+    "C:\\Users\\Lisa\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\04_DA\\ProTick\\ProTick\\ProTickDatabase\\ProTickDatabase.csproj",
+      "projectUniqueName": "D:\\Schule\\Diplomarbeit\\Projekt\\ProTick\\ProTick\\ProTickDatabase\\ProTickDatabase.csproj",
       "projectName": "ProTickDatabase",
-      "projectPath": "D:\\04_DA\\ProTick\\ProTick\\ProTickDatabase\\ProTickDatabase.csproj",
-      "packagesPath": "C:\\Users\\Jonas\\.nuget\\packages\\",
-      "outputPath": "D:\\04_DA\\ProTick\\ProTick\\ProTickDatabase\\obj\\",
+      "projectPath": "D:\\Schule\\Diplomarbeit\\Projekt\\ProTick\\ProTick\\ProTickDatabase\\ProTickDatabase.csproj",
+      "packagesPath": "C:\\Users\\Lisa\\.nuget\\packages\\",
+      "outputPath": "D:\\Schule\\Diplomarbeit\\Projekt\\ProTick\\ProTick\\ProTickDatabase\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Jonas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Lisa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

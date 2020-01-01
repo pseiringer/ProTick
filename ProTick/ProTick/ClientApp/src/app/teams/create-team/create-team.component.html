@@ -1,6 +1,11 @@
 <form [formGroup]="teamDataFormGroup">
 
-  <h6>{{_header}}</h6>
+  <div>
+    <h6 style="display: inline-block">{{_header}}</h6>
+    <button mat-button (click)="onNoClick()" style="display: inline-block; float: right">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
   <mat-form-field class="mat-form-field-appearance-legacy" [hideRequiredMarker]="true">
     <input matInput [(ngModel)]="data.description" placeholder="Beschreibung" formControlName="descCtrl" required />
   </mat-form-field>
