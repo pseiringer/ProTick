@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProTick.Exceptions
 {
-    class DatabaseEntryNotFoundException : Exception
+    public class DatabaseEntryNotFoundException : Exception
     {
         public DatabaseEntryNotFoundException(string message) : base(message)
         {
