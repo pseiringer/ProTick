@@ -59,6 +59,13 @@
         <th mat-header-cell *matHeaderCellDef> Kindprozesse </th>
         <td mat-cell *matCellDef="let element">
           <span>{{getFormatedChildrenOf(element)}}</span>
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="childOptions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
           <button mat-mini-fab (click)="openEditChildSubprocessesDialog(element)"><mat-icon aria-hidden="false" aria-label="Bearbeiten">more_horiz</mat-icon></button>
         </td>
       </ng-container>
@@ -108,9 +115,16 @@
         <th mat-header-cell *matHeaderCellDef> Kindprozesse </th>
         <td mat-cell *matCellDef="let element">
           <span>{{getFormatedChildrenOf(element)}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="childOptions">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
           <button mat-mini-fab (click)="openEditChildSubprocessesDialog(element)"><mat-icon aria-hidden="false" aria-label="Bearbeiten">more_horiz</mat-icon></button>
         </td>
       </ng-container>
+
 
       <ng-container matColumnDef="optionButtons">
         <th mat-header-cell *matHeaderCellDef>  </th>

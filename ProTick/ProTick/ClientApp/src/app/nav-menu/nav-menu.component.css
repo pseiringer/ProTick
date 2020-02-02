@@ -33,15 +33,22 @@ i {
   margin-right: 0.3em;
   float: left;
   padding-top: 4px;
-
   display: table-cell;
   vertical-align: middle;
   text-align: center;
 }
 
-span.sidebar-header {
-  font-size: 1.15em;
-  color: #fff;
+.wrap_div {
+  width: 100vh;
+}
+
+.company_logo {
+    margin-left: 45px;
+    height: 40px;
+}
+
+.diploma_logo {
+  height: 70px;
 }
 
 div.protick-underline {
@@ -57,9 +64,4 @@ div.protick-underline {
 
 img {
   height: 30px;
-  margin-right: 60px;
-}
-
-.wrap_div{
-  width: 200px;
 }

@@ -8,16 +8,23 @@
   border-radius: 2px;
 }
 
+mat-form-field {
+    width: 300px;
+}
+
 input[type] {
   border-radius: 2px;
 }
 
 button {
+  width: 270px;
+  margin: auto;
   color: #000;
   background-color: #f2a718;
   border-radius: 2px;
   border: none;
   transition: .5s;
+  margin-top: 20px;
 }
 
 #loginBtn {
@@ -31,4 +38,9 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
   border: 1px solid #f2a718;
   outline: 0 none;
   box-shadow: 0 0 0 0.1rem #f2a718;
+}
+
+img{
+    margin-bottom: 30px;
+    margin-top: 30px;
 }

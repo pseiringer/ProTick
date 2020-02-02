@@ -2,6 +2,12 @@ body {
   margin: 1%;
 }
 
+th.mat-header-cell, td.mat-cell {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+
 .example-list {
   width: 500px;
   max-width: 100%;
