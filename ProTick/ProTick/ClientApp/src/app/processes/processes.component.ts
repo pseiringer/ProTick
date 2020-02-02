@@ -72,9 +72,9 @@ export class ProcessesComponent implements OnInit {
         processName: undefined
     }
 
-    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'optionButtons'];
+    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'childOptions', 'optionButtons'];
 
-    firstDisplayedColumns: string[] = ['firstSubprocessID', 'firstDescription', 'firstTeamName', 'childProcesses'];
+  firstDisplayedColumns: string[] = ['firstSubprocessID', 'firstDescription', 'firstTeamName', 'childProcesses', 'childOptions'];
 
     serviceWorking: boolean = false;
 
