@@ -40,6 +40,7 @@ namespace ProTick.Singletons
         Subprocess FindSubprocessByID(int id);
         List<Subprocess> FindAllSubprocesses();
         List<Subprocess> FindAllSubprocesses(bool includeReferences);
+        List<Ticket> FindAllTicketsBySubprocessID(int id);
         List<Subprocess> FindAllChildrenBySubprocessID(int id);
 
         Team FindTeamByID(int id);
