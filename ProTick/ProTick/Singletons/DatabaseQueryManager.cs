@@ -282,7 +282,9 @@ namespace ProTick.Singletons
 
         public List<Ticket> FindAllTicketsByUsername(string username)
         {
-            var empID = FindEmployeeByUsername(username).EmployeeID;
+            var emp = FindEmployeeByUsername(username);
+            if (emp == null) throw new DatabaseEntryNotFoundException($"Employee with username ({username}) was not found");
+            var empID = emp.EmployeeID;
             var empTeams = FindEmployeeTeamsByEmployeeID(empID).Select(x => x.Team.TeamID);
             return db.Ticket
                 .Include(x => x.Subprocess)

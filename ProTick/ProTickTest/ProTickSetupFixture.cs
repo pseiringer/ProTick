@@ -13,7 +13,7 @@ namespace ProTickTest
         public ProTickSetupFixture()
         {
             dbOptions =  new DbContextOptionsBuilder<ProTickDatabaseContext>()
-                    .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                    .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options;
         }
 
