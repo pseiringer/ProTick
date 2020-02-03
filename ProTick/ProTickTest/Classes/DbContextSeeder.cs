@@ -214,7 +214,7 @@ namespace ProTickTest.Classes
             var addresses = new List<AddressDTO>();
             for (int i = 0; i < amount; i++)
             {
-                addresses.Add(DbPOCOGenerator.GenerateAddressDTO(i));
+                addresses.Add(DbPOCOGenerator.GenerateAddressDTO(i + 1));
             }
             return addresses;
         }

@@ -41,7 +41,7 @@ namespace ProTick.Controllers
         }
 
         [HttpGet("{id}/Teams")]
-        public IEnumerable<TeamDTO> GetTeamsByEmployeeID([FromServices] ProTickDatabaseContext db, int id)
+        public IEnumerable<TeamDTO> GetTeamsByEmployeeID(int id)
         {
             return dbm.FindAllEmployeeTeams(true).Where(x => x.Employee.EmployeeID == id).SelectMany(x => dbm.FindAllTeams(true).Where(y => x.Team.TeamID == y.TeamID)).Distinct().Select(x => converter.TeamToDTO(x)).ToList();
         }
