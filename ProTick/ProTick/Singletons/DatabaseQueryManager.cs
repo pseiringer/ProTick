@@ -261,6 +261,14 @@ namespace ProTick.Singletons
             }
         }
 
+        public List<Ticket> FindAllTicketsBySubprocessID(int id)
+        {
+            return db.Ticket.Include(x => x.State)
+                        .Include(x => x.Subprocess)
+                        .Where(x => x.Subprocess.SubprocessID == id)
+                        .ToList();
+        }
+
 
         public List<Subprocess> FindAllChildrenBySubprocessID(int id)
         {

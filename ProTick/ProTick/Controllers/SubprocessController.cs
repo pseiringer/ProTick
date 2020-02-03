@@ -27,22 +27,22 @@ namespace ProTick.Controllers
 
 
         [HttpGet("{id}")]
-        public SubprocessDTO GetSubprocess([FromServices] ProTickDatabaseContext db, int id)
+        public SubprocessDTO GetSubprocess(int id)
         {
             return converter.SubprocessToDTO(dbm.FindSubprocessByID(id));
         }
 
         [HttpGet]
-        public IEnumerable<SubprocessDTO> GetSubprocesses([FromServices] ProTickDatabaseContext db)
+        public IEnumerable<SubprocessDTO> GetSubprocesses()
         {
             return dbm.FindAllSubprocesses(true).Select(x => converter.SubprocessToDTO(x)).ToList();
         }
 
         [HttpGet("{id}/Children")]
-        public IEnumerable<SubprocessDTO> GetChildrenOfSubprocess([FromServices] ProTickDatabaseContext db, int id)
+        public IEnumerable<SubprocessDTO> GetChildrenOfSubprocess(int id)
         {
             return dbm.FindAllChildrenBySubprocessID(id)
-                .Select(x => 
+                .Select(x =>
                 {
                     if (x != null) return converter.SubprocessToDTO(x);
                     return null;
@@ -50,8 +50,20 @@ namespace ProTick.Controllers
                 .ToList();
         }
 
+        [HttpGet("{id}/Tickets")]
+        public IEnumerable<TicketDTO> GetTicketsOfSubprocess(int id)
+        {
+            return dbm.FindAllTicketsBySubprocessID(id)
+                .Select(x =>
+                {
+                    if (x != null) return converter.TicketToDTO(x);
+                    return null;
+                })
+                .ToList();
+        }
+
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public SubprocessDTO NewSubprocess([FromServices] ProTickDatabaseContext db, [FromBody] SubprocessDTO s)
+        public SubprocessDTO NewSubprocess([FromBody] SubprocessDTO s)
         {
             var a = db.Subprocess.Add(converter.DTOToSubprocess(s));
 
@@ -63,7 +75,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public SubprocessDTO EditSubprocess([FromServices] ProTickDatabaseContext db, int id, [FromBody] SubprocessDTO s)
+        public SubprocessDTO EditSubprocess(int id, [FromBody] SubprocessDTO s)
         {
             var sp = dbm.FindSubprocessByID(id);
 
@@ -89,7 +101,7 @@ namespace ProTick.Controllers
         }
 
         [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public void DeleteSubprocess([FromServices] ProTickDatabaseContext db, int id)
+        public void DeleteSubprocess(int id)
         {
             db.Subprocess.Remove(db.Subprocess.First(x => x.SubprocessID == id));
             db.SaveChanges();
