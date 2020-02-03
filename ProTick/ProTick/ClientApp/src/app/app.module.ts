@@ -43,6 +43,7 @@ import { JwtHeader } from '../classes/Authentication/JwtHeader';
 import { EditChildSubprocessesComponent } from './processes/edit-child-subprocesses/edit-child-subprocesses.component';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { EditProcessComponent } from './processes/edit-process/edit-process.component';
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         CreateSubprocessComponent,
         ForwardTicketComponent,
         EditChildSubprocessesComponent,
+        EditProcessComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -109,7 +111,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         YesNoComponent,
         CreateSubprocessComponent,
         ForwardTicketComponent,
-        EditChildSubprocessesComponent
+        EditChildSubprocessesComponent,
+        EditProcessComponent,
     ],
     bootstrap: [AppComponent],
 })

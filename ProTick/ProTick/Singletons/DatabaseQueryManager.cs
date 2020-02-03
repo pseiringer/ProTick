@@ -91,7 +91,6 @@ namespace ProTick.Singletons
             return ticket;
         }
 
-
         #endregion
 
 
