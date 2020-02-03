@@ -118,7 +118,10 @@ namespace ProTickTest.Classes
             var roles = new List<Role>();
             roles.Add(DbPOCOGenerator.GenerateRole(1, "Employee"));
             roles.Add(DbPOCOGenerator.GenerateRole(2, "Admin"));
-            roles.Add(DbPOCOGenerator.GenerateRole(3, "Other"));
+            for (int i = 3; i < amount+1; i++)
+            {
+                roles.Add(DbPOCOGenerator.GenerateRole(i, "Other"+i));
+            }
 
             return roles;
         }
@@ -211,7 +214,7 @@ namespace ProTickTest.Classes
             var addresses = new List<AddressDTO>();
             for (int i = 0; i < amount; i++)
             {
-                addresses.Add(DbPOCOGenerator.GenerateAddressDTO(i));
+                addresses.Add(DbPOCOGenerator.GenerateAddressDTO(i + 1));
             }
             return addresses;
         }
@@ -221,7 +224,10 @@ namespace ProTickTest.Classes
 
             roles.Add(DbPOCOGenerator.GenerateRoleDTO(1, "Employee"));
             roles.Add(DbPOCOGenerator.GenerateRoleDTO(2, "Admin"));
-            roles.Add(DbPOCOGenerator.GenerateRoleDTO(3, "Other"));
+            for (int i = 3; i < amount + 1; i++)
+            {
+                roles.Add(DbPOCOGenerator.GenerateRoleDTO(3, "Other"+i));
+            }
 
             return roles;
         }
