@@ -15,25 +15,31 @@ import { CreateSubprocessComponent } from '../processes/create-subprocess/create
 
 import { MatDialog, MatTable } from '@angular/material';
 import { isNullOrUndefined } from 'util';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, pipe } from 'rxjs';
 import { EditChildSubprocessesComponent } from './edit-child-subprocesses/edit-child-subprocesses.component';
 import { EditProcessComponent } from './edit-process/edit-process.component';
 import { YesNoComponent } from '../yes-no/yes-no.component';
 import { AuthGuard } from '../../classes/Authentication/AuthGuard';
 import { TicketService } from '../core/ticket/ticket.service';
+import { Ticket } from '../../classes/Ticket';
+import { mergeMap } from 'rxjs-compat/operator/mergeMap';
 
 @Component({
     selector: 'app-processes',
     templateUrl: './processes.component.html',
     styleUrls: ['./processes.component.css'],
-    providers: [ProcessService, ParentChildRelationService, TeamService],
+    providers: [
+        ProcessService,
+        ParentChildRelationService,
+        TeamService,
+        TicketService,
+    ],
 })
 
 export class ProcessesComponent implements OnInit {
 
     //@ViewChild(MatTable, { static: true, read: MatTable }) table: MatTable<any>;
     //@ViewChild(MatTable, { static: true, read: MatTable }) tableFirst: MatTable<any>;
-
 
     @ViewChild('table', { static: true, read: MatTable }) table: MatTable<any>;
     @ViewChild('tableFirst', { static: true, read: MatTable }) tableFirst: MatTable<any>;
@@ -85,7 +91,7 @@ export class ProcessesComponent implements OnInit {
     constructor(private _processService: ProcessService,
         private _parentChildRelationService: ParentChildRelationService,
         private _teamService: TeamService,
-        //private _ticketService: TicketService,
+        private _ticketService: TicketService,
         public dialog: MatDialog,
         private authGuard: AuthGuard) { }
 
@@ -216,27 +222,12 @@ export class ProcessesComponent implements OnInit {
                     }
                 });
 
+                // !! BEI TICKETS PROCESS ANZEIGEN, KÖNNTE ZWEI SUBPROCESSE MIT DEM GLEICHEN NAMEN GEBEN !!
+
                 dialogRef.afterClosed().subscribe(result => {
                     if (result === true) {
-                        this._processService.getSubprocessesByProcessID(x.processID).subscribe(subprocesses => {
-                            console.log(subprocesses);
-                            //this._ticketService.GetTicketBy
-                        });
-
-                        //this._ticketService.deleteTicket().subscribe(ticket => {
-
-                        //});
-                        
-                        //delete Ticket
-                        //delete Relations
-                        //delete Subprocesses
-                        //delete Process
-
-                        //this._processService.deleteProcess(x.processID).subscribe(data => {
-                        //    this.getProcesses();
-                        //});
-
-                        //this._processService.deleteSubprocess
+                        this._processService.deleteProcess(x.processID).subscribe();
+                        this.getProcesses();
                     }
                 });
             }
