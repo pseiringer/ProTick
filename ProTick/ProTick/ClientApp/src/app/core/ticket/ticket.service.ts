@@ -35,6 +35,11 @@ export class TicketService {
             { headers: this.jwtHeader.getJwtHeader() });
     }
 
+    getTicketsBySubprocessID(id: number): Observable<Ticket[]> {
+        return this.http.get<Ticket[]>('http://localhost:8080/ProTick/Subprocess/' + id + '/Tickets',
+            { headers: this.jwtHeader.getJwtHeader() });
+    }
+
     postTicket(ticket: Ticket): Observable<Ticket> {
         console.log(ticket);
         return this.http.post<Ticket>('http://localhost:8080/ProTick/Ticket',

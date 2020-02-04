@@ -1,11 +1,15 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProTick.Controllers;
 using ProTick.Exceptions;
 using ProTick.Singletons;
 using ProTickDatabase;
 using ProTickTest.Classes;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Xunit;
 
 namespace ProTickTest
@@ -72,9 +76,24 @@ namespace ProTickTest
                 var dbm = new DatabaseQueryManager(context);
                 var converter = new ResourceDTOConverter(dbm);
 
-                var controller = new TicketController(context, converter, dbm);
 
-                //Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTicketsByUsername("a1"));
+                var expectedUsername = "a2";
+                var expectedRole = "Admin";
+
+                var controller = new TicketController(context, converter, dbm);
+                var user = new ClaimsPrincipal(new ClaimsIdentity(
+                        new List<Claim>()
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, expectedUsername),
+                            new Claim(ClaimTypes.Role, expectedRole)
+                        }));
+                controller.ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext() { User = user }
+                };
+
+                
+                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTicketsByUsername(expectedUsername));
 
             }
 
@@ -90,10 +109,23 @@ namespace ProTickTest
                 var dbm = new DatabaseQueryManager(context);
                 var converter = new ResourceDTOConverter(dbm);
 
+                var expectedUsername = "a2";
+                var expectedRole = "Admin";
+
                 var controller = new TicketController(context, converter, dbm);
+                var user = new ClaimsPrincipal(new ClaimsIdentity(
+                        new List<Claim>()
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, expectedUsername),
+                            new Claim(ClaimTypes.Role, expectedRole)
+                        }));
+                controller.ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext() { User = user }
+                };
 
                 // admin
-                var actualAdmin = controller.GetTicketsByUsername("a2").ToList();
+                var actualAdmin = controller.GetTicketsByUsername(expectedUsername).ToList();
 
                 var expectedAdmin = DbContextSeeder.GetSeededTicketDTOs(
                     3,
@@ -103,6 +135,7 @@ namespace ProTickTest
                         DbContextSeeder.GetSeededProcessDTOs(3),
                         DbContextSeeder.GetSeededTeamDTOs(3))
                     )
+                    .Where(x => x.TicketID == 2)
                     .ToList();
 
                 Assert.Equal(expectedAdmin.Count, actualAdmin.Count);
@@ -110,7 +143,20 @@ namespace ProTickTest
                 expectedAdmin.Should().BeEquivalentTo(actualAdmin);
 
                 // employee
-                var actualEmployee = controller.GetTicketsByUsername("a1").ToList();
+                expectedUsername = "a1";
+                expectedRole = "Employee";
+                var user2 = new ClaimsPrincipal(new ClaimsIdentity(
+                        new List<Claim>()
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, expectedUsername),
+                            new Claim(ClaimTypes.Role, expectedRole)
+                        }));
+                controller.ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext() { User = user2 }
+                };
+
+                var actualEmployee = controller.GetTicketsByUsername(expectedUsername).ToList();
                 var expectedEmployee = DbContextSeeder.GetSeededTicketDTOs(
                     1,
                     DbContextSeeder.GetSeededStateDTOs(1),

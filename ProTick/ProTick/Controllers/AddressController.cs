@@ -40,7 +40,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public AddressDTO NewEmployee([FromBody] AddressDTO a)
+        public AddressDTO NewAddress([FromBody] AddressDTO a)
         {
             var add = db.Address.Add(converter.DTOToAddress(a));
 
