@@ -75,8 +75,8 @@ namespace ProTick.Controllers
         {
             var pr = db.Process.FirstOrDefault(x => x.ProcessID == p.ProcessID);
 
-            if(pr.Description != p.Description)
-            pr.Description = p.Description;
+            if (pr.Description != p.Description)
+                pr.Description = p.Description;
 
             db.SaveChanges();
             return converter.ProcessToDTO(pr);
@@ -85,6 +85,21 @@ namespace ProTick.Controllers
         [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteProcess([FromServices] ProTickDatabaseContext db, int id)
         {
+            db.Subprocess.Where(x => x.Process.ProcessID == id)
+                    .ToList()
+                    .ForEach(subprocess =>
+                    {
+                        db.Ticket.Where(y => y.Subprocess.SubprocessID == subprocess.SubprocessID)
+                            .ToList()
+                            .ForEach(ticket => db.Ticket.Remove(ticket));
+
+                        db.ParentChildRelation.Where(pcl => pcl.Child.SubprocessID == subprocess.SubprocessID || pcl.Parent.SubprocessID == subprocess.SubprocessID)
+                            .ToList()
+                            .ForEach(pcl => db.ParentChildRelation.Remove(pcl));
+
+                        db.Subprocess.Remove(subprocess);
+                    });
+
             db.Process.Remove(db.Process.First(x => x.ProcessID == id));
             db.SaveChanges();
         }
