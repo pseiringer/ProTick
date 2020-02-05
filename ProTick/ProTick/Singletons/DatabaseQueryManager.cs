@@ -91,7 +91,6 @@ namespace ProTick.Singletons
             return ticket;
         }
 
-
         #endregion
 
 
@@ -261,6 +260,14 @@ namespace ProTick.Singletons
             }
         }
 
+        public List<Ticket> FindAllTicketsBySubprocessID(int id)
+        {
+            return db.Ticket.Include(x => x.State)
+                        .Include(x => x.Subprocess)
+                        .Where(x => x.Subprocess.SubprocessID == id)
+                        .ToList();
+        }
+
 
         public List<Subprocess> FindAllChildrenBySubprocessID(int id)
         {
@@ -282,7 +289,9 @@ namespace ProTick.Singletons
 
         public List<Ticket> FindAllTicketsByUsername(string username)
         {
-            var empID = FindEmployeeByUsername(username).EmployeeID;
+            var emp = FindEmployeeByUsername(username);
+            if (emp == null) throw new DatabaseEntryNotFoundException($"Employee with username ({username}) was not found");
+            var empID = emp.EmployeeID;
             var empTeams = FindEmployeeTeamsByEmployeeID(empID).Select(x => x.Team.TeamID);
             return db.Ticket
                 .Include(x => x.Subprocess)

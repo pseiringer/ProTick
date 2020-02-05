@@ -38,6 +38,8 @@ textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
   border: 1px solid #f2a718;
   outline: 0 none;
   box-shadow: 0 0 0 0.1rem #f2a718;
+  outline: none;
+  border: 0;
 }
 
 img{

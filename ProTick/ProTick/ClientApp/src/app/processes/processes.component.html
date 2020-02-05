@@ -1,10 +1,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <body>
-  <button mat-raised-button (click)="openCreateProcessDialog()">Prozess erstellen</button>
-
-  <br />
-  <br />
+  <button mat-icon-button (click)="openCreateProcessDialog();">
+    <mat-icon>add_circle</mat-icon>
+  </button>
 
   <mat-form-field>
     <mat-label>Prozess</mat-label>
@@ -15,7 +14,17 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-raised-button (click)="openCreateSubprocessDialog()">Subprozess erstellen</button>
+  <button mat-icon-button (click)="openEditProcessDialog();">
+    <mat-icon>edit</mat-icon>
+  </button>
+
+  <button mat-icon-button (click)="openDeleteProcessDialog();">
+    <mat-icon>delete</mat-icon>
+  </button>
+
+  <br />
+
+  <button mat-raised-button (click)="openCreateSubprocessDialog();">Subprozess erstellen</button>
 
   <br />
   <br />
