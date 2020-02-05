@@ -49,6 +49,9 @@ namespace ProTick.Controllers
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
         public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
         {
+            Console.WriteLine(e.AddressID);
+            Console.WriteLine(e.FirstName);
+            Console.WriteLine(e.LastName);
             var newEmp = converter.DTOToEmployee(e);
             var passwordString = (e.FirstName.Substring(0, 1));
             if (e.LastName.Length >= 15)

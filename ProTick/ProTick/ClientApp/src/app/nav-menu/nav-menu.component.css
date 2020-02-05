@@ -65,3 +65,9 @@ div.protick-underline {
 img {
   height: 30px;
 }
+
+.logout{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+}

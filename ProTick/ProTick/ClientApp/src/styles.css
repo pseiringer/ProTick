@@ -7,6 +7,10 @@ html, body, .container-fluid {
   padding: 0;
 }
 
+.mat-tab-body-wrapper {
+    overflow: auto;
+}
+
 .mat-tab-label:nth-of-type(1) {
   border-right: ridge;
 }
@@ -18,3 +22,5 @@ html, body, .container-fluid {
 .mat-tab-label-active {
   background-color: #e6e6e6;
 }
+
+
