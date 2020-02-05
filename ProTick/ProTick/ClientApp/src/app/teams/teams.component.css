@@ -12,7 +12,7 @@
   overflow: auto;
 }
 
-.team_tab,.employee_tab {
+.team_tab, .employee_tab {
   margin: 40px;
   margin-top: 20px;
 }
@@ -62,7 +62,7 @@ th.mat-header-cell {
   color: #f2a718;
 }
 
-.details_div{
+.details_div {
   width: 100%;
 }
 
@@ -70,7 +70,7 @@ th.mat-header-cell {
   width: 100%;
 }
 
-.floating_div{
+.floating_div {
   float: left;
   width: 50%;
 }

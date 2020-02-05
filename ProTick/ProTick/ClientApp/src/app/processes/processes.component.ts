@@ -99,8 +99,8 @@ export class ProcessesComponent implements OnInit {
     getSubprocessesByProcessID(_processID): void {
         console.log('selectionChange');
         this._processService.getSubprocessesByProcessID(_processID)
-            .subscribe(data => {
-                this.subprocesses = data;
+          .subscribe(data => {
+            this.subprocesses = data.sort((a, b) => a.subprocessID - b.subprocessID);
                 this.getParentChildRelationsByProcessID(_processID);
             });
     }
@@ -150,8 +150,9 @@ export class ProcessesComponent implements OnInit {
                         this.firstSubprocess = [fullSubprocess];
                         this.tableFirst.renderRows();
                     } else {
-                        this.displayedSubprocesses.push(fullSubprocess);
-                        this.table.renderRows();
+                      this.displayedSubprocesses.push(fullSubprocess);
+                      this.table.renderRows();
+                      this.displayedSubprocesses.sort((a, b) => a.subprocessID - b.subprocessID);
                     }
                 });
             });
@@ -330,7 +331,7 @@ export class ProcessesComponent implements OnInit {
         return this.getChildrenOfSubprocess(fullSubprocess.subprocessID)
             .sort((a, b) => (b.childID > 0) ? a.childID - b.childID : -1)
             .map(x => (x.childID < 0) ? 'Ende' : x.childID)
-            .join(',');
+            .join(', ');
     }
 
     getChildrenOfSubprocess(subprocessID: number): ParentChildRelation[] {
