@@ -37,7 +37,7 @@ namespace ProTick.Singletons
 
         public EmployeeTeam FindEmployeeTeamByID(int id)
         {
-            var employeeTeam = db.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == id);
+            var employeeTeam = db.EmployeeTeam.Include(x => x.Team).Include(x => x.Employee).FirstOrDefault(x => x.EmployeeTeamID == id);
             if (employeeTeam == null) throw new DatabaseEntryNotFoundException($"EmployeeTeam with ID ({id}) was not found");
             return employeeTeam;
         }
@@ -235,6 +235,7 @@ namespace ProTick.Singletons
         public List<Ticket> FindAllTicketsByStateID(int id)
         {
             return db.Ticket.Include(x => x.Subprocess)
+                .Include(x => x.State)
                 .Include(x => x.Subprocess.Team)
                 .Where(x => x.State.StateID == id)
                 .ToList();

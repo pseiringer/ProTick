@@ -50,14 +50,14 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public EmployeeTeamDTO EditEmployeeTeam(int id, [FromBody] EmployeeTeam e)
+        public EmployeeTeamDTO EditEmployeeTeam(int id, [FromBody] EmployeeTeamDTO e)
         {
-            var empTeam = db.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == e.EmployeeTeamID);
+            var empTeam = dbm.FindEmployeeTeamByID(id);
 
-            if (empTeam.Employee != e.Employee)
-                empTeam.Employee = e.Employee;
-            if (empTeam.Team != e.Team)
-                empTeam.Team = e.Team;
+            if (empTeam.Employee.EmployeeID != e.EmployeeID)
+                empTeam.Employee = dbm.FindEmployeeByID(e.EmployeeID);
+            if (empTeam.Team.TeamID != e.TeamID)
+                empTeam.Team = dbm.FindTeamByID(e.TeamID);
 
             db.SaveChanges();
             return converter.EmployeeTeamToDTO(empTeam);
@@ -73,7 +73,9 @@ namespace ProTick.Controllers
         [HttpDelete("{tId}/{eId}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteEmployeeTeamByTeamAndEmpId(int tId, int eId)
         {
-            db.EmployeeTeam.Remove(db.EmployeeTeam.First(x => x.Team.TeamID == tId && x.Employee.EmployeeID == eId));
+            var empTeam = db.EmployeeTeam.FirstOrDefault(x => x.Team.TeamID == tId && x.Employee.EmployeeID == eId);
+            if (empTeam == null) return;
+            db.EmployeeTeam.Remove(empTeam);
             db.SaveChanges();
         }
     }
