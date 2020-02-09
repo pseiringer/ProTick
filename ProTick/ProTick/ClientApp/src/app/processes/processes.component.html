@@ -85,7 +85,7 @@
   <br />
 
   <div class="mat-elevation-z8 table_container">
-    <table mat-table #table [dataSource]="displayedSubprocesses">
+    <table mat-table #table [dataSource]="displayedSubprocesses" class="mat-elevation-z8">
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -139,6 +139,15 @@
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let element">
           <button mat-raised-button (click)="useAsFirst(element.subprocessID)" [disabled]="serviceWorking">Use As First!</button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deleteButton">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="openDeleteSubprocessDialog(element.subprocessID);">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
     </table>

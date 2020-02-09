@@ -82,7 +82,7 @@ export class ProcessesComponent implements OnInit {
         processName: undefined
     }
 
-    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'childOptions', 'optionButtons'];
+    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'childOptions', 'optionButtons', 'deleteButton'];
 
     firstDisplayedColumns: string[] = ['firstSubprocessID', 'firstDescription', 'firstTeamName', 'childProcesses', 'childOptions'];
 
@@ -216,7 +216,7 @@ export class ProcessesComponent implements OnInit {
                 const dialogRef = this.dialog.open(YesNoComponent, {
                     data: {
                         title: "Löschen",
-                        text: "Möchten Sie wirklich den Prozess " + x.description + ' und alle dazugehörigen Kindprozesse sowie Tickets löschen?',
+                        text: "Möchten Sie wirklich den Prozess \"" + x.description + "\" und alle dazugehörigen Kindprozesse sowie Tickets löschen?",
                         no: "Nein",
                         yes: "Ja"
                     }
@@ -227,6 +227,28 @@ export class ProcessesComponent implements OnInit {
                 dialogRef.afterClosed().subscribe(result => {
                     if (result === true) {
                         this._processService.deleteProcess(x.processID).subscribe();
+                        this.getProcesses();
+                    }
+                });
+            }
+        });
+    }
+
+    openDeleteSubprocessDialog(subprocessID: number): void {
+        this._processService.getSubprocessById(subprocessID).subscribe(x => {
+            if (this.authGuard.canActivate()) {
+                const dialogRef = this.dialog.open(YesNoComponent, {
+                    data: {
+                        title: "Löschen",
+                        text: "Möchten Sie wirklich den Subprocess \"" + x.description + "\" und alle dazugehörigen Tickets löschen?",
+                        no: "Nein",
+                        yes: "Ja"
+                    }
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result === true) {
+                        this._processService.deleteSubprocess(x.subprocessID).subscribe();
                         this.getProcesses();
                     }
                 });
