@@ -14,7 +14,7 @@ using Xunit;
 
 namespace ProTickTest
 {
-    public class TestTicketController : ProTickSetupFixture
+    public class TicketControllerTests : ProTickSetupFixture
     {
         [Fact]
         public void TestGetAll()

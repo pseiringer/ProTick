@@ -14,7 +14,7 @@ using Xunit;
 
 namespace ProTickTest
 {
-    public class TestTeamController : ProTickSetupFixture
+    public class TeamControllerTests : ProTickSetupFixture
     {
 
         [Fact]
@@ -90,7 +90,6 @@ namespace ProTickTest
 
 
                 Assert.Throws<DatabaseEntryNotFoundException>(() => controller.getTeamsByUsername(expectedUsername));
-
             }
 
             // seeding DB
@@ -171,7 +170,11 @@ namespace ProTickTest
 
                 var controller = new TeamController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTicketsByTeamID(0));
+                var actual = controller.GetTicketsByTeamID(0).ToList().Count;
+
+                int expected = 0;
+
+                Assert.Equal(expected, actual);
             }
 
             // seeding DB
@@ -198,9 +201,9 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetTicketsByTeamID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetTicketsByTeamID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetTicketsByTeamID(3));
+                expected[0].Should().BeEquivalentTo(controller.GetTicketsByTeamID(1).ToList()[0]);
+                expected[1].Should().BeEquivalentTo(controller.GetTicketsByTeamID(2).ToList()[0]);
+                expected[2].Should().BeEquivalentTo(controller.GetTicketsByTeamID(3).ToList()[0]);
             }
 
         }
@@ -216,7 +219,11 @@ namespace ProTickTest
 
                 var controller = new TeamController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetEmployeesByTeamID(0));
+                var actual = controller.GetEmployeesByTeamID(0).ToList().Count;
+
+                int expected = 0;
+
+                Assert.Equal(expected, actual);
             }
 
             // seeding DB
@@ -240,9 +247,9 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetEmployeesByTeamID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetEmployeesByTeamID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetEmployeesByTeamID(3));
+                expected[0].Should().BeEquivalentTo(controller.GetEmployeesByTeamID(1).ToList()[0]);
+                expected[1].Should().BeEquivalentTo(controller.GetEmployeesByTeamID(2).ToList()[0]);
+                expected[2].Should().BeEquivalentTo(controller.GetEmployeesByTeamID(3).ToList()[0]);
             }
 
         }
@@ -258,7 +265,11 @@ namespace ProTickTest
 
                 var controller = new TeamController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetEmployeeTeamsByTeamID(0));
+                var actual = controller.GetEmployeeTeamsByTeamID(0).ToList().Count;
+
+                int expected = 0;
+
+                Assert.Equal(expected, actual);
             }
 
             // seeding DB
@@ -286,9 +297,9 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetEmployeeTeamsByTeamID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetEmployeeTeamsByTeamID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetEmployeeTeamsByTeamID(3));
+                expected[0].Should().BeEquivalentTo(controller.GetEmployeeTeamsByTeamID(1).ToList()[0]);
+                expected[1].Should().BeEquivalentTo(controller.GetEmployeeTeamsByTeamID(2).ToList()[0]);
+                expected[2].Should().BeEquivalentTo(controller.GetEmployeeTeamsByTeamID(3).ToList()[0]);
             }
 
         }

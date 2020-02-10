@@ -221,13 +221,17 @@ namespace ProTick.Singletons
 
         public List<EmployeeTeam> FindEmployeeTeamsByTeamID(int id)
         {
-            return db.EmployeeTeam.Where(x => x.Team.TeamID == id).ToList();
+            return db.EmployeeTeam
+                .Include(x => x.Employee)
+                .Include(x => x.Team)
+                .Where(x => x.Team.TeamID == id).ToList();
         }
 
         public List<Ticket> FindAllTicketsByTeamID(int id)
         {
             return db.Ticket.Include(x => x.Subprocess)
-                .Include(x => x.Subprocess.Team)
+                .ThenInclude(x => x.Team)
+                .Include(x => x.State)
                 .Where(x => x.Subprocess.Team.TeamID == id)
                 .ToList();
         }
@@ -272,10 +276,13 @@ namespace ProTick.Singletons
 
         public List<Subprocess> FindAllChildrenBySubprocessID(int id)
         {
-            return db.ParentChildRelation.Where(x => x.Parent.SubprocessID == id)
+            return db.ParentChildRelation
+                        .Include(x => x.Child)
+                        .ThenInclude(x => x.Process)
+                        .Include(x => x.Child)
+                        .ThenInclude(x => x.Team)
+                        .Where(x => x.Parent.SubprocessID == id)
                         .Select(x => x.Child)
-                        .Include(x => x.Process)
-                        .Include(x => x.Team)
                         .ToList();
 		}
 		
@@ -296,6 +303,7 @@ namespace ProTick.Singletons
             var empTeams = FindEmployeeTeamsByEmployeeID(empID).Select(x => x.Team.TeamID);
             return db.Ticket
                 .Include(x => x.Subprocess)
+                .ThenInclude(x => x.Team)
                 .Include(x => x.State)
                 .Where(x => empTeams.Contains(x.Subprocess.Team.TeamID))
                 .ToList();
@@ -303,7 +311,9 @@ namespace ProTick.Singletons
 
         public List<Team> FindAllTeamsByUsername(string username)
         {
-            var empID = FindEmployeeByUsername(username).EmployeeID;
+            var emp = FindEmployeeByUsername(username);
+            if (emp == null) throw new DatabaseEntryNotFoundException($"Employee with username ({username}) was not found");
+            var empID = emp.EmployeeID;
             return FindEmployeeTeamsByEmployeeID(empID).Select(x => x.Team).ToList();
         }
     }

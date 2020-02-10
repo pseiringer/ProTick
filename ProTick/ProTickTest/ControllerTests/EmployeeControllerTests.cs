@@ -124,7 +124,11 @@ namespace ProTickTest
 
                 var controller = new EmployeeController(context, converter, dbm, hasher);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTeamsByEmployeeID(0));
+                var actual = controller.GetTeamsByEmployeeID(1).ToList().Count;
+
+                int expected = 0;
+
+                Assert.Equal(expected, actual);
             }
 
             // seeding DB
@@ -147,9 +151,9 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(3));
+                expected[0].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(1).ToList()[0]);
+                expected[1].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(2).ToList()[0]);
+                expected[2].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(3).ToList()[0]);
             }
 
         }

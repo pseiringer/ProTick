@@ -68,7 +68,7 @@ namespace ProTick.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void DeleteTicket(int id)
+        public void DeleteParentChildRelation(int id)
         {
             var removeParentChildRelation = dbm.FindParentChildRelationByID(id);
             if (removeParentChildRelation != null)

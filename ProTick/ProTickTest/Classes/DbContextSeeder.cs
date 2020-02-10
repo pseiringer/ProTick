@@ -296,7 +296,10 @@ namespace ProTickTest.Classes
             var parentChildRelationDTOs = new List<ParentChildRelationDTO>();
             for (int i = 0; i < amount; i++)
             {
-                parentChildRelationDTOs.Add(DbPOCOGenerator.GenerateParentChildRelationDTO(i + 1, children[i].SubprocessID, parents[i].SubprocessID));
+                parentChildRelationDTOs.Add(DbPOCOGenerator.GenerateParentChildRelationDTO(
+                    i + 1,
+                    (children[i] != null) ? children[i].SubprocessID : -1,
+                    (parents[i] != null) ? parents[i].SubprocessID : -1));
             }
             
             return parentChildRelationDTOs;
