@@ -2,14 +2,12 @@
   <div>
     <h6 style="display: inline-block">{{data.subprocess.subprocessID}}: {{data.subprocess.description}}</h6>
 
-    <button mat-button (click)="onNoClick()" style="display: inline-block; float: right">
+    <!--<button mat-button (click)="onNoClick()" style="display: inline-block; float: right">
       <mat-icon>cancel</mat-icon>
-    </button>
+    </button>-->
   </div>
 
-
-  <div class="mat-elevation-z8 table_container">
-    <table mat-table #tableFirst [dataSource]="dataSource">
+    <table mat-table #tableFirst [dataSource]="dataSource" class="mat-elevation-z8 table_container" style="width: 100%;">
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
@@ -30,8 +28,6 @@
         </td>
       </ng-container>
     </table>
-  </div>
-
 
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Abbrechen</button>

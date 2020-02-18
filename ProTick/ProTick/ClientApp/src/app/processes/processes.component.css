@@ -58,3 +58,16 @@ th.mat-header-cell, td.mat-cell {
 table.mat-table {
   display: table;
 }
+
+button:focus {
+  outline: none;
+}
+
+table {
+  text-align: center !important;
+  width: 100%;
+}
+
+.mat-header-cell {
+  text-align: center;
+}
