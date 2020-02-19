@@ -1,5 +1,8 @@
 <form [formGroup]="forwardTicketForm">
   <p mat-dialog-title>Ticket Weitergeben</p>
+  <button mat-button (click)="onCancelClicked()" style="display: inline-block; float: right">
+    <mat-icon>cancel</mat-icon>
+  </button>
   <mat-dialog-content>
     <label>
       <p>ID: {{ticketID}}</p>
