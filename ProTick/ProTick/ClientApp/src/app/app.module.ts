@@ -90,7 +90,7 @@ import { EditProcessComponent } from './processes/edit-process/edit-process.comp
         DragDropModule,
         MatCheckboxModule,
         RouterModule.forRoot([
-            { path: '', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+            { path: '', redirectTo: 'tickets', pathMatch: 'full' },
             { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
             { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
             { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
@@ -100,8 +100,8 @@ import { EditProcessComponent } from './processes/edit-process/edit-process.comp
             { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
             { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginComponent },
-            { path: '**', component: TicketsComponent, canActivate: [AuthGuard], pathMatch: 'full' },
-        ])
+            { path: '**', redirectTo:'tickets'},
+        ]),
     ],
     providers: [JwtHelper, AuthGuard, DatePipe, JwtHeader],
     entryComponents: [
