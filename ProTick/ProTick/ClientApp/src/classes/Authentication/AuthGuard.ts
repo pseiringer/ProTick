@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private getToken(): string {
-    return localStorage.getItem('jwt');
+    return sessionStorage.getItem('jwt');
   }
 
   private getDecodedToken(): any {

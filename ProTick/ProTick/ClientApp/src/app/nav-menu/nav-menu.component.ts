@@ -12,8 +12,8 @@ export class NavMenuComponent {
 
   isExpanded = false;
 
-  logout() {
-    localStorage.removeItem("jwt");
+    logout() {
+        sessionStorage.removeItem("jwt");
   }
 
   collapse() {
