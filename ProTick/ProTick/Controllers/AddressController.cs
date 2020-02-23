@@ -29,7 +29,9 @@ namespace ProTick.Controllers
         [HttpGet]
         public IEnumerable<AddressDTO> GetAddresses()
         {
-            return dbm.FindAllAddresses(true).Select(x => converter.AddressToDTO(x)).ToList();
+            return dbm.FindAllAddresses(true)
+                .Select(x => converter.AddressToDTO(x))
+                .ToList();
         }
         
 

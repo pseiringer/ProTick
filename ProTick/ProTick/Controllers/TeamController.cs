@@ -41,7 +41,7 @@ namespace ProTick.Controllers
         }
 
         [HttpGet("Username/{user}")]
-        public IEnumerable<TeamDTO> getTeamsByUsername(string user)
+        public IEnumerable<TeamDTO> GetTeamsByUsername(string user)
         {
             string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
@@ -54,19 +54,29 @@ namespace ProTick.Controllers
         [HttpGet("{id}/Tickets")]
         public IEnumerable<TicketDTO> GetTicketsByTeamID(int id)
         {
-            return dbm.FindAllTicketsByTeamID(id).Select(x => converter.TicketToDTO(x)).ToList();
+            return dbm.FindAllTicketsByTeamID(id)
+                .Select(x => converter.TicketToDTO(x))
+                .ToList();
         }
 
         [HttpGet("{id}/Employees")]
         public IEnumerable<EmployeeDTO> GetEmployeesByTeamID(int id)
         {
-            return dbm.FindAllEmployeeTeams(true).Where(x => x.Team.TeamID == id).SelectMany(x => dbm.FindAllEmployees(true).Where(y => x.Employee.EmployeeID == y.EmployeeID)).Distinct().Select(x => converter.EmployeeToDTO(x)).ToList();
+            return dbm.FindAllEmployeeTeams(true)
+                .Where(x => x.Team.TeamID == id)
+                .SelectMany(x => dbm.FindAllEmployees(true)
+                .Where(y => x.Employee.EmployeeID == y.EmployeeID))
+                .Distinct()
+                .Select(x => converter.EmployeeToDTO(x))
+                .ToList();
         }
 
         [HttpGet("{id}/EmployeeTeams")]
         public IEnumerable<EmployeeTeamDTO> GetEmployeeTeamsByTeamID(int id)
         {
-            return dbm.FindEmployeeTeamsByTeamID(id).Select(x => converter.EmployeeTeamToDTO(x)).ToList();
+            return dbm.FindEmployeeTeamsByTeamID(id)
+                .Select(x => converter.EmployeeTeamToDTO(x))
+                .ToList();
 
         }
 
