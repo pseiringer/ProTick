@@ -282,7 +282,7 @@ namespace ProTickTest
         }
         
         [Fact]
-        public void TestNewProcess()
+        public void TestPostProcess()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -303,7 +303,7 @@ namespace ProTickTest
                 //dtos[3].Abbreviation = "test";
                 //dtos[3].Description = "test";
 
-                var actual = controller.NewProcess(dtos[3]);
+                var actual = controller.PostProcess(dtos[3]);
 
                 actual.Should().BeEquivalentTo(dtos[3]);
 
@@ -318,7 +318,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestEditProcess()
+        public void TestPutProcess()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -344,7 +344,7 @@ namespace ProTickTest
 
                 dtos[2].Description = expectedText;
 
-                var actual = controller.EditProcess(3, dtos[2]);
+                var actual = controller.PutProcess(3, dtos[2]);
 
                 actual.Should().BeEquivalentTo(dtos[2]);
 

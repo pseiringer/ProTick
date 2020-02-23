@@ -40,7 +40,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public AddressDTO NewAddress([FromBody] AddressDTO a)
+        public AddressDTO PostAddress([FromBody] AddressDTO a)
         {
             var add = db.Address.Add(converter.DTOToAddress(a));
 
@@ -50,7 +50,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public AddressDTO EditAddress(int id, [FromBody] AddressDTO a)
+        public AddressDTO PutAddress(int id, [FromBody] AddressDTO a)
         {
             var add = db.Address.FirstOrDefault(x => x.AddressID == a.AddressID);
 

@@ -63,7 +63,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public SubprocessDTO NewSubprocess([FromBody] SubprocessDTO s)
+        public SubprocessDTO PostSubprocess([FromBody] SubprocessDTO s)
         {
             var a = db.Subprocess.Add(converter.DTOToSubprocess(s));
 
@@ -75,7 +75,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public SubprocessDTO EditSubprocess(int id, [FromBody] SubprocessDTO s)
+        public SubprocessDTO PutSubprocess(int id, [FromBody] SubprocessDTO s)
         {
             var sp = dbm.FindSubprocessByID(id);
 

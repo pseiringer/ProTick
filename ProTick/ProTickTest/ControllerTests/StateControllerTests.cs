@@ -18,7 +18,7 @@ namespace ProTickTest
     {
 
         [Fact]
-        public void TestGetAllState()
+        public void TestGetStates()
         {
             // db is empty
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -28,7 +28,7 @@ namespace ProTickTest
 
                 var controller = new StateController(context, converter, dbm);
 
-                var actual = controller.GetAllState().ToList().Count;
+                var actual = controller.GetStates().ToList().Count;
 
                 int expected = 0;
 
@@ -49,7 +49,7 @@ namespace ProTickTest
 
                 var controller = new StateController(context, converter, dbm);
 
-                var actual = controller.GetAllState().ToList();
+                var actual = controller.GetStates().ToList();
 
                 var expected = DbContextSeeder.GetSeededStateDTOs(
                         3
@@ -64,7 +64,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestGetStateByID()
+        public void TestGetState()
         {
             // db is empty
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -74,7 +74,7 @@ namespace ProTickTest
 
                 var controller = new StateController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetStateByID(0));
+                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetState(0));
             }
 
             // seeding DB
@@ -96,9 +96,9 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetStateByID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetStateByID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetStateByID(3));
+                expected[0].Should().BeEquivalentTo(controller.GetState(1));
+                expected[1].Should().BeEquivalentTo(controller.GetState(2));
+                expected[2].Should().BeEquivalentTo(controller.GetState(3));
             }
 
         }

@@ -28,7 +28,7 @@ namespace ProTick.Controllers
         }
 
         [HttpGet, Authorize(Roles = StaticRoles.Admin)]
-        public IEnumerable<TicketDTO> GetAllTickets()
+        public IEnumerable<TicketDTO> GetTickets()
         {
             return dbm.FindAllTickets(true).Select(x => converter.TicketToDTO(x)).ToList();
         }
@@ -47,7 +47,7 @@ namespace ProTick.Controllers
 
 
         [HttpGet("{id}")]
-        public TicketDTO GetTicketByID(int id)
+        public TicketDTO GetTicket(int id)
         {
             return converter.TicketToDTO(dbm.FindTicketByID(id));
         }

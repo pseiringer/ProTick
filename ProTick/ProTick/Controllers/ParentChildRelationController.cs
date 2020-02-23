@@ -26,13 +26,13 @@ namespace ProTick.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ParentChildRelationDTO> GetAllParentChildRelations()
+        public IEnumerable<ParentChildRelationDTO> GetParentChildRelations()
         {
             return dbm.FindAllParentChildRelations(true).Select(x => converter.ParentChildRelationToDTO(x)).ToList();
         }
 
         [HttpGet("{id}")]
-        public ParentChildRelationDTO GetParentChildRelationByID(int id)
+        public ParentChildRelationDTO GetParentChildRelation(int id)
         {
             return converter.ParentChildRelationToDTO(dbm.FindParentChildRelationByID(id));
         }

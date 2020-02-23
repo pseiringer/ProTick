@@ -57,7 +57,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public ProcessDTO NewProcess([FromBody] ProcessDTO p)
+        public ProcessDTO PostProcess([FromBody] ProcessDTO p)
         {
             Console.WriteLine(p);
 
@@ -71,7 +71,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public ProcessDTO EditProcess(int id, [FromBody] ProcessDTO p)
+        public ProcessDTO PutProcess(int id, [FromBody] ProcessDTO p)
         {
             var pr = db.Process.FirstOrDefault(x => x.ProcessID == p.ProcessID);
 

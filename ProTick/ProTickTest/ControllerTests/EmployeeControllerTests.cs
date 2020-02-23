@@ -159,7 +159,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestNewEmployee()
+        public void TestPostEmployee()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -197,7 +197,7 @@ namespace ProTickTest
                 expected[3].Password = "67d10c8324b1e0ae4f97cba25b3bc43a9a9104b0f945750b4cf6edc14669e009";
                 
 
-                var actual = controller.NewEmployee(dtos[3]);
+                var actual = controller.PostEmployee(dtos[3]);
 
                 actual.Should().BeEquivalentTo(dtos[3]);
 
@@ -212,7 +212,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestEditEmployee()
+        public void TestPutEmployee()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -251,7 +251,7 @@ namespace ProTickTest
                 dtos[2].RoleID = expectedID;
                 dtos[2].Username = expectedText;
 
-                var actual = controller.EditEmployee(3, dtos[2]);
+                var actual = controller.PutEmployee(3, dtos[2]);
 
                 actual.Should().BeEquivalentTo(dtos[2]);
 

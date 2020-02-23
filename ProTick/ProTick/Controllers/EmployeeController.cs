@@ -47,7 +47,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public EmployeeDTO NewEmployee([FromBody] EmployeeDTO e)
+        public EmployeeDTO PostEmployee([FromBody] EmployeeDTO e)
         {
             Console.WriteLine(e.AddressID);
             Console.WriteLine(e.FirstName);
@@ -68,7 +68,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public EmployeeDTO EditEmployee(int id, [FromBody] EmployeeDTO changedE)
+        public EmployeeDTO PutEmployee(int id, [FromBody] EmployeeDTO changedE)
         {
             var emp = db.Employee.FirstOrDefault(x => x.EmployeeID == changedE.EmployeeID);
             var e = converter.DTOToEmployee(changedE);

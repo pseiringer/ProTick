@@ -116,7 +116,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestNewEmployeeTeam()
+        public void TestPostEmployeeTeam()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -163,7 +163,7 @@ namespace ProTickTest
                         DbContextSeeder.GetSeededRoles(1)
                     )[0];
 
-                var actual = controller.NewEmployeeTeam(dtos[3]);
+                var actual = controller.PostEmployeeTeam(dtos[3]);
 
                 actual.Should().BeEquivalentTo(dtos[3]);
 
@@ -178,7 +178,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestEditEmployeeTeam()
+        public void TestPutEmployeeTeam()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -211,7 +211,7 @@ namespace ProTickTest
                 dtos[2].TeamID = expectedID;
                 dtos[2].EmployeeID = expectedID;
 
-                var actual = controller.EditEmployeeTeam(3, dtos[2]);
+                var actual = controller.PutEmployeeTeam(3, dtos[2]);
 
                 actual.Should().BeEquivalentTo(dtos[2]);
 

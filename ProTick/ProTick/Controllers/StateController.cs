@@ -25,13 +25,13 @@ namespace ProTick.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<StateDTO> GetAllState()
+        public IEnumerable<StateDTO> GetStates()
         {
             return dbm.FindAllStates(true).Select(x => converter.StateToDTO(x)).ToList();
         }
 
         [HttpGet("{id}")]
-        public StateDTO GetStateByID(int id)
+        public StateDTO GetState(int id)
         {
             return converter.StateToDTO(dbm.FindStateByID(id));
         }
