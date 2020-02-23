@@ -104,7 +104,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestNewAddress()
+        public void TestPostAddress()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -125,7 +125,7 @@ namespace ProTickTest
                 //dtos[3].Abbreviation = "test";
                 //dtos[3].Description = "test";
 
-                var actual = controller.NewAddress(dtos[3]);
+                var actual = controller.PostAddress(dtos[3]);
 
                 actual.Should().BeEquivalentTo(dtos[3]);
 
@@ -140,7 +140,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestEditAddress()
+        public void TestPutAddress()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -170,7 +170,7 @@ namespace ProTickTest
                 dtos[2].Street = expectedText;
                 dtos[2].StreetNumber = expectedText;
 
-                var actual = controller.EditAddress(3, dtos[2]);
+                var actual = controller.PutAddress(3, dtos[2]);
 
                 actual.Should().BeEquivalentTo(dtos[2]);
 

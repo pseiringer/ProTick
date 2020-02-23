@@ -71,7 +71,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public TeamDTO NewTeam([FromBody] TeamDTO t)
+        public TeamDTO PostTeam([FromBody] TeamDTO t)
         {
             var a = db.Team.Add(converter.DTOToTeam(t));
 
@@ -81,7 +81,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public TeamDTO EditTeam(int id, [FromBody] TeamDTO t)
+        public TeamDTO PutTeam(int id, [FromBody] TeamDTO t)
         {
             var team = db.Team.FirstOrDefault(x => x.TeamID == t.TeamID);
 

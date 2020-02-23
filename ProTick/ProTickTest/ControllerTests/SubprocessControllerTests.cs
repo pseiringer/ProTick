@@ -208,7 +208,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestNewSubprocess()
+        public void TestPostSubprocess()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -241,7 +241,7 @@ namespace ProTickTest
                 expected[3].Process = DbContextSeeder.GetSeededProcesses(1)[0];
                 expected[3].Team = DbContextSeeder.GetSeededTeams(1)[0];
 
-                var actual = controller.NewSubprocess(dtos[3]);
+                var actual = controller.PostSubprocess(dtos[3]);
 
                 actual.Should().BeEquivalentTo(dtos[3]);
 
@@ -256,7 +256,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestEditSubprocess()
+        public void TestPutSubprocess()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -286,7 +286,7 @@ namespace ProTickTest
                 dtos[2].ProcessID = expectedID;
                 dtos[2].Description = expectedText;
 
-                var actual = controller.EditSubprocess(3, dtos[2]);
+                var actual = controller.PutSubprocess(3, dtos[2]);
 
                 actual.Should().BeEquivalentTo(dtos[2]);
 

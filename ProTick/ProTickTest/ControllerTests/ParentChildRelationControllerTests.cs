@@ -20,7 +20,7 @@ namespace ProTickTest
     {
 
         [Fact]
-        public void TestGetAllParentChildRelations()
+        public void TestGetParentChildRelations()
         {
             // db is empty
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -30,7 +30,7 @@ namespace ProTickTest
 
                 var controller = new ParentChildRelationController(context, converter, dbm);
 
-                var actual = controller.GetAllParentChildRelations().ToList().Count;
+                var actual = controller.GetParentChildRelations().ToList().Count;
 
                 int expected = 0;
 
@@ -51,7 +51,7 @@ namespace ProTickTest
 
                 var controller = new ParentChildRelationController(context, converter, dbm);
 
-                var actual = controller.GetAllParentChildRelations().ToList();
+                var actual = controller.GetParentChildRelations().ToList();
 
                 var subprocessDTOs = DbContextSeeder.GetSeededSubprocessDTOs(
                         3,
@@ -75,7 +75,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestGetParentChildRelationByID()
+        public void TestGetParentChildRelation()
         {
             // db is empty
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -85,7 +85,7 @@ namespace ProTickTest
 
                 var controller = new ParentChildRelationController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetParentChildRelationByID(0));
+                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetParentChildRelation(0));
             }
 
             // seeding DB
@@ -115,10 +115,10 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetParentChildRelationByID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetParentChildRelationByID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetParentChildRelationByID(3));
-                expected[3].Should().BeEquivalentTo(controller.GetParentChildRelationByID(4));
+                expected[0].Should().BeEquivalentTo(controller.GetParentChildRelation(1));
+                expected[1].Should().BeEquivalentTo(controller.GetParentChildRelation(2));
+                expected[2].Should().BeEquivalentTo(controller.GetParentChildRelation(3));
+                expected[3].Should().BeEquivalentTo(controller.GetParentChildRelation(4));
             }
 
         }

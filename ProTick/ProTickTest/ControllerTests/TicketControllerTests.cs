@@ -17,7 +17,7 @@ namespace ProTickTest
     public class TicketControllerTests : ProTickSetupFixture
     {
         [Fact]
-        public void TestGetAll()
+        public void TestGetTickets()
         {
             // db is empty
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -27,7 +27,7 @@ namespace ProTickTest
 
                 var controller = new TicketController(context, converter, dbm);
 
-                var actual = controller.GetAllTickets().ToList().Count;
+                var actual = controller.GetTickets().ToList().Count;
 
                 int expected = 0;
 
@@ -48,7 +48,7 @@ namespace ProTickTest
 
                 var controller = new TicketController(context, converter, dbm);
 
-                var actual = controller.GetAllTickets().ToList();
+                var actual = controller.GetTickets().ToList();
 
                 var expected = DbContextSeeder.GetSeededTicketDTOs(
                     3,
@@ -175,7 +175,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestGetTicketByID()
+        public void TestGetTicket()
         {
             // db is empty
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -185,7 +185,7 @@ namespace ProTickTest
 
                 var controller = new TicketController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTicketByID(0));
+                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTicket(0));
             }
 
             // seeding DB
@@ -212,9 +212,9 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetTicketByID(1));
-                expected[1].Should().BeEquivalentTo(controller.GetTicketByID(2));
-                expected[2].Should().BeEquivalentTo(controller.GetTicketByID(3));
+                expected[0].Should().BeEquivalentTo(controller.GetTicket(1));
+                expected[1].Should().BeEquivalentTo(controller.GetTicket(2));
+                expected[2].Should().BeEquivalentTo(controller.GetTicket(3));
             }
 
         }

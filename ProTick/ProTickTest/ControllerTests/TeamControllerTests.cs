@@ -345,7 +345,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestNewTeam()
+        public void TestPostTeam()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -366,7 +366,7 @@ namespace ProTickTest
                 //dtos[3].Abbreviation = "test";
                 //dtos[3].Description = "test";
 
-                var actual = controller.NewTeam(dtos[3]);
+                var actual = controller.PostTeam(dtos[3]);
 
                 actual.Should().BeEquivalentTo(dtos[3]);
 
@@ -381,7 +381,7 @@ namespace ProTickTest
         }
 
         [Fact]
-        public void TestEditTeam()
+        public void TestPutTeam()
         {
             // seeding DB
             using (var context = new ProTickDatabaseContext(dbOptions))
@@ -408,7 +408,7 @@ namespace ProTickTest
                 dtos[2].Abbreviation = expectedText;
                 dtos[2].Description = expectedText;
 
-                var actual = controller.EditTeam(3, dtos[2]);
+                var actual = controller.PutTeam(3, dtos[2]);
 
                 actual.Should().BeEquivalentTo(dtos[2]);
 

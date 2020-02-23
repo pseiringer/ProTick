@@ -40,7 +40,7 @@ namespace ProTick.Controllers
 
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
-        public EmployeeTeamDTO NewEmployeeTeam([FromBody] EmployeeTeamDTO e)
+        public EmployeeTeamDTO PostEmployeeTeam([FromBody] EmployeeTeamDTO e)
         {
             var a = db.EmployeeTeam.Add(converter.DTOToEmployeeTeam(e));
 
@@ -50,7 +50,7 @@ namespace ProTick.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
-        public EmployeeTeamDTO EditEmployeeTeam(int id, [FromBody] EmployeeTeamDTO e)
+        public EmployeeTeamDTO PutEmployeeTeam(int id, [FromBody] EmployeeTeamDTO e)
         {
             var empTeam = dbm.FindEmployeeTeamByID(id);
 
