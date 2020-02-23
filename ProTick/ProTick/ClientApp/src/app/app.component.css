@@ -1,55 +1,148 @@
-@media (max-width: 767px) {
-  /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
-  .centered {
-    width: 100%;
-    float: none;
-  }
+.example-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-.nav {
+.example-is-mobile .example-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+  color: white;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+mat-sidenav-content {
   height: 100%;
-  width: 225px;
-}
-
-.body-content {
-  display: table-cell;
-  width: 100%;
-  vertical-align: top;
-  height: 100%;
-}
-
-.row {
-  display: table;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-html, body, .container-fluid {
-  height: 100vh;
   overflow: hidden;
-  margin: 0;
-  padding: 0;
 }
 
-app-nav-menu {
-  min-width: 100%
+.example-is-mobile .example-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
 }
 
-.btn {
+li.link-active a,
+li.link-active a:hover,
+li.link-active a:focus {
+  background-color: #f2a718;
+  color: #fff;
+  transition: .3s;
+}
+
+.sidebar {
+  background-color: #303030;
+  height: 100%;
+  min-width: 100%;
+  text-align: center;
+  position: static;
+}
+
+li.nav-item {
+  list-style-type: none;
+}
+
+.nav-link {
+  color: grey;
+  padding: 17px 100px 17px 10px;
+  font-size: 1.15em;
+  border-radius: 5px;
+  margin: 5px;
+  text-align: left;
+  transition: .3s;
+}
+
+  .nav-link:hover {
+    color: #fff;
+  }
+
+i {
+  margin-left: 0.5em;
+  margin-right: 0.3em;
   float: left;
-  padding: 0 10px;
-  background-color: red;
+  padding-top: 4px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.wrap_div {
+  width: 100vh;
+}
+
+.company_logo {
+  margin-left: 45px;
+  height: 40px;
+}
+
+.diploma_logo {
+  height: 70px;
+}
+
+div.protick-underline {
+  margin: 0 auto;
+  height: 1px;
+  width: 90%;
+  background-color: #f2a718;
+}
+
+.align-left {
+  text-align: left;
+}
+
+img {
   height: 30px;
-  cursor: pointer;
 }
 
-.btn:before {
-  background-color: blue;
+mat-sidenav {
+  background-color: #202020;
 }
 
-.btnc:before {
-  background-color: green;
+.wrap_div {
+  width: 100vh;
 }
 
+.company_logo {
+  margin-left: 10pt;
+  height: 30pt;
+}
 
+.diploma_logo {
+  height: 40pt;
+}
+
+.mat-toolbar.mat-primary {
+  background: #202020;
+  color: #fff;
+}
+
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+button.mat-menu-item {
+  transition: .3s;
+}
+
+  button.mat-menu-item:hover {
+    background-color: #f2a718;
+    color: white;
+  }

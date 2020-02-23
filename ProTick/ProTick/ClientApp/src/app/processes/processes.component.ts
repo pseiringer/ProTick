@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { MatDialog, MatTable } from '@angular/material';
+import { isNullOrUndefined } from 'util';
+import { forkJoin } from 'rxjs';
+import { AuthGuard } from '../../classes/Authentication/AuthGuard';
+
 import { ProcessService } from '../core/process/process.service';
 import { TeamService } from '../core/team/team.service';
 import { ParentChildRelationService } from '../core/parent-child-relation/parent-child-relation.service';
@@ -12,17 +17,9 @@ import { ParentChildRelation } from '../../classes/ParentChildRelation';
 
 import { CreateProcessComponent } from '../processes/create-process/create-process.component';
 import { CreateSubprocessComponent } from '../processes/create-subprocess/create-subprocess.component';
-
-import { MatDialog, MatTable } from '@angular/material';
-import { isNullOrUndefined } from 'util';
-import { Observable, forkJoin, pipe } from 'rxjs';
 import { EditChildSubprocessesComponent } from './edit-child-subprocesses/edit-child-subprocesses.component';
 import { EditProcessComponent } from './edit-process/edit-process.component';
 import { YesNoComponent } from '../yes-no/yes-no.component';
-import { AuthGuard } from '../../classes/Authentication/AuthGuard';
-import { TicketService } from '../core/ticket/ticket.service';
-import { Ticket } from '../../classes/Ticket';
-import { mergeMap } from 'rxjs-compat/operator/mergeMap';
 
 @Component({
     selector: 'app-processes',
@@ -32,28 +29,21 @@ import { mergeMap } from 'rxjs-compat/operator/mergeMap';
         ProcessService,
         ParentChildRelationService,
         TeamService,
-        TicketService,
     ],
 })
 
 export class ProcessesComponent implements OnInit {
-
-    //@ViewChild(MatTable, { static: true, read: MatTable }) table: MatTable<any>;
-    //@ViewChild(MatTable, { static: true, read: MatTable }) tableFirst: MatTable<any>;
-
     @ViewChild('table', { static: true, read: MatTable }) table: MatTable<any>;
     @ViewChild('tableFirst', { static: true, read: MatTable }) tableFirst: MatTable<any>;
 
     private processes: Process[] = [];
     private subprocesses: Subprocess[] = [];
-    private parentChildRelations: ParentChildRelation[] = [];
     private displayedSubprocesses: FullSubprocess[] = [];
     private firstSubprocess: FullSubprocess[] = [];
+    private parentChildRelations: ParentChildRelation[] = [];
     private teams: Team[] = [];
 
-    private selectedProcess: number;
-
-    private _processID: number;
+    private selectedProcessID: number;
 
     process: Process = {
         processID: undefined,
@@ -82,93 +72,97 @@ export class ProcessesComponent implements OnInit {
         processName: undefined
     }
 
-    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'childOptions', 'optionButtons'];
+    displayedColumns: string[] = ['subprocessID', 'description', 'teamName', 'childProcesses', 'optionButtons', 'childOptions', 'deleteButton'];
 
     firstDisplayedColumns: string[] = ['firstSubprocessID', 'firstDescription', 'firstTeamName', 'childProcesses', 'childOptions'];
 
     serviceWorking: boolean = false;
 
-    constructor(private _processService: ProcessService,
-        private _parentChildRelationService: ParentChildRelationService,
-        private _teamService: TeamService,
-        private _ticketService: TicketService,
+    constructor(
+        private authGuard: AuthGuard,
+        private teamService: TeamService,
+        private processService: ProcessService,
+        private parentChildRelationService: ParentChildRelationService,
         public dialog: MatDialog,
-        private authGuard: AuthGuard) { }
+    ) { }
 
     ngOnInit() {
-        this._teamService.getTeams().subscribe(data => {
-            this.teams = data;
-            this.getProcesses();
-        });
-    }
-
-    getProcesses(): void {
-        this._processService.getProcesses().subscribe(data => {
-            this.processes = data;
-            if (this.processes.length > 0) this.selectedProcess = this.processes[0].processID;
-            this.getSubprocessesByProcessID(this.selectedProcess);
-        });
-    }
-
-    getSubprocessesByProcessID(_processID): void {
-        this._processService.getSubprocessesByProcessID(_processID)
-          .subscribe(data => {
-            this.subprocesses = data.sort((a, b) => a.subprocessID - b.subprocessID);
-                this.getParentChildRelationsByProcessID(_processID);
+        this.teamService.getTeams()
+            .subscribe(teams => {
+                this.teams = teams;
+                this.getProcesses();
             });
     }
 
-    getParentChildRelationsByProcessID(_processID: number): void {
-        this.parentChildRelations = [];
+    getProcesses(): void {
+        this.processService.getProcesses()
+            .subscribe(processes => {
+                this.processes = processes;
+                if (this.selectedProcessID === undefined) this.selectedProcessID = this.processes[0].processID;
+                this.getSubprocessesByProcessID(this.selectedProcessID);
+            });
+    }
 
-        this._parentChildRelationService.getParentChildRelationByProcessID(_processID).subscribe(x => {
-            this.parentChildRelations = x;
-            this.reloadFullSubprocesses();
-            this.serviceWorking = false;
-        });
+    getSubprocessesByProcessID(selectedProcessID: number): void {
+        this.processService.getSubprocessesByProcessID(selectedProcessID)
+            .subscribe(subprocesses => {
+                this.subprocesses = subprocesses;
+                this.getParentChildRelationsByProcessID(selectedProcessID);
+            });
+    }
+
+    getParentChildRelationsByProcessID(selectedProcessID: number): void {
+        this.parentChildRelations = [];
+        this.parentChildRelationService.getParentChildRelationByProcessID(selectedProcessID)
+            .subscribe(parentChildRelations => {
+                this.parentChildRelations = parentChildRelations;
+                this.reloadFullSubprocesses();
+                this.serviceWorking = false;
+            });
     }
 
     reloadFullSubprocesses() {
         this.displayedSubprocesses = [];
         this.firstSubprocess = [];
+        this.subprocesses
+            .forEach(subprocess => {
+                let teamName = '';
+                let processName = '';
 
-        this.subprocesses.forEach(x => {
-            let teamName = '';
-            let processName = '';
+                this.teamService.getTeam(subprocess.teamID)
+                    .subscribe(team => {
+                        teamName = team.abbreviation;
 
-            this._teamService.getTeam(x.teamID).subscribe(y => {
-                teamName = y.abbreviation;
+                        this.processService.getProcess(subprocess.processID)
+                            .subscribe(process => {
+                                processName = process.description;
 
-                this._processService.getProcess(x.processID).subscribe(z => {
-                    processName = z.description;
+                                const fullSubprocess: FullSubprocess = {
+                                    subprocessID: undefined,
+                                    description: undefined,
+                                    teamID: undefined,
+                                    teamName: undefined,
+                                    processID: undefined,
+                                    processName: undefined
+                                };
 
-                    const fullSubprocess: FullSubprocess = {
-                        subprocessID: undefined,
-                        description: undefined,
-                        teamID: undefined,
-                        teamName: undefined,
-                        processID: undefined,
-                        processName: undefined
-                    };
+                                fullSubprocess.subprocessID = subprocess.subprocessID;
+                                fullSubprocess.description = subprocess.description;
+                                fullSubprocess.teamID = subprocess.teamID;
+                                fullSubprocess.teamName = teamName;
+                                fullSubprocess.processID = subprocess.processID;
+                                fullSubprocess.processName = processName;
 
-                    fullSubprocess.subprocessID = x.subprocessID;
-                    fullSubprocess.description = x.description;
-                    fullSubprocess.teamID = x.teamID;
-                    fullSubprocess.teamName = teamName;
-                    fullSubprocess.processID = x.processID;
-                    fullSubprocess.processName = processName;
-
-                    if (this.parentChildRelations.findIndex(a => a.parentID === -1 && a.childID === x.subprocessID) >= 0) {
-                        this.firstSubprocess = [fullSubprocess];
-                        this.tableFirst.renderRows();
-                    } else {
-                      this.displayedSubprocesses.push(fullSubprocess);
-                      this.table.renderRows();
-                      this.displayedSubprocesses.sort((a, b) => a.subprocessID - b.subprocessID);
-                    }
-                });
+                                if (this.parentChildRelations.findIndex(a => a.parentID === -1 && a.childID === subprocess.subprocessID) >= 0) {
+                                    this.firstSubprocess = [fullSubprocess];
+                                    this.tableFirst.renderRows();
+                                } else {
+                                    this.displayedSubprocesses.push(fullSubprocess);
+                                    this.table.renderRows();
+                                }
+                            });
+                    });
             });
-        });
     }
 
     openCreateProcessDialog(): void {
@@ -176,101 +170,139 @@ export class ProcessesComponent implements OnInit {
             data: { description: this.process.description }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
+        dialogRef.afterClosed()
+            .subscribe(result => {
+                if (isNullOrUndefined(result)) return;
 
-            if (isNullOrUndefined(result)) return;
-
-            console.log(result);
-
-            this.process.description = result.description;
-
-            this._processService.postProcess(this.process)
-                .subscribe(x => { this.getProcesses(); });
-
-            this.process.description = undefined;
-        });
+                this.process.description = result.description;
+                this.processService.postProcess(this.process)
+                    .subscribe(process => {
+                        this.selectedProcessID = process.processID;
+                        this.getProcesses();
+                    });
+                this.process.description = undefined;
+            });
     }
 
     openEditProcessDialog(): void {
-        this._processService.getProcess(this.selectedProcess).subscribe(x => {
-            const dialogRef = this.dialog.open(EditProcessComponent, {
-                data: { description: x.description }
-            });
-
-            dialogRef.afterClosed().subscribe(result => {
-                if (isNullOrUndefined(result)) return;
-
-                x.description = result.description;
-
-                this._processService.putProcess(x, this.selectedProcess).subscribe(x => {
-                    this.getProcesses();
-                    // aktualisiert, aber wählt falschen aus, warum?
-                    this.selectedProcess = x.processID;
+        this.processService.getProcess(this.selectedProcessID)
+            .subscribe(process => {
+                const dialogRef = this.dialog.open(EditProcessComponent, {
+                    data: { description: process.description }
                 });
+
+                dialogRef.afterClosed()
+                    .subscribe(result => {
+                        if (isNullOrUndefined(result)) return;
+
+                        process.description = result.description;
+                        this.processService.putProcess(process, this.selectedProcessID)
+                            .subscribe(process => {
+                                this.getProcesses();
+                                this.selectedProcessID = process.processID;
+                            });
+                    });
             });
-        });
     }
 
     openDeleteProcessDialog(): void {
-        this._processService.getProcess(this.selectedProcess).subscribe(x => {
-            if (this.authGuard.canActivate()) {
-                const dialogRef = this.dialog.open(YesNoComponent, {
-                    data: {
-                        title: "Löschen",
-                        text: "Möchten Sie wirklich den Prozess " + x.description + ' und alle dazugehörigen Kindprozesse sowie Tickets löschen?',
-                        no: "Nein",
-                        yes: "Ja"
-                    }
-                });
+        this.processService.getProcess(this.selectedProcessID)
+            .subscribe(process => {
+                if (this.authGuard.canActivate()) {
+                    const dialogRef = this.dialog.open(YesNoComponent, {
+                        data: {
+                            title: "Löschen",
+                            text: "Möchten Sie wirklich den Prozess \"" + process.description + "\" und alle dazugehörigen Kindprozesse sowie Beziehungen und Tickets löschen?",
+                            no: "Nein",
+                            yes: "Ja"
+                        }
+                    });
 
-                // !! BEI TICKETS PROCESS ANZEIGEN, KÖNNTE ZWEI SUBPROCESSE MIT DEM GLEICHEN NAMEN GEBEN !!
-
-                dialogRef.afterClosed().subscribe(result => {
-                    if (result === true) {
-                        this._processService.deleteProcess(x.processID).subscribe();
-                        this.getProcesses();
-                    }
-                });
-            }
-        });
+                    dialogRef.afterClosed()
+                        .subscribe(result => {
+                            if (result === true) {
+                                this.processService.deleteProcess(process.processID)
+                                    .subscribe(process => {
+                                        this.selectedProcessID = undefined;
+                                        this.getProcesses()
+                                    });
+                            }
+                        });
+                }
+            });
     }
 
+    // TODO: ersten Subprozess immer als Startprozess festlegen
     openCreateSubprocessDialog(): void {
         const dialogRef = this.dialog.open(CreateSubprocessComponent, {
-            data: { description: this.subprocess.description, teamID: this.subprocess.teamID, processID: this.selectedProcess }
+            data: {
+                description: this.subprocess.description,
+                teamID: this.subprocess.teamID,
+                processID: this.selectedProcessID,
+            }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
+        dialogRef.afterClosed()
+            .subscribe(result => {
+                if (isNullOrUndefined(result)) return;
 
-            if (isNullOrUndefined(result)) return;
+                this.subprocess.description = result.description;
+                this.subprocess.teamID = result.teamID;
+                this.subprocess.processID = result.processID;
 
-            this.subprocess.description = result.description;
-            this.subprocess.teamID = result.teamID;
-            this.subprocess.processID = result.processID;
+                this.processService.postSubprocess(this.subprocess)
+                    .subscribe(subprocess => {
+                        this.selectedProcessID = subprocess.processID;
 
-            this._processService.postSubprocess(this.subprocess).subscribe(x => {
-                this._parentChildRelationService.postParentChildRelation({ parentChildRelationID: 0, parentID: x.subprocessID, childID: -1 })
-                    .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcess));
+                        this.parentChildRelationService.postParentChildRelation({
+                            parentChildRelationID: 0,
+                            parentID: subprocess.subprocessID,
+                            childID: -1,
+                        })
+                            .subscribe(x => {
+                                this.getSubprocessesByProcessID(this.selectedProcessID);
+                            });
+                    });
+
+                this.subprocess.description = undefined;
+                this.subprocess.teamID = undefined;
+                this.subprocess.processID = undefined;
             });
+    }
 
-            this.subprocess.description = undefined;
-            this.subprocess.teamID = undefined;
-            this.subprocess.processID = undefined;
-        });
+    openDeleteSubprocessDialog(subprocessID: number): void {
+        this.processService.getSubprocessById(subprocessID)
+            .subscribe(subprocess => {
+                if (this.authGuard.canActivate()) {
+                    const dialogRef = this.dialog.open(YesNoComponent, {
+                        data: {
+                            title: "Löschen",
+                            text: "Möchten Sie wirklich den Folgeprozess \"" + subprocess.description + "\" und alle dazugehörigen Beziehungen und Tickets löschen?",
+                            no: "Nein",
+                            yes: "Ja"
+                        }
+                    });
+
+                    dialogRef.afterClosed()
+                        .subscribe(result => {
+                            if (result === true) {
+                                this.processService.deleteSubprocess(subprocess.subprocessID).subscribe();
+                                this.getProcesses();
+                            }
+                        });
+                }
+            });
     }
 
     attributeChanged(subprocessID: number, attribute: string, value: string): void {
-        console.log('attChanged ' + subprocessID + value);
         let changeSubprocess = this.subprocesses.find(x => x.subprocessID === subprocessID);
 
         if (isNullOrUndefined(changeSubprocess)) return;
 
         changeSubprocess[attribute] = value;
 
-        this._processService.putSubprocess(changeSubprocess, subprocessID)
-            .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcess));
+        this.processService.putSubprocess(changeSubprocess, subprocessID)
+            .subscribe(x => this.getSubprocessesByProcessID(this.selectedProcessID));
     }
 
     useAsFirst(subprocessID: number): void {
@@ -290,7 +322,6 @@ export class ProcessesComponent implements OnInit {
             newFirst.childID = subprocessID;
 
             var children = this.parentChildRelations.filter(x => x.parentID === subprocessID);
-
             var newChild: ParentChildRelation = null;
 
             if (children.length <= 0 && this.subprocesses.length > 1) {
@@ -306,36 +337,35 @@ export class ProcessesComponent implements OnInit {
 
             var oldParents = this.parentChildRelations.filter(x => x.parentID !== -1 && x.childID === subprocessID);
 
-
-            // Delete Old Parents (ForkJoin), Post New First, If (newChild != null): Post, Finally: GetParentChildRelationsByProcessID
-
             const calls = [];
+
             oldParents.forEach(x => {
-                calls.push(this._parentChildRelationService.deleteParentChildRelation(x.parentChildRelationID));
+                calls.push(this.parentChildRelationService.deleteParentChildRelation(x.parentChildRelationID));
             });
 
             if (calls.length > 0) {
-                forkJoin(calls).subscribe(x => {
-                    this._parentChildRelationService.postParentChildRelation(newFirst).subscribe(x => {
-                        if (!isNullOrUndefined(newChild)) {
-                            this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
-                                this.getParentChildRelationsByProcessID(this.selectedProcess);
+                forkJoin(calls)
+                    .subscribe(result => {
+                        this.parentChildRelationService.postParentChildRelation(newFirst)
+                            .subscribe(parentChildRelation => {
+                                if (!isNullOrUndefined(newChild)) {
+                                    this.parentChildRelationService.postParentChildRelation(newChild)
+                                        .subscribe(parentChildRelation => this.getParentChildRelationsByProcessID(this.selectedProcessID));
+                                } else {
+                                    this.getParentChildRelationsByProcessID(this.selectedProcessID);
+                                }
                             });
+                    });
+            } else {
+                this.parentChildRelationService.postParentChildRelation(newFirst)
+                    .subscribe(parentChildRelation => {
+                        if (!isNullOrUndefined(newChild)) {
+                            this.parentChildRelationService.postParentChildRelation(newChild)
+                                .subscribe(parentChildRelation => this.getParentChildRelationsByProcessID(this.selectedProcessID));
                         } else {
-                            this.getParentChildRelationsByProcessID(this.selectedProcess);
+                            this.getParentChildRelationsByProcessID(this.selectedProcessID);
                         }
                     });
-                });
-            } else {
-                this._parentChildRelationService.postParentChildRelation(newFirst).subscribe(x => {
-                    if (!isNullOrUndefined(newChild)) {
-                        this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
-                            this.getParentChildRelationsByProcessID(this.selectedProcess);
-                        });
-                    } else {
-                        this.getParentChildRelationsByProcessID(this.selectedProcess);
-                    }
-                });
             }
         } else {
             var previousFirstID = -1;
@@ -355,27 +385,26 @@ export class ProcessesComponent implements OnInit {
 
             var oldParents = this.parentChildRelations.filter(x => x.parentID !== -1 && x.childID === subprocessID);
 
-            // Delete Old Parents (ForkJoin), Update First, Create New Child, Finally: GetParentChildRelationsByProcessID
-
             const calls = [];
             oldParents.forEach(x => {
-                calls.push(this._parentChildRelationService.deleteParentChildRelation(x.parentChildRelationID));
+                calls.push(this.parentChildRelationService.deleteParentChildRelation(x.parentChildRelationID));
             });
 
             if (calls.length > 0) {
-                forkJoin(calls).subscribe(x => {
-                    this._parentChildRelationService.putParentChildRelation(first.parentChildRelationID, first).subscribe(x => {
-                        this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
-                            this.getParentChildRelationsByProcessID(this.selectedProcess);
-                        });
+                forkJoin(calls)
+                    .subscribe(result => {
+                        this.parentChildRelationService.putParentChildRelation(first.parentChildRelationID, first)
+                            .subscribe(parentChildRelation => {
+                                this.parentChildRelationService.postParentChildRelation(newChild)
+                                    .subscribe(parentChildRelation => this.getParentChildRelationsByProcessID(this.selectedProcessID));
+                            });
                     });
-                });
             } else {
-                this._parentChildRelationService.putParentChildRelation(first.parentChildRelationID, first).subscribe(x => {
-                    this._parentChildRelationService.postParentChildRelation(newChild).subscribe(x => {
-                        this.getParentChildRelationsByProcessID(this.selectedProcess);
+                this.parentChildRelationService.putParentChildRelation(first.parentChildRelationID, first)
+                    .subscribe(parentChildRelation => {
+                        this.parentChildRelationService.postParentChildRelation(newChild)
+                            .subscribe(parentChildRelation => this.getParentChildRelationsByProcessID(this.selectedProcessID));
                     });
-                });
             }
         }
     }
@@ -392,54 +421,54 @@ export class ProcessesComponent implements OnInit {
     }
 
     openEditChildSubprocessesDialog(fullSubprocess: FullSubprocess): void {
-        console.log(fullSubprocess);
-
         var children = this.getChildrenOfSubprocess(fullSubprocess.subprocessID).map(x => x.childID);
 
         const dialogRef = this.dialog.open(EditChildSubprocessesComponent, {
             data: {
                 subprocess: fullSubprocess,
                 children: children,
-                allSubprocesses: this.displayedSubprocesses
+                allSubprocesses: this.displayedSubprocesses,
             }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (isNullOrUndefined(result)) return;
+        dialogRef.afterClosed()
+            .subscribe(result => {
+                if (isNullOrUndefined(result)) return;
 
-            var added: number[] = [];
-            var removed: number[] = [];
+                var added: number[] = [];
+                var removed: number[] = [];
 
-            result.forEach(x => {
-                if (x.isChecked) {
-                    if (children.indexOf(x.childID) < 0) added.push(x.childID);
-                } else {
-                    if (children.indexOf(x.childID) >= 0) removed.push(x.childID);
+                result.forEach(x => {
+                    if (x.isChecked) {
+                        if (children.indexOf(x.childID) < 0) added.push(x.childID);
+                    }
+                    else {
+                        if (children.indexOf(x.childID) >= 0) removed.push(x.childID);
+                    }
+                });
+
+                const calls = [];
+                added.forEach(x => {
+                    calls.push(this.parentChildRelationService.postParentChildRelation({
+                        parentChildRelationID: 0,
+                        parentID: fullSubprocess.subprocessID,
+                        childID: x,
+                    }));
+                });
+
+                removed.forEach(x => {
+                    calls.push(this.parentChildRelationService.deleteParentChildRelation(
+                        this.parentChildRelations
+                            .find(y => y.parentID === fullSubprocess.subprocessID && y.childID === x)
+                            .parentChildRelationID
+                    ));
+                });
+
+                if (calls.length > 0) {
+                    forkJoin(calls).subscribe(x => {
+                        this.getParentChildRelationsByProcessID(this.selectedProcessID);
+                    });
                 }
             });
-
-            const calls = [];
-            added.forEach(x => {
-                calls.push(this._parentChildRelationService.postParentChildRelation({
-                    parentChildRelationID: 0,
-                    parentID: fullSubprocess.subprocessID,
-                    childID: x
-                }));
-            });
-
-            removed.forEach(x => {
-                calls.push(this._parentChildRelationService.deleteParentChildRelation(
-                    this.parentChildRelations
-                        .find(y => y.parentID === fullSubprocess.subprocessID && y.childID === x)
-                        .parentChildRelationID
-                ));
-            });
-
-            if (calls.length > 0) {
-                forkJoin(calls).subscribe(x => {
-                    this.getParentChildRelationsByProcessID(this.selectedProcess);
-                });
-            }
-        });
     }
 }

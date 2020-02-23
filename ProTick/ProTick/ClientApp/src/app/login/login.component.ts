@@ -20,7 +20,6 @@ export class LoginComponent {
     login(form: NgForm) {
         this.invalidFormInput = form.invalid;
         if (this.invalidFormInput) return;
-
         let credentials = JSON.stringify(form.value);
         this.http.post("http://localhost:8080/ProTick/Authentication/Login", credentials, {
             headers: new HttpHeaders({
@@ -28,7 +27,6 @@ export class LoginComponent {
             })
         }).subscribe(response => {
             let token = (<any>response).token;
-            //console.log('token recieved');
             sessionStorage.setItem("jwt", token);
             this.invalidLogin = false;
             this.router.navigate(["/tickets"]);

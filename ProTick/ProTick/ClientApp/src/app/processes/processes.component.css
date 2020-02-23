@@ -54,3 +54,20 @@ th.mat-header-cell, td.mat-cell {
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+table.mat-table {
+  display: table;
+}
+
+button:focus {
+  outline: none;
+}
+
+table {
+  text-align: center !important;
+  width: 100%;
+}
+
+.mat-header-cell {
+  text-align: center;
+}
