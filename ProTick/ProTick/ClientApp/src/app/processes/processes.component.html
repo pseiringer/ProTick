@@ -22,11 +22,10 @@
     <mat-icon>delete</mat-icon>
   </button>
 
-  <br />
+  <button mat-raised-button color="primary" style="color: white; float: right;" (click)="openCreateSubprocessDialog();">
+    <mat-icon>add_circle</mat-icon>Subprozess erstellen
+  </button>
 
-  <button mat-raised-button (click)="openCreateSubprocessDialog();">Subprozess erstellen</button>
-
-  <br />
   <br />
 
   <table mat-table #tableFirst [dataSource]="firstSubprocess" class="mat-elevation-z8 table_container" style="width: 100%;">
