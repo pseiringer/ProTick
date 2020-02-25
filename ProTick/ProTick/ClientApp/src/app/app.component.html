@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<div class="example-container">
-  <mat-toolbar color="primary" class="example-toolbar" *ngIf="this.auth.canActivate()">
+<div class="example-container" *ngIf="this.auth.canActivate()">
+  <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()" style="outline: 0;"><mat-icon style="color: white;">menu</mat-icon></button>
     <div class="wrap_div">
       <img src="logo.png" class="diploma_logo" />
@@ -21,35 +21,40 @@
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <mat-nav-list>
-        <li [routerLinkActive]='["link-active"]' class="nav-item">
-          <a [routerLink]='["/tickets"]' class="nav-link">
-            <i class="fa fa-ticket"></i>
-            <span>Tickets</span>
-          </a>
-        </li>
+      <div>
+        <mat-nav-list>
+          <li [routerLinkActive]='["link-active"]' class="nav-item">
+            <a [routerLink]='["/tickets"]' class="nav-link">
+              <i class="fa fa-ticket"></i>
+              <span>Tickets</span>
+            </a>
+          </li>
 
-        <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf="this.auth.isAdmin()">
-          <a [routerLink]='["/processes"]' class="nav-link">
-            <i class="fa fa-cog"></i>
-            <span>Prozesse</span>
-          </a>
-        </li>
+          <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf="this.auth.isAdmin()">
+            <a [routerLink]='["/processes"]' class="nav-link">
+              <i class="fa fa-cog"></i>
+              <span>Prozesse</span>
+            </a>
+          </li>
 
-        <li [routerLinkActive]='["link-active"]' class="nav-item">
-          <a [routerLink]='["/teams"]' class="nav-link">
-            <i class="fa fa-users"></i>
-            <span>Teams</span>
-          </a>
-        </li>
-
-      </mat-nav-list>
+          <li [routerLinkActive]='["link-active"]' class="nav-item">
+            <a [routerLink]='["/teams"]' class="nav-link">
+              <i class="fa fa-users"></i>
+              <span>Teams</span>
+            </a>
+          </li>
+        </mat-nav-list>
+      </div>
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <div [ngClass]="{ 'body-content': this.auth.canActivate(), 'centered': !this.auth.canActivate() }">
+      <div>
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
+</div>
+
+<div *ngIf="!this.auth.canActivate()">
+  <router-outlet></router-outlet>
 </div>

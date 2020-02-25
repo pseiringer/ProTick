@@ -98,3 +98,7 @@ body {
   display: inherit;
   margin-left: 100px;
 }
+
+tr.example-element-row {
+  cursor: pointer;
+}

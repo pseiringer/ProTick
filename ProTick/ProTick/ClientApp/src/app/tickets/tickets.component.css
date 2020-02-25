@@ -165,3 +165,7 @@ mat-cell {
 body {
   display: inherit;
 }
+
+tr.example-element-row {
+  cursor: pointer;
+}

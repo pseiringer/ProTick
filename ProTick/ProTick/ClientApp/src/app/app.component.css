@@ -146,3 +146,13 @@ button.mat-menu-item {
     background-color: #f2a718;
     color: white;
   }
+
+  /*.centered {
+    width: 100%;
+    float: none;
+  }*/
+
+.snackbarStyle {
+  color: white;
+  background-color: #f2a718;
+}

@@ -47,6 +47,8 @@ import { EditProcessComponent } from './processes/edit-process/edit-process.comp
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MatMenuModule } from '@angular/material/menu';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -79,6 +81,7 @@ import { MatMenuModule } from '@angular/material/menu';
         CoreModule,
         MatDialogModule,
         MatFormFieldModule,
+        MatSnackBarModule,
         MatToolbarModule,
         MatDatepickerModule,
         MatInputModule,
@@ -106,7 +109,7 @@ import { MatMenuModule } from '@angular/material/menu';
             { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
             { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginComponent },
-            { path: '**', redirectTo:'tickets'},
+            { path: '**', redirectTo: 'tickets' },
         ]),
     ],
     providers: [JwtHelper, AuthGuard, DatePipe, JwtHeader],

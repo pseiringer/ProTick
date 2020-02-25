@@ -15,6 +15,7 @@ export interface ChangePasswordDialogData {
 })
 export class ChangePasswordComponent {
 
+    // TODO: neu und alt passwort darf nicht gleich sein
     constructor(public dialogRef: MatDialogRef<ChangePasswordComponent>,
         @Inject(MAT_DIALOG_DATA) public data: ChangePasswordDialogData,
         private fb: FormBuilder) { }
@@ -32,5 +33,4 @@ export class ChangePasswordComponent {
     onYesClick(): void {
         if (this.passwordForm.valid) this.dialogRef.close(this.data);
     }
-
 }
