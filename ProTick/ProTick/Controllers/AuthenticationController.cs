@@ -51,15 +51,11 @@ namespace ProTick.Controllers
 
             if (emp != null && emp.Password == pass)
             {
-
-                var jwtAuthentication = configuration.GetSection("JwtAuthentication");
+                //user authenticated
 
                 var handler = new JwtSecurityTokenHandler();
-
-                //string role = StaticRoles.Employee;
-                //if (emp.Role.Title == StaticRoles.Admin) role = StaticRoles.Admin;
+                
                 string role = emp.Role.Title;
-
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new Claim [] {
                         new Claim(ClaimTypes.NameIdentifier, emp.Username),
@@ -67,13 +63,17 @@ namespace ProTick.Controllers
                     }
                 );
 
-                var keyByteArray = System.Text.Encoding.UTF8.GetBytes(jwtAuthentication.GetValue<string>("SecurityKey"));
+                var jwtAuthentication = configuration.GetSection("JwtAuthentication");
+                var keyByteArray = System.Text.Encoding.UTF8.GetBytes(
+                    jwtAuthentication.GetValue<string>("SecurityKey"));
                 var signinKey = new SymmetricSecurityKey(keyByteArray);
                 var securityToken = handler.CreateToken(new SecurityTokenDescriptor
                 {
                     Issuer = jwtAuthentication.GetValue<string>("ValidIssuer"),
                     Audience = jwtAuthentication.GetValue<string>("ValidAudience"),
-                    SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
+                    SigningCredentials = new SigningCredentials(
+                        signinKey,
+                        SecurityAlgorithms.HmacSha256),
                     Subject = identity,
                     Expires = DateTime.Now.AddHours(1),
                     NotBefore = DateTime.Now
