@@ -26,7 +26,7 @@ namespace ProTick.Controllers
         private IDatabaseQueryManager dbm;
         private IHasher hasher;
 
-        public AuthenticationController(IConfiguration conf, 
+        public AuthenticationController(IConfiguration conf,
             [FromServices] ProTickDatabaseContext db,
             [FromServices] IResourceDTOConverter converter,
             [FromServices] IDatabaseQueryManager dbm,
@@ -44,7 +44,7 @@ namespace ProTick.Controllers
         {
             if (loginUser == null)
                 return BadRequest("Invalid client request");
-            
+
             var emp = dbm.FindEmployeeByUsername(loginUser.Username);
 
             var pass = hasher.HashPassword(loginUser.Password);
@@ -57,7 +57,7 @@ namespace ProTick.Controllers
                 
                 string role = emp.Role.Title;
                 ClaimsIdentity identity = new ClaimsIdentity(
-                    new Claim [] {
+                    new Claim[] {
                         new Claim(ClaimTypes.NameIdentifier, emp.Username),
                         new Claim(ClaimTypes.Role, role)
                     }
@@ -88,11 +88,12 @@ namespace ProTick.Controllers
         }
 
 
-        [HttpPut, Route("Users/{username}"), Authorize]
-        public IActionResult PutUser(string username, [FromBody] LoginUserDTO editedLoginUser)
+        [HttpPut, Route("ChangePassword"), Authorize]
+        public IActionResult ChangePassword([FromBody] LoginUserDTO editedLoginUser)
         {
-            var emp = dbm.FindEmployeeByUsername(username);
+            var username = editedLoginUser.Username;
 
+            var emp = dbm.FindEmployeeByUsername(username);
 
             string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -104,19 +105,23 @@ namespace ProTick.Controllers
                 if (loggedInRole == StaticRoles.Admin) canEdit = true;
                 if (loggedInUser != null && loggedInUser != string.Empty)
                 {
-                    if (loggedInUser == username) canEdit = true;
+                    if (loggedInUser == username)
+                    {
+                        if (emp != null && emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
+                        {
+                            canEdit = true;
+                        }
+                    }
                 }
             }
+
+            // Check if new password is valid
+            // Eventually add lenght check
+            if (editedLoginUser.Password == null || editedLoginUser.Password == "") canEdit = false;
 
             if (canEdit)
             {
                 bool changesMade = false;
-
-                if (editedLoginUser.Username != null && editedLoginUser.Username != "" && emp.Username != editedLoginUser.Username)
-                {
-                    emp.Username = editedLoginUser.Username;
-                    changesMade = true;
-                }
 
                 string hashedPass = hasher.HashPassword(editedLoginUser.Password);
 
@@ -128,7 +133,7 @@ namespace ProTick.Controllers
 
                 if (changesMade) db.SaveChanges();
 
-                return Ok( emp );
+                return Ok(converter.EmployeeToDTO(emp));
             }
 
             return Unauthorized();

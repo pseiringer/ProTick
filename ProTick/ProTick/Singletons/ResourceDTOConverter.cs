@@ -22,15 +22,23 @@ namespace ProTick.Singletons
         #region ------ DB to DTO
         public AddressDTO AddressToDTO(Address a)
         {
-            return new AddressDTO { AddressID = a.AddressID, Country = a.Country, City = a.City, PostalCode = a.PostalCode, Street = a.Street, StreetNumber = a.StreetNumber };
+            return new AddressDTO
+            {
+                AddressID = a.AddressID,
+                Country = a.Country,
+                City = a.City,
+                PostalCode = a.PostalCode,
+                Street = a.Street,
+                StreetNumber = a.StreetNumber
+            };
         }
 
         public EmployeeDTO EmployeeToDTO(Employee a)
         {
-            if(a.Address == null)
-            return new EmployeeDTO { AddressID = 0, RoleID = a.Role.RoleID, DateOfBirth = (a.DateOfBirth.HasValue) ? a.DateOfBirth.Value.ToShortDateString() : "", EmployeeID = a.EmployeeID, FirstName = a.FirstName, Email = a.Email, PhoneNumber = a.PhoneNumber, HireDate = (a.HireDate.HasValue) ? a.HireDate.Value.ToShortDateString() : "", LastName = a.LastName, Username = a.Username };
+            if (a.Address == null)
+                return new EmployeeDTO { AddressID = 0, RoleID = a.Role.RoleID, DateOfBirth = (a.DateOfBirth.HasValue) ? a.DateOfBirth.Value.ToShortDateString() : "", EmployeeID = a.EmployeeID, FirstName = a.FirstName, Email = a.Email, PhoneNumber = a.PhoneNumber, HireDate = (a.HireDate.HasValue) ? a.HireDate.Value.ToShortDateString() : "", LastName = a.LastName, Username = a.Username };
             else
-            return new EmployeeDTO { AddressID = a.Address.AddressID, DateOfBirth = (a.DateOfBirth.HasValue) ? a.DateOfBirth.Value.ToShortDateString() : "", EmployeeID = a.EmployeeID, FirstName = a.FirstName, Email = a.Email, PhoneNumber = a.PhoneNumber, HireDate = (a.HireDate.HasValue) ? a.HireDate.Value.ToShortDateString() : "", LastName = a.LastName, Username = a.Username, RoleID = a.Role.RoleID };
+                return new EmployeeDTO { AddressID = a.Address.AddressID, DateOfBirth = (a.DateOfBirth.HasValue) ? a.DateOfBirth.Value.ToShortDateString() : "", EmployeeID = a.EmployeeID, FirstName = a.FirstName, Email = a.Email, PhoneNumber = a.PhoneNumber, HireDate = (a.HireDate.HasValue) ? a.HireDate.Value.ToShortDateString() : "", LastName = a.LastName, Username = a.Username, RoleID = a.Role.RoleID };
         }
 
         public EmployeeTeamDTO EmployeeTeamToDTO(EmployeeTeam a)
@@ -104,7 +112,7 @@ namespace ProTick.Singletons
 
         public EmployeeTeam DTOToEmployeeTeam(EmployeeTeamDTO a)
         {
-            return new EmployeeTeam { Employee = dbm.FindEmployeeByID(a.EmployeeID), EmployeeTeamID = a.EmployeeTeamID, Team = dbm.FindTeamByID(a.TeamID)};
+            return new EmployeeTeam { Employee = dbm.FindEmployeeByID(a.EmployeeID), EmployeeTeamID = a.EmployeeTeamID, Team = dbm.FindTeamByID(a.TeamID) };
         }
 
         public Role DTOToRole(RoleDTO a)

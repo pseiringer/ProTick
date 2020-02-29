@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 import { JwtHelper } from 'angular2-jwt';
+import { isNullOrUndefined } from 'util';
 import { StaticDatabaseObjectsService } from '../../app/core/static-database-objects/static-database-objects.service';
 import { isNull, isNullOrUndefined } from 'util';
 

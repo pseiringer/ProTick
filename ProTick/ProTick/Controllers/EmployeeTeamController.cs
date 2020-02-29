@@ -71,7 +71,7 @@ namespace ProTick.Controllers
         }
 
         [HttpDelete("{tId}/{eId}"), Authorize(Roles = StaticRoles.Admin)]
-        public void DeleteEmployeeTeamByTeamAndEmpId(int tId, int eId)
+        public void DeleteEmployeeTeamByTeamAndEmpID(int tId, int eId)
         {
             var empTeam = db.EmployeeTeam.FirstOrDefault(x => x.Team.TeamID == tId && x.Employee.EmployeeID == eId);
             if (empTeam == null) return;

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatTooltipModule, MatSelectModule, MatListModule, MatStepperModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatButtonModule, MatTabsModule, MatNativeDateModule, MatTooltipModule, MatSelectModule, MatListModule, MatStepperModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -44,6 +44,10 @@ import { EditChildSubprocessesComponent } from './processes/edit-child-subproces
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditProcessComponent } from './processes/edit-process/edit-process.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [
@@ -65,20 +69,25 @@ import { EditProcessComponent } from './processes/edit-process/edit-process.comp
         ForwardTicketComponent,
         EditChildSubprocessesComponent,
         EditProcessComponent,
+        ChangePasswordComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
         HttpClientModule,
         HttpModule,
         FormsModule,
+        MatMenuModule,
         ReactiveFormsModule,
         CoreModule,
         MatDialogModule,
         MatFormFieldModule,
+        MatSnackBarModule,
+        MatToolbarModule,
         MatDatepickerModule,
         MatInputModule,
         MatListModule,
         MatSelectModule,
+        MatSidenavModule,
         MatStepperModule,
         MatTooltipModule,
         MatTabsModule,
@@ -100,7 +109,7 @@ import { EditProcessComponent } from './processes/edit-process/edit-process.comp
             { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
             { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginComponent },
-            { path: '**', redirectTo:'tickets'},
+            { path: '**', redirectTo: 'tickets' },
         ]),
     ],
     providers: [JwtHelper, AuthGuard, DatePipe, JwtHeader],
@@ -114,6 +123,7 @@ import { EditProcessComponent } from './processes/edit-process/edit-process.comp
         ForwardTicketComponent,
         EditChildSubprocessesComponent,
         EditProcessComponent,
+        ChangePasswordComponent,
     ],
     bootstrap: [AppComponent],
 })
