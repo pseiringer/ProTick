@@ -306,21 +306,23 @@ namespace ProTickTest
                         )
                     .ToList();
 
-                controller.DeleteEmployeeTeamByTeamAndEmpId(dtos[2].TeamID, dtos[2].EmployeeID);
+                controller.DeleteEmployeeTeamByTeamAndEmpID(dtos[2].TeamID, dtos[2].EmployeeID);
 
                 var actualCount = context.EmployeeTeam.ToList().Count;
                 Assert.Equal(2, actualCount);
-                Assert.True(context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == 3) == null);
-                Assert.True(context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID != 3) != null);
+                Assert.True(
+                    context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == 3) == null);
+                Assert.True(
+                    context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID != 3) != null);
 
-                controller.DeleteEmployeeTeamByTeamAndEmpId(dtos[2].TeamID, dtos[2].EmployeeID);
+                controller.DeleteEmployeeTeamByTeamAndEmpID(dtos[2].TeamID, dtos[2].EmployeeID);
 
                 actualCount = context.EmployeeTeam.ToList().Count;
                 Assert.Equal(2, actualCount);
                 Assert.True(context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == 3) == null);
                 Assert.True(context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID != 3) != null);
 
-                controller.DeleteEmployeeTeamByTeamAndEmpId(dtos[1].TeamID, dtos[1].EmployeeID);
+                controller.DeleteEmployeeTeamByTeamAndEmpID(dtos[1].TeamID, dtos[1].EmployeeID);
 
                 actualCount = context.EmployeeTeam.ToList().Count;
                 Assert.Equal(1, actualCount);

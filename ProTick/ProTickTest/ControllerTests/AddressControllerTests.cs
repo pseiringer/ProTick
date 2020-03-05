@@ -74,7 +74,9 @@ namespace ProTickTest
 
                 var controller = new AddressController(context, converter, dbm);
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetAddress(0));
+                Assert.Throws<DatabaseEntryNotFoundException>(
+                    () => controller.GetAddress(0)
+                    );
             }
 
             // seeding DB
@@ -132,7 +134,10 @@ namespace ProTickTest
                 var actualCount = context.Address.ToList().Count;
                 Assert.Equal(4, actualCount);
 
-                context.Address.FirstOrDefault(x => x.AddressID == 4).Should().BeEquivalentTo(expected[3]);
+                context.Address
+                    .FirstOrDefault(x => x.AddressID == 4)
+                    .Should()
+                    .BeEquivalentTo(expected[3]);
 
             }
 
@@ -219,14 +224,17 @@ namespace ProTickTest
 
                 var actualCount = context.Address.ToList().Count;
                 Assert.Equal(2, actualCount);
-                Assert.True(context.Address.FirstOrDefault(x => x.AddressID == 3) == null);
-                Assert.True(context.Address.FirstOrDefault(x => x.AddressID != 3) != null);
+                Assert.True(
+                    context.Address.FirstOrDefault(x => x.AddressID == 3) == null);
+                Assert.True(
+                    context.Address.FirstOrDefault(x => x.AddressID != 3) != null);
 
                 controller.DeleteAddress(dtos[1].AddressID);
 
                 actualCount = context.Address.ToList().Count;
                 Assert.Equal(1, actualCount);
-                Assert.True(context.Address.FirstOrDefault(x => x.AddressID == 2) == null);
+                Assert.True(
+                    context.Address.FirstOrDefault(x => x.AddressID == 2) == null);
 
             }
 
