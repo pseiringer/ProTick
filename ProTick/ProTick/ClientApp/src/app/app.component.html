@@ -1,16 +1,20 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<div class="example-container" *ngIf="this.auth.canActivate()">
-  <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()" style="outline: 0;"><mat-icon style="color: white;">menu</mat-icon></button>
+
+<div class="example-container">
+  <mat-toolbar color="primary" class="example-toolbar" *ngIf="auth.canActivate()">
+    <button mat-icon-button (click)="toggleSidenav()" style="outline: 0;"><mat-icon style="color: white;">menu</mat-icon></button>
+
     <div class="wrap_div">
       <img src="logo.png" class="diploma_logo" />
       <img src="logo.ico" class="company_logo" />
     </div>
+
     <span class="example-spacer"></span>
 
     <button mat-button [matMenuTriggerFor]="menu" style="outline: 0;">
-      {{this.auth.getUsername()}}<mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">arrow_drop_down</mat-icon>
+      {{this.auth.getUsername()}}<mat-icon>arrow_drop_down</mat-icon>
     </button>
+
     <mat-menu #menu="matMenu">
       <button mat-menu-item style="outline: 0;" (click)="openChangePasswordDialog();">Passwort ändern</button>
       <button mat-menu-item style="outline: 0;" [routerLink]='["/login"]' (click)='logout();'>Abmelden</button>
@@ -20,7 +24,7 @@
   <mat-sidenav-container class="example-sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" *ngIf="auth.canActivate()">
       <div>
         <mat-nav-list>
           <li [routerLinkActive]='["link-active"]' class="nav-item">
@@ -30,7 +34,7 @@
             </a>
           </li>
 
-          <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf="this.auth.isAdmin()">
+          <li [routerLinkActive]='["link-active"]' class="nav-item" *ngIf="auth.isAdmin()">
             <a [routerLink]='["/processes"]' class="nav-link">
               <i class="fa fa-cog"></i>
               <span>Prozesse</span>
@@ -53,8 +57,4 @@
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
-</div>
-
-<div *ngIf="!this.auth.canActivate()">
-  <router-outlet></router-outlet>
 </div>

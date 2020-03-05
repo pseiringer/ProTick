@@ -27,7 +27,7 @@ h1.example-app-name {
 
 mat-sidenav-content {
   height: 100%;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .example-is-mobile .example-sidenav-container {
@@ -147,12 +147,14 @@ button.mat-menu-item {
     color: white;
   }
 
-  /*.centered {
+/*.centered {
     width: 100%;
     float: none;
   }*/
 
-.snackbarStyle {
-  color: white;
+snack-bar-container {
+  color: white !important;
   background-color: #f2a718;
+  margin: auto;
+  text-align: center;
 }

@@ -1,0 +1,20 @@
+button.mat-flat-button {
+  margin-left: 2pt;
+  color: white;
+}
+
+mat-select {
+  letter-spacing: 0px !important;
+}
+
+button {
+  outline: 0;
+}
+
+.empListButton {
+  border-radius: 4px;
+}
+
+.empListButton:hover {
+  background-color: lightgrey;
+}

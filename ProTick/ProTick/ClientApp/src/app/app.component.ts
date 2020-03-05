@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { isNullOrUndefined } from 'util';
 
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSidenav } from '@angular/material';
 
 import { AuthGuard } from '../classes/Authentication/AuthGuard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -34,6 +34,11 @@ export class AppComponent {
         sessionStorage.removeItem("jwt");
     }
 
+    @ViewChild(MatSidenav, {static: false}) snav: any;
+    toggleSidenav() {
+        this.snav.toggle();
+    }
+
     private currentPassword: string;
     private newPassword: string;
 
@@ -56,7 +61,7 @@ export class AppComponent {
                 this.authService.changePassword(this.auth.getUsername(), this.newPassword, this.currentPassword)
                     .subscribe(result => {
                         this.snackBar.open('Passwort wurde erfolgreich geändert', undefined, {
-                            duration: 3000, panelClass: ['snackbarStyle']
+                            duration: 20000
                         });
 
                         this.currentPassword = undefined;
@@ -64,12 +69,12 @@ export class AppComponent {
                     },
                         errorResult => {
                             this.snackBar.open('Passwort konnte nicht geändert werden', undefined, {
-                                duration: 3000, panelClass: ['snackbarStyle']
+                                duration: 3000
                             });
 
                             this.currentPassword = undefined;
                             this.newPassword = undefined;
                         });
             });
-    }
+    }  
 }

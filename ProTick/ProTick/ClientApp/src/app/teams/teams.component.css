@@ -102,3 +102,11 @@ body {
 tr.example-element-row {
   cursor: pointer;
 }
+
+button {
+  outline: 0;
+}
+
+mat-select {
+  letter-spacing: 0px !important;
+}

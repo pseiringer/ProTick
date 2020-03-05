@@ -15,9 +15,6 @@ import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CoreModule } from './core/core.module';
 
 import { ProcessesComponent } from './processes/processes.component';
@@ -53,9 +50,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     declarations: [
         AppComponent,
         NavMenuComponent,
-        HomeComponent,
-        CounterComponent,
-        FetchDataComponent,
         ProcessesComponent,
         CreateProcessComponent,
         TicketsComponent,
@@ -100,13 +94,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatCheckboxModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'tickets', pathMatch: 'full' },
-            { path: 'counter', component: CounterComponent, canActivate: [AuthGuard] },
-            { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
             { path: 'processes', component: ProcessesComponent, canActivate: [AuthGuard] },
-            { path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
-            { path: 'create-subprocess', component: CreateSubprocessComponent, canActivate: [AuthGuard] },
+            //{ path: 'create-process', component: CreateProcessComponent, canActivate: [AuthGuard] },
+            //{ path: 'create-subprocess', component: CreateSubprocessComponent, canActivate: [AuthGuard] },
             { path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
-            { path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
+            //{ path: 'create-ticket', component: CreateTicketComponent, canActivate: [AuthGuard] },
             { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginComponent },
             { path: '**', redirectTo: 'tickets' },

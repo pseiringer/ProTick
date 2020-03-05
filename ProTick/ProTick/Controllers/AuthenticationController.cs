@@ -107,7 +107,7 @@ namespace ProTick.Controllers
                 {
                     if (loggedInUser == username)
                     {
-                        if (emp != null && emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
+                        if (emp != null && editedLoginUser.OldPassword != null && editedLoginUser.OldPassword != "" && emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
                         {
                             canEdit = true;
                         }

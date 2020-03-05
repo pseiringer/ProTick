@@ -1,134 +1,132 @@
 <div>
-  <h6 style="display: inline-block">{{_header}}</h6>
-  <button mat-button (click)="onNoClickEmp()" style="display: inline-block; float: right">
-    <mat-icon>cancel</mat-icon>
-  </button>
+  <p mat-dialog-title align="center">{{_header}}</p>
+
 </div>
-  <mat-vertical-stepper [linear]="true" #stepper>
-    <!--persönliche Daten-->
-    <mat-step [stepControl]="personalFormGroup">
-      <form [formGroup]="personalFormGroup">
-        <ng-template matStepLabel>Persönliche Daten</ng-template>
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.firstName" placeholder="Vorname" formControlName="firstNameCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.lastName" placeholder="Nachname" formControlName="lastNameCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.phoneNumber" placeholder="Tel." formControlName="phoneNumberCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.email" placeholder="E-Mail" formControlName="emailCtrl">
-          <mat-error>Ungültige E-Mail-Adresse!</mat-error>
-        </mat-form-field>
-        <br />
-        <mat-form-field>
-          <input matInput [value]="birthDate.value" [(ngModel)]="data.dateOfBirth" [matDatepicker]="pickBirthDate" placeholder="Geburtsdatum" formControlName="birthDateCtrl">
-          <mat-datepicker-toggle matSuffix [for]="pickBirthDate"></mat-datepicker-toggle>
-          <mat-datepicker [startAt]="birthDate.value" #pickBirthDate></mat-datepicker>
-        </mat-form-field>
-        <br />
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [value]="hireDate.value" [(ngModel)]="data.hireDate" [matDatepicker]="pickHireDate" placeholder="Einstellungsdatum" formControlName="hireDateCtrl">
-          <mat-error>{{error}}</mat-error>
-          <mat-datepicker-toggle matSuffix [for]="pickHireDate"></mat-datepicker-toggle>
-          <mat-datepicker #pickHireDate></mat-datepicker>
-        </mat-form-field>
-        <br />
-        <div>
-          <button mat-button matStepperNext [disabled]="!personalFormGroup.valid">Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <!--Addresse-->
-    <mat-step [stepControl]="addressFormGroup">
-      <form [formGroup]="addressFormGroup">
-        <ng-template matStepLabel>Addresse</ng-template>
-
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.street" placeholder="Straße" formControlName="streetCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.streetNumber" placeholder="Hausnummer" formControlName="streetNumberCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.postalCode" placeholder="PLZ" formControlName="postalCodeCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.city" placeholder="Stadt" formControlName="cityCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-        <br />
-
-        <mat-form-field [hideRequiredMarker]="true">
-          <input matInput [(ngModel)]="data.country" placeholder="Land" formControlName="countryCtrl">
-          <mat-error>{{error}}</mat-error>
-        </mat-form-field>
-
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext [disabled]="!addressFormGroup.valid">Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <!--Teamauswahl-->
-    <mat-step [stepControl]="teamFormGroup">
-      <ng-template matStepLabel>Teamauswahl</ng-template>
-
+<mat-vertical-stepper [linear]="true" #stepper>
+  <!--persönliche Daten-->
+  <mat-step [stepControl]="personalFormGroup">
+    <form [formGroup]="personalFormGroup">
+      <ng-template matStepLabel>Persönliche Daten</ng-template>
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.firstName" placeholder="Vorname" formControlName="firstNameCtrl">
+        <mat-error>{{error}}</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.lastName" placeholder="Nachname" formControlName="lastNameCtrl">
+        <mat-error>{{error}}</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.phoneNumber" placeholder="Tel." formControlName="phoneNumberCtrl">
+        <mat-error>{{error}}</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.email" placeholder="E-Mail" formControlName="emailCtrl">
+        <mat-error>Ungültige E-Mail-Adresse!</mat-error>
+      </mat-form-field>
+      <br />
       <mat-form-field>
-        <mat-label>Rolle</mat-label>
-        <mat-select [(ngModel)]="data.roleID">
-          <mat-option *ngFor="let role of allRoles" [value]="role.roleID">
-            {{role.title}}
-          </mat-option>
-        </mat-select>
+        <input matInput [value]="birthDate.value" [(ngModel)]="data.dateOfBirth" [matDatepicker]="pickBirthDate" placeholder="Geburtsdatum" formControlName="birthDateCtrl">
+        <mat-datepicker-toggle matSuffix [for]="pickBirthDate"></mat-datepicker-toggle>
+        <mat-datepicker [startAt]="birthDate.value" #pickBirthDate></mat-datepicker>
+      </mat-form-field>
+      <br />
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [value]="hireDate.value" [(ngModel)]="data.hireDate" [matDatepicker]="pickHireDate" placeholder="Einstellungsdatum" formControlName="hireDateCtrl">
+        <mat-error>{{error}}</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="pickHireDate"></mat-datepicker-toggle>
+        <mat-datepicker #pickHireDate></mat-datepicker>
+      </mat-form-field>
+      <br />
+      <div>
+        <button mat-button matStepperNext [disabled]="!personalFormGroup.valid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <!--Addresse-->
+  <mat-step [stepControl]="addressFormGroup">
+    <form [formGroup]="addressFormGroup">
+      <ng-template matStepLabel>Addresse</ng-template>
+
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.street" placeholder="Straße" formControlName="streetCtrl">
+        <mat-error>{{error}}</mat-error>
       </mat-form-field>
       <br />
 
-      <mat-form-field>
-        <mat-label>Teams</mat-label>
-        <mat-select [(ngModel)]="data.teamID">
-          <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
-            {{team.description}}
-          </mat-option>
-        </mat-select>
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.streetNumber" placeholder="Hausnummer" formControlName="streetNumberCtrl">
+        <mat-error>{{error}}</mat-error>
       </mat-form-field>
+      <br />
 
-      <button mat-icon-button (click)="onAddTeam()">
-        <mat-icon>playlist_add</mat-icon>
-      </button>
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.postalCode" placeholder="PLZ" formControlName="postalCodeCtrl">
+        <mat-error>{{error}}</mat-error>
+      </mat-form-field>
+      <br />
 
-      <p>Klicken, um zu entfernen</p>
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.city" placeholder="Stadt" formControlName="cityCtrl">
+        <mat-error>{{error}}</mat-error>
+      </mat-form-field>
+      <br />
 
-      <mat-action-list>
-        <button class="selectedTeamsListItem" *ngFor="let t of data.selTeams" mat-list-item (click)="onRemoveTeam(t)"> {{t.description}} </button>
-      </mat-action-list>
-
+      <mat-form-field [hideRequiredMarker]="true">
+        <input matInput [(ngModel)]="data.country" placeholder="Land" formControlName="countryCtrl">
+        <mat-error>{{error}}</mat-error>
+      </mat-form-field>
 
       <div>
         <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="!addressFormGroup.valid">Next</button>
       </div>
+    </form>
+  </mat-step>
+  <!--Teamauswahl-->
+  <mat-step [stepControl]="teamFormGroup">
+    <ng-template matStepLabel>Teamauswahl</ng-template>
 
-      <div mat-dialog-actions>
-        <button mat-button (click)="onNoClickEmp()">Abbrechen</button>
-        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{_buttonText}}</button>
-      </div>
+    <mat-form-field>
+      <mat-label>Rolle</mat-label>
+      <mat-select [(ngModel)]="data.roleID">
+        <mat-option *ngFor="let role of allRoles" [value]="role.roleID">
+          {{role.title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br />
 
-    </mat-step>
-  </mat-vertical-stepper>
+    <mat-form-field>
+      <mat-label>Teams</mat-label>
+      <mat-select [(ngModel)]="data.teamID">
+        <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
+          {{team.description}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-icon-button (click)="onAddTeam()">
+      <mat-icon>playlist_add</mat-icon>
+    </button>
+
+    <p>Klicken, um zu entfernen</p>
+
+    <mat-action-list>
+      <button class="selectedTeamsListItem" *ngFor="let t of data.selTeams" mat-list-item (click)="onRemoveTeam(t)"> {{t.description}} </button>
+    </mat-action-list>
+
+
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClickEmp()">Abbrechen</button>
+      <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{_buttonText}}</button>
+    </div>
+
+  </mat-step>
+</mat-vertical-stepper>

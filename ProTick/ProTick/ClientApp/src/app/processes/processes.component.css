@@ -71,3 +71,7 @@ table {
 .mat-header-cell {
   text-align: center;
 }
+
+mat-select {
+  letter-spacing: 0px !important;
+}

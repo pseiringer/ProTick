@@ -180,10 +180,10 @@ export class TicketsComponent implements OnInit {
         if (this.authGuard.canActivate()) {
             const dialogRef = this.dialog.open(YesNoComponent, {
                 data: {
-                    title: "Delete",
-                    text: "Do you really want to delete Ticket " + id,
-                    no: "No",
-                    yes: "Yes"
+                    title: "Ticket löschen",
+                    text: "Wollen Sie wirklich das Ticket " + id + " löschen?",
+                    no: "Nein",
+                    yes: "Ja"
                 }
             });
             dialogRef.afterClosed().subscribe(result => {
@@ -196,6 +196,8 @@ export class TicketsComponent implements OnInit {
                 }
             });
         }
+
+        //event.stopPropagation();
     }
 
 

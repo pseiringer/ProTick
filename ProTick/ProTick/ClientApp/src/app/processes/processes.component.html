@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <body>
-  <button mat-icon-button (click)="openCreateProcessDialog();">
+  <button mat-icon-button (click)="openCreateProcessDialog();" style="margin-right: 10pt;" title="Neuen Prozess erstellen">
     <mat-icon>add_circle</mat-icon>
   </button>
 
-  <mat-form-field>
+  <mat-form-field style="margin-right: 10pt;">
     <mat-label>Prozess</mat-label>
     <mat-select [(ngModel)]="selectedProcessID" (selectionChange)="getSubprocessesByProcessID(selectedProcessID)">
       <mat-option *ngFor="let process of processes" [value]="process.processID">
@@ -14,16 +14,16 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-icon-button (click)="openEditProcessDialog();">
+  <button mat-icon-button (click)="openEditProcessDialog()" title="Prozess bearbeiten">
     <mat-icon>edit</mat-icon>
   </button>
 
-  <button mat-icon-button (click)="openDeleteProcessDialog();">
+  <button mat-icon-button (click)="openDeleteProcessDialog()" title="Prozess löschen" style="margin-right: 20pt;">
     <mat-icon>delete</mat-icon>
   </button>
 
-  <button mat-raised-button color="primary" style="color: white; float: right;" (click)="openCreateSubprocessDialog();">
-    <mat-icon>add_circle</mat-icon>Subprozess erstellen
+  <button mat-stroked-button (click)="openCreateSubprocessDialog()">
+    Subprozess erstellen
   </button>
 
   <br />

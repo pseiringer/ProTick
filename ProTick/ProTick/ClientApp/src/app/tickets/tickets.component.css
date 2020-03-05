@@ -169,3 +169,15 @@ body {
 tr.example-element-row {
   cursor: pointer;
 }
+
+  tr.example-element-row:hover {
+    background-color: #f0f0f0!important;
+  }
+
+button {
+  outline: 0;
+}
+
+mat-select {
+  letter-spacing: 0px !important;
+}

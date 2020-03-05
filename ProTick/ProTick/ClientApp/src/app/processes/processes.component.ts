@@ -211,7 +211,7 @@ export class ProcessesComponent implements OnInit {
                 if (this.authGuard.canActivate()) {
                     const dialogRef = this.dialog.open(YesNoComponent, {
                         data: {
-                            title: "Löschen",
+                            title: "Prozess löschen",
                             text: "Möchten Sie wirklich den Prozess \"" + process.description + "\" und alle dazugehörigen Kindprozesse sowie Beziehungen und Tickets löschen?",
                             no: "Nein",
                             yes: "Ja"
@@ -276,8 +276,8 @@ export class ProcessesComponent implements OnInit {
                 if (this.authGuard.canActivate()) {
                     const dialogRef = this.dialog.open(YesNoComponent, {
                         data: {
-                            title: "Löschen",
-                            text: "Möchten Sie wirklich den Folgeprozess \"" + subprocess.description + "\" und alle dazugehörigen Beziehungen und Tickets löschen?",
+                            title: "Subprozess löschen",
+                            text: "Möchten Sie wirklich den Subprozess \"" + subprocess.description + "\" und alle dazugehörigen Beziehungen und Tickets löschen?",
                             no: "Nein",
                             yes: "Ja"
                         }

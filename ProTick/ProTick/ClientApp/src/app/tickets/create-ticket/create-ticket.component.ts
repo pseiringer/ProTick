@@ -44,7 +44,7 @@ export class CreateTicketComponent implements OnInit {
     stateID: [{ value: '', disabled: !this.isEdit }, Validators.compose([Validators.required, Validators.min(0)])],
   })
 
-  error: string = 'Bitte geben Sie einen gültigen Wert ein!';  
+  error: string = 'Ungültige Eingabe!';  
 
   ngOnInit() {
     if (this.data.ticket !== undefined) {
