@@ -3,8 +3,8 @@
     <div class="container-fluid">
       <img src="./logo_schwarz.png" height="250" />
       <br />
-      <div *ngIf="invalidLogin" class="alert alert-danger">Invalid username or password.</div>
-      <div *ngIf="invalidFormInput" class="alert alert-danger">Please enter a username and a password.</div>
+      <div *ngIf="invalidLogin" class="alert alert-danger">Ungültiger Benutzername oder Passwort.</div>
+      <div *ngIf="invalidFormInput" class="alert alert-danger">Bitte geben Sie einen Benutzernamen und ein Passwort ein.</div>
 
       <mat-form-field class="mat-form-field-appearance-legacy" [hideRequiredMarker]="true">
         <input matInput type="text" id="username" name="username" ngModel class="form-control" placeholder="Benutzername" required autofocus />

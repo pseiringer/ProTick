@@ -31,8 +31,6 @@ namespace ProTick
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var jwtAuth = Configuration.GetSection("JwtAuthentication");
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<ProTickDatabaseContext>(options =>
@@ -47,6 +45,7 @@ namespace ProTick
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            var jwtAuth = Configuration.GetSection("JwtAuthentication");
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

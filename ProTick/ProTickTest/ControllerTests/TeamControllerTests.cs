@@ -89,7 +89,8 @@ namespace ProTickTest
                 };
 
 
-                Assert.Throws<DatabaseEntryNotFoundException>(() => controller.GetTeamsByUsername(expectedUsername));
+                Assert.Throws<DatabaseEntryNotFoundException>(
+                    () => controller.GetTeamsByUsername(expectedUsername));
             }
 
             // seeding DB
@@ -120,7 +121,8 @@ namespace ProTickTest
                 };
 
                 // admin
-                var actualAdmin = controller.GetTeamsByUsername(expectedUsername).ToList();
+                var actualAdmin = controller.GetTeamsByUsername(expectedUsername)
+                    .ToList();
 
                 var expectedAdmin = DbContextSeeder.GetSeededTeamDTOs(
                     3
@@ -146,7 +148,8 @@ namespace ProTickTest
                     HttpContext = new DefaultHttpContext() { User = user2 }
                 };
 
-                var actualEmployee = controller.GetTeamsByUsername(expectedUsername).ToList();
+                var actualEmployee = controller.GetTeamsByUsername(expectedUsername)
+                    .ToList();
                 var expectedEmployee = DbContextSeeder.GetSeededTeamDTOs(
                     1
                     )

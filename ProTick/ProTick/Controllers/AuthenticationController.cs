@@ -92,14 +92,14 @@ namespace ProTick.Controllers
         public IActionResult ChangePassword([FromBody] LoginUserDTO editedLoginUser)
         {
             var username = editedLoginUser.Username;
-
             var emp = dbm.FindEmployeeByUsername(username);
 
-            string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            string loggedInRole = User.Claims.FirstOrDefault(
+                x => x.Type == ClaimTypes.Role)?.Value;
+            string loggedInUser = User.Claims.FirstOrDefault(
+                x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             bool canEdit = false;
-
             if (loggedInRole != null && loggedInRole != string.Empty)
             {
                 if (loggedInRole == StaticRoles.Admin) canEdit = true;
@@ -107,20 +107,21 @@ namespace ProTick.Controllers
                 {
                     if (loggedInUser == username)
                     {
-                        if (emp != null && emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
+                        if (emp != null && 
+                            emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
                         {
                             canEdit = true;
                         }
                     }
                 }
             }
-
             // Check if new password is valid
-            // Eventually add lenght check
-            if (editedLoginUser.Password == null || editedLoginUser.Password == "") canEdit = false;
+            if (editedLoginUser.Password == null || editedLoginUser.Password == "")
+                canEdit = false;
 
             if (canEdit)
             {
+                // Request is valid
                 bool changesMade = false;
 
                 string hashedPass = hasher.HashPassword(editedLoginUser.Password);
