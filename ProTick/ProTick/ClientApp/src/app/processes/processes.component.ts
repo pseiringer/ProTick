@@ -211,7 +211,7 @@ export class ProcessesComponent implements OnInit {
                 if (this.authGuard.canActivate()) {
                     const dialogRef = this.dialog.open(YesNoComponent, {
                         data: {
-                            title: "Löschen",
+                            title: "Prozess löschen",
                             text: "Möchten Sie wirklich den Prozess \"" + process.description + "\" und alle dazugehörigen Kindprozesse sowie Beziehungen und Tickets löschen?",
                             no: "Nein",
                             yes: "Ja"
@@ -276,8 +276,8 @@ export class ProcessesComponent implements OnInit {
                 if (this.authGuard.canActivate()) {
                     const dialogRef = this.dialog.open(YesNoComponent, {
                         data: {
-                            title: "Löschen",
-                            text: "Möchten Sie wirklich den Folgeprozess \"" + subprocess.description + "\" und alle dazugehörigen Beziehungen und Tickets löschen?",
+                            title: "Subprozess löschen",
+                            text: "Möchten Sie wirklich den Subprozess " + subprocess.subprocessID + " und alle dazugehörigen Beziehungen und Tickets löschen?",
                             no: "Nein",
                             yes: "Ja"
                         }
@@ -286,8 +286,8 @@ export class ProcessesComponent implements OnInit {
                     dialogRef.afterClosed()
                         .subscribe(result => {
                             if (result === true) {
-                                this.processService.deleteSubprocess(subprocess.subprocessID).subscribe();
-                                this.getProcesses();
+                                this.processService.deleteSubprocess(subprocess.subprocessID)
+                                    .subscribe(subprocess => this.getProcesses());
                             }
                         });
                 }
@@ -424,6 +424,8 @@ export class ProcessesComponent implements OnInit {
         var children = this.getChildrenOfSubprocess(fullSubprocess.subprocessID).map(x => x.childID);
 
         const dialogRef = this.dialog.open(EditChildSubprocessesComponent, {
+            height: '600px',
+            width: '400px',
             data: {
                 subprocess: fullSubprocess,
                 children: children,

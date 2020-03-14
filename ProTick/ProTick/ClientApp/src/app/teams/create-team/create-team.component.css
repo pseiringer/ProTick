@@ -1,0 +1,32 @@
+button.mat-flat-button {
+  margin-left: 2pt;
+  color: white;
+}
+
+mat-select {
+  letter-spacing: 0px !important;
+}
+
+button {
+  outline: 0;
+}
+
+.empListButton {
+  border-radius: 4px;
+}
+
+.empListButton:hover {
+  background-color: lightgrey;
+}
+
+.someicon {
+  margin-right: 5px;
+}
+
+.link mat-icon {
+  opacity: 0;
+}
+
+.link:hover mat-icon {
+  opacity: 1;
+}

@@ -1,9 +1,14 @@
 <form [formGroup]="processForm">
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.description" formControlName="description" placeholder="Beschreibung" />
-  </mat-form-field>
+  <p mat-dialog-title align="center">Prozess bearbeiten</p>
+
+  <mat-dialog-content align="center">
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.description" formControlName="description" placeholder="Beschreibung" />
+    </mat-form-field>
+  </mat-dialog-content>
+
   <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Abbrechen</button>
-    <button mat-button (click)="onYesClick()" cdkFocusInitial [disabled]="!processForm.valid">Bestätigen</button>
+    <button mat-stroked-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-flat-button color="primary" (click)="onYesClick()" cdkFocusInitial [disabled]="!processForm.valid">Bestätigen</button>
   </div>
 </form>

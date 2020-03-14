@@ -1,27 +1,26 @@
-<div class="login-form">
-  <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-    <div class="container-fluid">
-      <img src="./logo_schwarz.png" height="250" />
-      <br />
-      <div *ngIf="invalidLogin" class="alert alert-danger">Ungültiger Benutzername oder Passwort.</div>
-      <div *ngIf="invalidFormInput" class="alert alert-danger">Bitte geben Sie einen Benutzernamen und ein Passwort ein.</div>
+<body>
+  <div class="login-form">
+    <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <div class="container-fluid">
+        <img src="./logo_schwarz.png" height="200" />
+        <br />
+        <div *ngIf="invalidLogin" class="alert alert-danger">Ungültiger Benutzername oder Passwort.</div>
+        <div *ngIf="invalidFormInput" class="alert alert-danger">Bitte geben Sie einen Benutzernamen und Passwort ein.</div>
 
-      <mat-form-field class="mat-form-field-appearance-legacy" [hideRequiredMarker]="true">
-        <input matInput type="text" id="username" name="username" ngModel class="form-control" placeholder="Benutzername" required autofocus />
-      </mat-form-field>
+        <mat-icon>person</mat-icon>
+        <mat-form-field [hideRequiredMarker]="true">
+          <input matInput type="text" id="username" name="username" ngModel placeholder="Benutzername" autofocus required />
+        </mat-form-field>
 
-      <mat-form-field class="mat-form-field-appearance-legacy" [hideRequiredMarker]="true">
-        <input matInput type="password" id="password" name="password" ngModel class="form-control" placeholder="Passwort" required />
-      </mat-form-field>
+        <br />
 
+        <mat-icon>vpn_key</mat-icon>
+        <mat-form-field [hideRequiredMarker]="true">
+          <input matInput type="password" id="password" name="password" ngModel placeholder="Passwort" required />
+        </mat-form-field>
 
-      <!--<label for="Username" class="sr-only">Email address</label>
-      <input type="text" id="username" name="username" ngModel class="form-control" placeholder="Username" required autofocus>
-      <br />
-      <label for="Password" class="sr-only">Password</label>
-      <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password" required>
-      <br />-->
-      <button id="loginBtn" class="btn btn-lg btn-primary btn-block " type="submit">Anmelden</button>
-    </div>
-  </form>
-</div>
+        <button mat-flat-button color="primary" style="color: white;" type="submit">Anmelden</button>
+      </div>
+    </form>
+  </div>
+</body>

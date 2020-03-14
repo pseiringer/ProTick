@@ -100,7 +100,7 @@ export class TeamsComponent implements OnInit {
     }
 
 
-    displayedColumns: string[] = ['teamID', 'abbreviation', 'options'];
+    displayedColumns: string[] = ['teamID', 'abbreviation', 'description', 'options'];
     displayedColumnsEmp: string[] = ['employeeID', 'firstName', 'lastName', 'hireDate', 'username', 'options'];
 
     expandedElement: Team | null;
@@ -576,8 +576,8 @@ export class TeamsComponent implements OnInit {
 
         const dialogRef = this.dialog.open(YesNoComponent, {
             data: {
-                title: "Löschen",
-                text: "Wollen Sie das Team mit der ID " + id + " wirklich löschen?",
+                title: "Team löschen",
+                text: "Wollen Sie wirklich das Team " + id + " löschen?",
                 no: "Nein",
                 yes: "Ja"
             }
@@ -598,8 +598,8 @@ export class TeamsComponent implements OnInit {
 
         const dialogRef = this.dialog.open(YesNoComponent, {
             data: {
-                title: "Löschen",
-                text: "Wollen Sie den Employee mit der ID " + id + " wirklich löschen?",
+                title: "Mitarbeiter löschen",
+                text: "Wollen Sie wirklich den Mitarbeiter " + id + " löschen?",
                 no: "Nein",
                 yes: "Ja"
             }
