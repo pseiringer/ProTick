@@ -9,7 +9,8 @@
 }
 
 mat-form-field {
-  width: 300px;
+  width: 230px;
+  margin-right: 20pt;
 }
 
 input[type] {
@@ -27,12 +28,6 @@ button {
   margin-top: 20px;
 }
 
-#loginBtn {
-  color: #000;
-  background-color: #db9716;
-  box-shadow: 0 0 0 0.1rem #f2a718;
-}
-
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
   outline: 0 none !important;
   border: 0 !important;
@@ -44,31 +39,17 @@ img {
 }
 
 body {
-  height: 100vh;
   padding-top: 50pt;
-  background-color: #202020 !important;
-}
-
-.mat-form-field-appearance-outline .mat-form-field-outline {
-  color: white;
-}
-/* Font color */
-input.mat-input-element {
-  color: white !important;
 }
 
 .container-fluid {
-  box-shadow: 1px 1px 10px 1px black;
-  background-image: linear-gradient(#1b1b1b, #202020);
+  box-shadow: 1px 1px 10px 1px grey;
+  background-color: white;
 }
 
 button {
   margin-bottom: 20pt;
   padding: 5pt;
-}
-
-mat-icon {
-  margin-right: 10pt;
 }
 
 .mat-form-field-infix {
@@ -78,25 +59,7 @@ mat-icon {
 
 mat-icon {
   color: #f2a718 !important;
-  height: 30px !important;
-  width: 30px !important;
-}
-
-input#username.mat-input-element {
-  color: white !important;
-}
-
-::ng-deep .mat-focused .mat-form-field-label {
-  /*change color of label*/
-  color: white !important;
-}
-
-::ng-deep.mat-form-field-underline {
-  /*change color of underline*/
-  background-color: white !important;
-}
-
-::ng-deep.mat-form-field-ripple {
-  /*change color of underline when focused*/
-  background-color: white !important;
+  font-size: 25pt;
+  margin-right: 20pt;
+  vertical-align: middle !important;
 }

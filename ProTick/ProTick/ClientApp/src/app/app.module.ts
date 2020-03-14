@@ -14,7 +14,6 @@ import { DatePipe } from '@angular/common'
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { CoreModule } from './core/core.module';
 
 import { ProcessesComponent } from './processes/processes.component';
@@ -49,7 +48,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
     declarations: [
         AppComponent,
-        NavMenuComponent,
         ProcessesComponent,
         CreateProcessComponent,
         TicketsComponent,

@@ -158,3 +158,12 @@ snack-bar-container {
   margin: auto;
   text-align: center;
 }
+
+mat-sidenav-content {
+  height: 100%;
+  overflow: auto;
+  /*display: flex;
+  max-height: 91vh;
+  position: relative;
+  flex-direction: column;*/
+}

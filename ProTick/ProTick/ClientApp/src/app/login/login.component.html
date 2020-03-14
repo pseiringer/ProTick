@@ -2,14 +2,14 @@
   <div class="login-form">
     <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
       <div class="container-fluid">
-        <img src="./logo.png" height="200" />
+        <img src="./logo_schwarz.png" height="200" />
         <br />
         <div *ngIf="invalidLogin" class="alert alert-danger">Ungültiger Benutzername oder Passwort.</div>
         <div *ngIf="invalidFormInput" class="alert alert-danger">Bitte geben Sie einen Benutzernamen und Passwort ein.</div>
 
         <mat-icon>person</mat-icon>
         <mat-form-field [hideRequiredMarker]="true">
-          <input matInput type="text" id="username" name="username" ngModel placeholder="Benutzername" autofocus required/>
+          <input matInput type="text" id="username" name="username" ngModel placeholder="Benutzername" autofocus required />
         </mat-form-field>
 
         <br />

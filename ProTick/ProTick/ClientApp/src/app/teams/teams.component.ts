@@ -100,7 +100,7 @@ export class TeamsComponent implements OnInit {
     }
 
 
-    displayedColumns: string[] = ['teamID', 'abbreviation', 'options'];
+    displayedColumns: string[] = ['teamID', 'abbreviation', 'description', 'options'];
     displayedColumnsEmp: string[] = ['employeeID', 'firstName', 'lastName', 'hireDate', 'username', 'options'];
 
     expandedElement: Team | null;

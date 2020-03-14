@@ -4,8 +4,11 @@
 }
 
 .ticket-list {
-  margin: 3%;
-  margin-top: 1%;
+  padding-left: 3%; 
+  padding-right: 3%;
+  padding-top: 1%;
+  overflow: hidden;
+  height: 100%;
 }
 
 .mat-column-ticketid {

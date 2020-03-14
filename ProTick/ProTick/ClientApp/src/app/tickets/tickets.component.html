@@ -58,7 +58,7 @@
       </ng-container>
 
       <ng-container matColumnDef="options">
-        <th mat-header-cell *matHeaderCellDef></th>
+        <th mat-header-cell *matHeaderCellDef> Optionen </th>
         <td mat-cell *matCellDef="let row">
           <button [disabled]="row.subprocessID === -1"
                   mat-icon-button
@@ -99,7 +99,7 @@
                 <div class="floating_div_big">
                   <div class="desc_element">Notiz</div>
                   <div class="example-element">
-                    {{element.note}}
+                    {{element.note === null ? '–' : element.note}}
                   </div>
                 </div>
               </div>

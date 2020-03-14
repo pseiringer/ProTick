@@ -1,20 +1,26 @@
 .mat-tab-group {
-  height: 100vh;
+  height: 100% !important;
 }
 
 .table_container_teams {
-  height: 81vh;
+  height: 68vh;
   overflow: auto;
 }
 
 .table_container_emps {
-  height: 77vh;
+  height: 67vh;
   overflow: auto;
 }
 
+div.team_tab {
+  height: 100% !important;
+}
+
 .team_tab, .employee_tab {
-  margin: 40px;
-  margin-top: 20px;
+  padding: 3%;
+  padding-top: 2%;
+  padding-bottom: 0%;
+  height: 100% !important;
 }
 
 table {
@@ -86,14 +92,6 @@ mat-cell {
   white-space: nowrap;
 }
 
-/*mat-cell[title]:hover:after{
-  content:attr(title);
-  position: absolute;
-  color:aqua;
-}*/
-
-
-
 body {
   display: inherit;
   margin-left: 100px;
@@ -103,10 +101,144 @@ tr.example-element-row {
   cursor: pointer;
 }
 
+  tr.example-element-row:hover {
+    background-color: #f0f0f0 !important;
+  }
+
 button {
   outline: 0;
 }
 
 mat-select {
   letter-spacing: 0px !important;
+}
+
+.mat-column-teamID {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-abbreviation {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-description {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 50% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-options {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 40% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+/deep/ .mat-tab-body-wrapper {
+  height: 100%;
+}
+
+.mat-column-employeeID {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 10% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-firstName {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-lastName {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-hireDate {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-username {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }

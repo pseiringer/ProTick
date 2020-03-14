@@ -1,5 +1,5 @@
 body {
-  margin: 1%;
+  padding: 1%;
 }
 
 th.mat-header-cell, td.mat-cell {
@@ -74,4 +74,9 @@ table {
 
 mat-select {
   letter-spacing: 0px !important;
+}
+
+.table-container {
+  height: 57vh;
+  overflow: auto;
 }

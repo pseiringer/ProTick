@@ -14,6 +14,10 @@
 </form>
 
 <mat-dialog-content align="center">
+  <button mat-icon-button>
+    <mat-icon title="Klicken Sie auf einen Mitarbeiter, um diesen zu entfernen." style="cursor: help;">info</mat-icon>
+  </button>
+
   <mat-form-field>
     <mat-label>Mitarbeiter</mat-label>
     <mat-select [(ngModel)]="data.employeeID">
@@ -27,10 +31,10 @@
     <mat-icon>library_add</mat-icon>
   </button>
 
-  <p>Klicken, um zu entfernen</p>
-
   <mat-action-list>
-    <button class="empListButton" selectedEmpsListItem *ngFor="let e of data.selEmps" mat-list-item (click)="onRemoveEmp(e)">{{e.firstName}} {{e.lastName}}</button>
+    <button class="empListButton link" selectedEmpsListItem *ngFor="let e of data.selEmps" mat-list-item (click)="onRemoveEmp(e)">
+      {{e.firstName}} {{e.lastName}} <mat-icon class="someicon">delete</mat-icon>
+    </button>
   </mat-action-list>
 </mat-dialog-content>
 

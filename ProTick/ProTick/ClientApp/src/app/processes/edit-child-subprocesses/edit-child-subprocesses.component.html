@@ -2,7 +2,7 @@
   <p mat-dialog-title align="center">{{data.subprocess.subprocessID}}: {{data.subprocess.description}}</p>
 
   <mat-dialog-content>
-    <div class="mat-elevation-z8 table_container">
+    <div class="mat-elevation-z8 table_container table-container">
       <table mat-table #tableFirst [dataSource]="dataSource">
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -18,16 +18,16 @@
         </ng-container>
 
         <ng-container matColumnDef="checkbox">
-          <th mat-header-cell *matHeaderCellDef> Kindprozess </th>
+          <th mat-header-cell *matHeaderCellDef> Auswählen </th>
           <td mat-cell *matCellDef="let element">
-            <mat-checkbox [(ngModel)]="element.isChecked" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+            <mat-checkbox style="text-align: center !important;" color="primary" [(ngModel)]="element.isChecked" [ngModelOptions]="{standalone: true}"></mat-checkbox>
           </td>
         </ng-container>
       </table>
     </div>
   </mat-dialog-content>
 
-  <div mat-dialog-actions>
+  <div mat-dialog-actions align="center">
     <button mat-stroked-button (click)="onNoClick()">Abbrechen</button>
     <button mat-flat-button color="primary" (click)="onYesClick()" cdkFocusInitial [disabled]="!isValid()">Bestätigen</button>
   </div>

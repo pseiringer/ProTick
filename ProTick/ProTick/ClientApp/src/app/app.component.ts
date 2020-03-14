@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, OnInit } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { isNullOrUndefined } from 'util';
 
@@ -15,7 +15,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+    ngOnInit(): void {
+        
+    }
+
     mobileQuery: MediaQueryList;
 
     private _mobileQueryListener: () => void;

@@ -18,3 +18,15 @@ button {
 .empListButton:hover {
   background-color: lightgrey;
 }
+
+.someicon {
+  margin-right: 5px;
+}
+
+.link mat-icon {
+  opacity: 0;
+}
+
+.link:hover mat-icon {
+  opacity: 1;
+}
