@@ -1,5 +1,4 @@
 <form [formGroup]="teamDataFormGroup">
-
   <div>
     <h6 style="display: inline-block">{{_header}}</h6>
     <button mat-button (click)="onNoClick()" style="display: inline-block; float: right">
@@ -15,29 +14,33 @@
   </mat-form-field>
   <br />
 </form>
-  <mat-form-field>
-    <mat-label>Mitarbeiter</mat-label>
-    <mat-select [(ngModel)]="data.employeeID">
-      <mat-option *ngFor="let emp of allEmps" [value]="emp.employeeID">
-        {{emp.firstName
-    }} {{emp.lastName}}
+<mat-form-field>
+  <mat-label>Mitarbeiter</mat-label>
+  <mat-select [(ngModel)]="data.employeeID">
+    <mat-option *ngFor="let emp of allEmps" [value]="emp.employeeID">
+      {{
+emp.firstName
+      }} {{emp.lastName}}
     </mat-option>
-    </mat-select>
-    </mat-form-field>
+  </mat-select>
+</mat-form-field>
 
-    <button mat-icon-button (click)="onAddEmp()">
-      <mat-icon>playlist_add</mat-icon>
-    </button>
+<button mat-icon-button (click)="onAddEmp()">
+  <mat-icon>playlist_add</mat-icon>
+</button>
 
 <p>Klicken, um zu entfernen</p>
 
-  <mat-action-list>
-    <button class="selectedEmpsListItem" *ngFor="let e of data.selEmps" mat-list-item (click)="onRemoveEmp(e)"> {{e.firstName}} {{e.lastName}} </button>
-  </mat-action-list>
+<mat-action-list>
+  <button class="selectedEmpsListItem" *ngFor="let e of data.selEmps" mat-list-item (click)="onRemoveEmp(e)">
+    {{e.firstName}} {{e.lastName}}
+  </button>
+</mat-action-list>
 
-  <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Abbrechen</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!teamDataFormGroup.valid">
-      {{_buttonText}}</button>
-  </div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!teamDataFormGroup.valid">
+    {{_buttonText}}
+  </button>
+</div>
 

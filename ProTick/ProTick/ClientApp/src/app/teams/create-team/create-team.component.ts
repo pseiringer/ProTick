@@ -27,7 +27,7 @@ export class CreateTeamComponent implements OnInit {
     private _employeeService: EmployeeService,
     @Inject(MAT_DIALOG_DATA) public data: CreateTeamDialogData) { }
 
-  allEmps: any = [];
+  allEmps: Employee[] = [];
   selEmp: Employee;
 
   _header: string;
@@ -48,7 +48,7 @@ export class CreateTeamComponent implements OnInit {
     }
 
     this.getEmps();
-   
+
     this.teamDataFormGroup = this._formBuilder.group({
       descCtrl: ['', Validators.required],
       abbrCtrl: ['', Validators.required]
@@ -66,16 +66,13 @@ export class CreateTeamComponent implements OnInit {
 
   onAddEmp() {
     console.log(this.data.employeeID);
-    this._employeeService.getEmployee(this.data.employeeID)
-      .subscribe(data => {
-        console.log(data);
-        this.selEmp = data;
 
-        if (this.data.selEmps.some(e => e.employeeID === this.selEmp.employeeID) == false) {
-          this.data.selEmps.push(this.selEmp);
-        }
-      }
-      );
+    this.selEmp = this.allEmps.filter(x => x.employeeID === this.data.employeeID)[0];
+    console.log(this.selEmp);
+
+    if (this.data.selEmps.some(e => e.employeeID === this.selEmp.employeeID) == false) {
+      this.data.selEmps.push(this.selEmp);
+    }
   }
 
   onNoClick(): void {
