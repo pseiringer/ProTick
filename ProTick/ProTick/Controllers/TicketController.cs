@@ -33,7 +33,6 @@ namespace ProTick.Controllers
             return dbm.FindAllTickets(true).Select(x => converter.TicketToDTO(x)).ToList();
         }
         
-
         [HttpGet("Username/{user}")]
         public IEnumerable<TicketDTO> GetTicketsByUsername(string user)
         {
@@ -44,7 +43,6 @@ namespace ProTick.Controllers
 
             return new List<TicketDTO>();
         }
-
 
         [HttpGet("{id}")]
         public TicketDTO GetTicket(int id)

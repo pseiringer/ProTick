@@ -151,9 +151,12 @@ namespace ProTickTest
                     )
                     .ToList();
 
-                expected[0].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(1).ToList()[0]);
-                expected[1].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(2).ToList()[0]);
-                expected[2].Should().BeEquivalentTo(controller.GetTeamsByEmployeeID(3).ToList()[0]);
+                expected[0].Should().BeEquivalentTo(
+                    controller.GetTeamsByEmployeeID(1).ToList()[0]);
+                expected[1].Should().BeEquivalentTo(
+                    controller.GetTeamsByEmployeeID(2).ToList()[0]);
+                expected[2].Should().BeEquivalentTo(
+                    controller.GetTeamsByEmployeeID(3).ToList()[0]);
             }
 
         }

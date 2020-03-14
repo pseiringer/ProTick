@@ -107,9 +107,7 @@ namespace ProTickTest
             }
 
         }
-
         
-
         [Fact]
         public void TestGetChildrenOfSubprocess()
         {
@@ -151,11 +149,11 @@ namespace ProTickTest
 
                 expected[1].Should().BeEquivalentTo(controller.GetChildrenOfSubprocess(1).ToList()[0]);
                 expected[2].Should().BeEquivalentTo(controller.GetChildrenOfSubprocess(2).ToList()[0]);
-                (new List<SubprocessDTO>() { null }).Should().BeEquivalentTo(controller.GetChildrenOfSubprocess(3).ToList());
+                (new List<SubprocessDTO>() { null })
+                    .Should().BeEquivalentTo(controller.GetChildrenOfSubprocess(3).ToList());
             }
 
         }
-
 
         [Fact]
         public void TestGetTicketsOfSubprocess()

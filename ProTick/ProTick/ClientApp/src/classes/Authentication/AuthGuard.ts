@@ -1,12 +1,14 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 import { JwtHelper } from 'angular2-jwt';
-import { isNullOrUndefined } from 'util';
 import { StaticDatabaseObjectsService } from '../../app/core/static-database-objects/static-database-objects.service';
+import { isNull, isNullOrUndefined } from 'util';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private jwtHelper: JwtHelper, private router: Router, private staticDbObj: StaticDatabaseObjectsService) { }
+    constructor(private jwtHelper: JwtHelper,
+        private router: Router,
+        private staticDbObj: StaticDatabaseObjectsService) { }
 
     canActivate(): boolean {
         var token = this.getToken();
@@ -28,19 +30,19 @@ export class AuthGuard implements CanActivate {
     private getDecodedToken(): any {
         var token = this.getToken();
         if (isNullOrUndefined(token)) return null;
-        return this.jwtHelper.decodeToken(this.getToken());
+        return this.jwtHelper.decodeToken(token);
     }
 
     getUsername(): string {
         var token = this.getDecodedToken();
         if (isNullOrUndefined(token)) return null;
-        return this.getDecodedToken().nameid;
+        return token.nameid;
     }
 
     getRole(): string {
         var token = this.getDecodedToken();
         if (isNullOrUndefined(token)) return null;
-        return this.getDecodedToken().role;
+        return token.role;
     }
 
     isAdmin(): boolean {

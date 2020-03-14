@@ -49,13 +49,18 @@ namespace ProTick.Controllers
         [HttpGet("{id}/Subprocesses")]
         public IEnumerable<SubprocessDTO> GetSubprocessesByProcessID(int id)
         {
-            return dbm.FindAllSubprocesses(true).Where(x => x.Process.ProcessID == id).Select(x => converter.SubprocessToDTO(x)).ToList();
+            return dbm.FindAllSubprocesses(true)
+                .Where(x => x.Process.ProcessID == id)
+                .Select(x => converter.SubprocessToDTO(x))
+                .ToList();
         }
 
         [HttpGet("{id}/ParentChildRelations")]
         public IEnumerable<ParentChildRelationDTO> GetParentChildRelationsByProcessID(int id)
         {
-            return dbm.FindAllParentChildRelationsOfProcess(id).Select(x => converter.ParentChildRelationToDTO(x)).ToList();
+            return dbm.FindAllParentChildRelationsOfProcess(id)
+                .Select(x => converter.ParentChildRelationToDTO(x))
+                .ToList();
         }
 
         [HttpPost, Authorize(Roles = StaticRoles.Admin)]
