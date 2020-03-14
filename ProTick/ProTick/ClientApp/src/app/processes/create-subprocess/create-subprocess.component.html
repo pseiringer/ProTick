@@ -1,32 +1,36 @@
 <form [formGroup]="subprocessForm">
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.description" formControlName="description" placeholder="Beschreibung" />
-  </mat-form-field>
+  <p mat-dialog-title align="center">Subprozess erstellen</p>
 
-  <br />
+  <mat-dialog-content align="center">
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.description" formControlName="description" placeholder="Beschreibung" />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Team</mat-label>
-    <mat-select [(ngModel)]="data.teamID" formControlName="teamID">
-      <mat-option *ngFor="let team of teams" [value]="team.teamID">
-        {{team.description}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <br />
 
-  <br />
+    <mat-form-field>
+      <mat-label>Team</mat-label>
+      <mat-select [(ngModel)]="data.teamID" formControlName="teamID">
+        <mat-option *ngFor="let team of teams" [value]="team.teamID">
+          {{team.description}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Prozess</mat-label>
-    <mat-select [(ngModel)]="data.processID" formControlName="processID">
-      <mat-option *ngFor="let process of processes" [value]="process.processID">
-        {{process.description}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <br />
+
+    <mat-form-field>
+      <mat-label>Prozess</mat-label>
+      <mat-select [(ngModel)]="data.processID" formControlName="processID">
+        <mat-option *ngFor="let process of processes" [value]="process.processID">
+          {{process.description}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Abbrechen</button>
-    <button mat-button (click)="onYesClick()" cdkFocusInitial [disabled]="!subprocessForm.valid">Subprozess erstellen</button>
+    <button mat-stroked-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-flat-button color="primary" (click)="onYesClick()" cdkFocusInitial [disabled]="!subprocessForm.valid">Erstellen</button>
   </div>
 </form>

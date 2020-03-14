@@ -5,48 +5,48 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from '../../../classes/Employee';
 
 export interface CreateTeamDialogData {
-  teamID: number;
-  description: string;
-  abbreviation: string;
-  employeeID: number;
-  selEmps: Employee[],
+    teamID: number;
+    description: string;
+    abbreviation: string;
+    employeeID: number;
+    selEmps: Employee[],
 }
 
 @Component({
-  selector: 'app-create-team',
-  templateUrl: './create-team.component.html',
-  styleUrls: ['./create-team.component.css'],
-  providers: [EmployeeService],
+    selector: 'app-create-team',
+    templateUrl: './create-team.component.html',
+    styleUrls: ['./create-team.component.css'],
+    providers: [EmployeeService],
 
 })
 export class CreateTeamComponent implements OnInit {
 
 
-  constructor(private _formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<CreateTeamComponent>,
-    private _employeeService: EmployeeService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateTeamDialogData) { }
+    constructor(private _formBuilder: FormBuilder,
+        public dialogRef: MatDialogRef<CreateTeamComponent>,
+        private _employeeService: EmployeeService,
+        @Inject(MAT_DIALOG_DATA) public data: CreateTeamDialogData) { }
 
   allEmps: Employee[] = [];
   selEmp: Employee;
 
-  _header: string;
-  _buttonText: string;
+    _header: string;
+    _buttonText: string;
 
-  teamDataFormGroup: FormGroup;
+    teamDataFormGroup: FormGroup;
 
-  ngOnInit() {
-    if (this.data.teamID !== undefined) {
-      console.log(this.data);
-      this._header = "Team bearbeiten";
-      this._buttonText = "Ändern"
-    }
-    else {
-      this._header = "Neues Team";
-      this._buttonText = "Erstellen";
-      this.data.selEmps = [];
-    }
-
+    ngOnInit() {
+        if (this.data.teamID !== undefined) {
+            console.log(this.data);
+            this._header = "Team bearbeiten";
+            this._buttonText = "Bestätigen"
+        }
+        else {
+            this._header = "Team erstellen";
+            this._buttonText = "Erstellen";
+            this.data.selEmps = [];
+        }
+      
     this.getEmps();
 
     this.teamDataFormGroup = this._formBuilder.group({

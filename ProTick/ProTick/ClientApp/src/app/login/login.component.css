@@ -9,7 +9,8 @@
 }
 
 mat-form-field {
-    width: 300px;
+  width: 230px;
+  margin-right: 20pt;
 }
 
 input[type] {
@@ -27,22 +28,38 @@ button {
   margin-top: 20px;
 }
 
-#loginBtn {
-  color: #000;
-  background-color: #db9716;
-  box-shadow: 0 0 0 0.1rem #f2a718;
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
+  outline: 0 none !important;
+  border: 0 !important;
 }
 
-textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {
-  border-color: #f2a718;
-  border: 1px solid #f2a718;
-  outline: 0 none;
-  box-shadow: 0 0 0 0.1rem #f2a718;
-  outline: none;
+img {
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+body {
+  padding-top: 50pt;
+}
+
+.container-fluid {
+  box-shadow: 1px 1px 10px 1px grey;
+  background-color: white;
+}
+
+button {
+  margin-bottom: 20pt;
+  padding: 5pt;
+}
+
+.mat-form-field-infix {
+  outline: 0;
   border: 0;
 }
 
-img{
-    margin-bottom: 30px;
-    margin-top: 30px;
+mat-icon {
+  color: #f2a718 !important;
+  font-size: 25pt;
+  margin-right: 20pt;
+  vertical-align: middle !important;
 }
