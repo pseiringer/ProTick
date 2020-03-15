@@ -112,14 +112,14 @@
                     <div class="floating_div">
                       <div class="desc_element">Straße, Hausnummer</div>
                       <div class="example-element-street">
-                        {{element.street === null && element.streetNumber === null ? '–' : element.street + ' ' + element.streetNumber}}
+                        {{(element.street === undefined || element.street === null)  ? '–' : element.street}} {{(element.streetNumber === undefined || element.streetNumber === null) ? '–' : element.streetNumber}}
                       </div>
                     </div>
 
                     <div class="floating_div">
                       <div class="desc_element">Geburtsdatum</div>
                       <div class="example-element-birthDate">
-                        {{element.dateOfBirth === null ? '–' : element.dateOfBirth}}
+                        {{(element.dateOfBirth === null || element.dateOfBirth === undefined) ? '–' : element.dateOfBirth}}
                       </div>
                     </div>
                   </div>
@@ -128,14 +128,14 @@
                     <div class="floating_div">
                       <div class="desc_element">PLZ, Ort</div>
                       <div class="example-element-city">
-                        {{element.postalCode === null && element.city === null ? '–' : element.postalCode + ' ' + element.city}}
+                        {{(element.postalCode === undefined || element.postCode === null)  ? '–' : element.postalCode}} {{(element.city === undefined || element.city === null) ? '–' : element.city}}
                       </div>
                     </div>
 
                     <div class="floating_div">
                       <div class="desc_element">Tel.</div>
                       <div class="example-element-phoneNumber">
-                        {{element.phoneNumber === null ? '–' : element.phoneNumber}}
+                        {{(element.phoneNumber === null || element.phoneNumber === undefined) ? '–' : element.phoneNumber}}
                       </div>
                     </div>
                   </div>
@@ -144,14 +144,14 @@
                     <div class="floating_div">
                       <div class="desc_element">Land</div>
                       <div class="example-element-country">
-                        {{element.country === null ? '–' : element.country}}
+                        {{(element.country === null || element.country === undefined) ? '–' : element.country}}
                       </div>
                     </div>
 
                     <div class="floating_div">
                       <div class="desc_element">E-Mail</div>
                       <div class="example-element-email">
-                        {{element.email === null ? '–' : element.email}}
+                        {{(element.email === null || element.email === null) ? '–' : element.email}}
                       </div>
                     </div>
                   </div>
