@@ -9,3 +9,8 @@
   .selectedTeamsListItem:hover {
     background-color: #f2a718;
   }
+
+.close {
+  margin-top: 0%;
+  padding-top: 0%;
+}
