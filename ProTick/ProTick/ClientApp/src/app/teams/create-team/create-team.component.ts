@@ -27,8 +27,8 @@ export class CreateTeamComponent implements OnInit {
         private _employeeService: EmployeeService,
         @Inject(MAT_DIALOG_DATA) public data: CreateTeamDialogData) { }
 
-    allEmps: any = [];
-    selEmp: Employee;
+  allEmps: Employee[] = [];
+  selEmp: Employee;
 
     _header: string;
     _buttonText: string;
@@ -46,44 +46,41 @@ export class CreateTeamComponent implements OnInit {
             this._buttonText = "Erstellen";
             this.data.selEmps = [];
         }
+      
+    this.getEmps();
 
-        this.getEmps();
+    this.teamDataFormGroup = this._formBuilder.group({
+      descCtrl: ['', Validators.required],
+      abbrCtrl: ['', Validators.required]
+    });
+  }
 
-        this.teamDataFormGroup = this._formBuilder.group({
-            descCtrl: ['', Validators.required],
-            abbrCtrl: ['', Validators.required]
-        });
-    }
-
-    getEmps() {
-        this._employeeService.getEmployees()
-            .subscribe(data => {
-                this.allEmps = data;
-                this.data.employeeID = this.allEmps[0].employeeID;
-                console.log(this.data.employeeID);
-            });
-    }
-
-    onAddEmp() {
+  getEmps() {
+    this._employeeService.getEmployees()
+      .subscribe(data => {
+        this.allEmps = data;
+        this.data.employeeID = this.allEmps[0].employeeID;
         console.log(this.data.employeeID);
-        this._employeeService.getEmployee(this.data.employeeID)
-            .subscribe(data => {
-                console.log(data);
-                this.selEmp = data;
+      });
+  }
 
-                if (this.data.selEmps.some(e => e.employeeID === this.selEmp.employeeID) == false) {
-                    this.data.selEmps.push(this.selEmp);
-                }
-            }
-            );
-    }
+  onAddEmp() {
+    console.log(this.data.employeeID);
 
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
+    this.selEmp = this.allEmps.filter(x => x.employeeID === this.data.employeeID)[0];
+    console.log(this.selEmp);
 
-    onRemoveEmp(e: Employee) {
-        const index = this.data.selEmps.findIndex(i => i.employeeID === e.employeeID);
-        this.data.selEmps.splice(index, 1);
+    if (this.data.selEmps.some(e => e.employeeID === this.selEmp.employeeID) == false) {
+      this.data.selEmps.push(this.selEmp);
     }
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onRemoveEmp(e: Employee) {
+    const index = this.data.selEmps.findIndex(i => i.employeeID === e.employeeID);
+    this.data.selEmps.splice(index, 1);
+  }
 }

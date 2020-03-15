@@ -29,7 +29,9 @@ namespace ProTickTest.Classes
 
 
         #region SimpleSeeders
-        private static List<Address> SeedAddresses(ProTickDatabaseContext context, int amount)
+        private static List<Address> SeedAddresses(
+            ProTickDatabaseContext context,
+            int amount)
         {
             var addresses = GetSeededAddresses(amount);
             addresses.ForEach(x => context.Add(x));

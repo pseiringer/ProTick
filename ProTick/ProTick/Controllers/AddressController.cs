@@ -19,7 +19,9 @@ namespace ProTick.Controllers
         private IResourceDTOConverter converter;
         private IDatabaseQueryManager dbm;
 
-        public AddressController([FromServices] ProTickDatabaseContext db, [FromServices] IResourceDTOConverter converter, [FromServices] IDatabaseQueryManager dbm)
+        public AddressController([FromServices] ProTickDatabaseContext db,
+            [FromServices] IResourceDTOConverter converter,
+            [FromServices] IDatabaseQueryManager dbm)
         {
             this.db = db;
             this.converter = converter;
@@ -54,7 +56,7 @@ namespace ProTick.Controllers
         [HttpPut("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public AddressDTO PutAddress(int id, [FromBody] AddressDTO a)
         {
-            var add = db.Address.FirstOrDefault(x => x.AddressID == a.AddressID);
+            var add = dbm.FindAddressByID(id);
 
             if (add.Street != a.Street)
                 add.Street = a.Street;
@@ -74,7 +76,7 @@ namespace ProTick.Controllers
         [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteAddress(int id)
         {
-            db.Address.Remove(db.Address.First(x => x.AddressID == id));
+            db.Address.Remove(dbm.FindAddressByID(id));
             db.SaveChanges();
         }
 

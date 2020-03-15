@@ -51,15 +51,11 @@ namespace ProTick.Controllers
 
             if (emp != null && emp.Password == pass)
             {
-
-                var jwtAuthentication = configuration.GetSection("JwtAuthentication");
+                //user authenticated
 
                 var handler = new JwtSecurityTokenHandler();
-
-                //string role = StaticRoles.Employee;
-                //if (emp.Role.Title == StaticRoles.Admin) role = StaticRoles.Admin;
+                
                 string role = emp.Role.Title;
-
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new Claim[] {
                         new Claim(ClaimTypes.NameIdentifier, emp.Username),
@@ -67,13 +63,17 @@ namespace ProTick.Controllers
                     }
                 );
 
-                var keyByteArray = System.Text.Encoding.UTF8.GetBytes(jwtAuthentication.GetValue<string>("SecurityKey"));
+                var jwtAuthentication = configuration.GetSection("JwtAuthentication");
+                var keyByteArray = System.Text.Encoding.UTF8.GetBytes(
+                    jwtAuthentication.GetValue<string>("SecurityKey"));
                 var signinKey = new SymmetricSecurityKey(keyByteArray);
                 var securityToken = handler.CreateToken(new SecurityTokenDescriptor
                 {
                     Issuer = jwtAuthentication.GetValue<string>("ValidIssuer"),
                     Audience = jwtAuthentication.GetValue<string>("ValidAudience"),
-                    SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
+                    SigningCredentials = new SigningCredentials(
+                        signinKey,
+                        SecurityAlgorithms.HmacSha256),
                     Subject = identity,
                     Expires = DateTime.Now.AddHours(1),
                     NotBefore = DateTime.Now
@@ -92,14 +92,14 @@ namespace ProTick.Controllers
         public IActionResult ChangePassword([FromBody] LoginUserDTO editedLoginUser)
         {
             var username = editedLoginUser.Username;
-
             var emp = dbm.FindEmployeeByUsername(username);
 
-            string loggedInRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            string loggedInUser = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            string loggedInRole = User.Claims.FirstOrDefault(
+                x => x.Type == ClaimTypes.Role)?.Value;
+            string loggedInUser = User.Claims.FirstOrDefault(
+                x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             bool canEdit = false;
-
             if (loggedInRole != null && loggedInRole != string.Empty)
             {
                 if (loggedInRole == StaticRoles.Admin) canEdit = true;
@@ -107,20 +107,23 @@ namespace ProTick.Controllers
                 {
                     if (loggedInUser == username)
                     {
-                        if (emp != null && editedLoginUser.OldPassword != null && editedLoginUser.OldPassword != "" && emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
+                        if (emp != null 
+                          && editedLoginUser.OldPassword != null 
+                          && editedLoginUser.OldPassword != "" 
+                          && emp.Password == hasher.HashPassword(editedLoginUser.OldPassword))
                         {
                             canEdit = true;
                         }
                     }
                 }
             }
-
             // Check if new password is valid
-            // Eventually add lenght check
-            if (editedLoginUser.Password == null || editedLoginUser.Password == "") canEdit = false;
+            if (editedLoginUser.Password == null || editedLoginUser.Password == "")
+                canEdit = false;
 
             if (canEdit)
             {
+                // Request is valid
                 bool changesMade = false;
 
                 string hashedPass = hasher.HashPassword(editedLoginUser.Password);

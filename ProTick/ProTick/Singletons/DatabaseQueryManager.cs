@@ -278,11 +278,10 @@ namespace ProTick.Singletons
         {
             return db.ParentChildRelation
                         .Include(x => x.Child)
-                        .ThenInclude(x => x.Process)
-                        .Include(x => x.Child)
-                        .ThenInclude(x => x.Team)
                         .Where(x => x.Parent.SubprocessID == id)
                         .Select(x => x.Child)
+                        .Include(x => x.Process)
+                        .Include(x => x.Team)
                         .ToList();
 		}
 		

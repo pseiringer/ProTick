@@ -115,14 +115,16 @@ namespace ProTick.Controllers
                 db.EmployeeTeam.Remove(et[i]);
             }
 
-            var add = dbm.FindAddressByID(emp.Address.AddressID);
-
-            db.Employee.Remove(emp);
-            
-            if(db.Employee.Include(x => x.Address).Where(x => x.Address.AddressID == add.AddressID).ToList().Count() <= 1)
+            if(emp.Address != null)
             {
-                db.Address.Remove(add);
+                var add = dbm.FindAddressByID(emp.Address.AddressID);
+                if (db.Employee.Include(x => x.Address).Where(x => x.Address.AddressID == add.AddressID).ToList().Count() <= 1)
+                {
+                    db.Address.Remove(add);
+                }
             }
+            
+            db.Employee.Remove(emp);
 
             db.SaveChanges();
         }

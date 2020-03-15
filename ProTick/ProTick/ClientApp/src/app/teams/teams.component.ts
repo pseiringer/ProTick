@@ -109,7 +109,8 @@ export class TeamsComponent implements OnInit {
 
     //@ViewChild(MatSort) sort: MatSort;
 
-    constructor(public datepipe: DatePipe, private _employeeTeamService: EmployeeTeamService,
+  constructor(public datepipe: DatePipe,
+        private _employeeTeamService: EmployeeTeamService,
         private _teamService: TeamService,
         private _addressService: AddressService,
         private _employeeService: EmployeeService, public dialog: MatDialog,
@@ -123,7 +124,8 @@ export class TeamsComponent implements OnInit {
     }
 
     changeTab() {
-        this.getEmployees();
+      this.getEmployees();
+      this.getTeams();
     }
 
     getTeams() {
