@@ -18,6 +18,10 @@ export class CreateProcessComponent {
         @Inject(MAT_DIALOG_DATA) public data: CreateProcessDialogData,
         private fb: FormBuilder) { }
 
+    onYesClick(): void {
+        if (this.processForm.valid) this.dialogRef.close(this.data);
+    }
+
     processForm = this.fb.group({
         description: ['', Validators.required]
     })
@@ -26,7 +30,5 @@ export class CreateProcessComponent {
         this.dialogRef.close();
     }
 
-    onYesClick(): void {
-        if (this.processForm.valid) this.dialogRef.close(this.data);
-    }
+    
 }
