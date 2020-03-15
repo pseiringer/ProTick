@@ -109,12 +109,12 @@ export class TeamsComponent implements OnInit {
 
     //@ViewChild(MatSort) sort: MatSort;
 
-  constructor(public datepipe: DatePipe,
+    constructor(public datepipe: DatePipe,
         private _employeeTeamService: EmployeeTeamService,
         private _teamService: TeamService,
         private _addressService: AddressService,
         private _employeeService: EmployeeService, public dialog: MatDialog,
-        private authguard: AuthGuard,) { }
+        private authguard: AuthGuard, ) { }
 
     ngOnInit() {
 
@@ -124,8 +124,8 @@ export class TeamsComponent implements OnInit {
     }
 
     changeTab() {
-      this.getEmployees();
-      this.getTeams();
+        this.getEmployees();
+        this.getTeams();
     }
 
     getTeams() {
@@ -267,13 +267,13 @@ export class TeamsComponent implements OnInit {
                 this.emp.email = result.email;
                 this.emp.dateOfBirth = this.datepipe.transform(result.dateOfBirth, "yyyy-MM-dd hh:mm:ss");
                 this.emp.hireDate = this.datepipe.transform(result.hireDate, "yyyy-MM-dd hh:mm:ss");
-              this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName.substr(0, 15)).toLowerCase();
-              this.emp.roleID = result.roleID;
-              this.emp.addressID = -1;
+                this.emp.username = (this.emp.firstName.substr(0, 1) + "" + this.emp.lastName.substr(0, 15)).toLowerCase();
+                this.emp.roleID = result.roleID;
+                this.emp.addressID = -1;
 
 
-              if (result.city === undefined && result.country === undefined && result.postalCode === undefined && result.street === undefined && result.streetNumber === undefined) {
-                  
+                if (result.city === undefined && result.country === undefined && result.postalCode === undefined && result.street === undefined && result.streetNumber === undefined) {
+
                     this._employeeService.postEmployee(this.emp)  //add emp
                         .subscribe(data => {
                             this.emp = data;

@@ -2,7 +2,9 @@
 
 <div class="example-container">
   <mat-toolbar color="primary" class="example-toolbar" *ngIf="auth.canActivate()">
-    <button mat-icon-button (click)="toggleSidenav()" style="outline: 0;"><mat-icon style="color: white;">menu</mat-icon></button>
+    <button mat-icon-button (click)="toggleSidenav()" style="outline: 0;">
+      <mat-icon style="color: white;">menu</mat-icon>
+    </button>
 
     <div class="wrap_div">
       <img src="logo.png" class="diploma_logo" />
@@ -52,7 +54,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
