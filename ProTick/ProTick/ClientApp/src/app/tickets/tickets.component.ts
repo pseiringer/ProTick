@@ -180,10 +180,10 @@ export class TicketsComponent implements OnInit {
         if (this.authGuard.canActivate()) {
             const dialogRef = this.dialog.open(YesNoComponent, {
                 data: {
-                    title: "Delete",
-                    text: "Do you really want to delete Ticket " + id,
-                    no: "No",
-                    yes: "Yes"
+                    title: "Löschen",
+                    text: "Möchten Sie das Ticket " + id + " wirklich löschen?",
+                    no: "Nein",
+                    yes: "Ja"
                 }
             });
             dialogRef.afterClosed().subscribe(result => {
