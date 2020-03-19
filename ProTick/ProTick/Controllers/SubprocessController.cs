@@ -103,7 +103,17 @@ namespace ProTick.Controllers
         [HttpDelete("{id}"), Authorize(Roles = StaticRoles.Admin)]
         public void DeleteSubprocess(int id)
         {
-            db.Subprocess.Remove(db.Subprocess.First(x => x.SubprocessID == id));
+            var subprocess = dbm.FindSubprocessByID(id);
+
+            db.Ticket.Where(y => y.Subprocess.SubprocessID == subprocess.SubprocessID)
+                            .ToList()
+                            .ForEach(ticket => db.Ticket.Remove(ticket));
+
+            db.ParentChildRelation.Where(pcl => pcl.Child.SubprocessID == subprocess.SubprocessID || pcl.Parent.SubprocessID == subprocess.SubprocessID)
+                .ToList()
+                .ForEach(pcl => db.ParentChildRelation.Remove(pcl));
+
+            db.Subprocess.Remove(subprocess);
             db.SaveChanges();
         }
     }

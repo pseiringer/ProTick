@@ -7,8 +7,6 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatListModule, MatStepperModule } from '
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { RoleService } from '../../core/role/role.service';
 
-
-
 export interface CreateEmployeeDialogData {
     employeeID: number,
     firstName: string,
@@ -53,7 +51,7 @@ export class CreateEmployeeComponent implements OnInit {
     hireDate = new FormControl(new Date());
     birthDate = new FormControl(new Date());
 
-    allTeams: any = [];
+    allTeams: Team[] = [];
     allRoles: any = [];
     selTeam: Team;
 
@@ -67,12 +65,14 @@ export class CreateEmployeeComponent implements OnInit {
 
         if (this.data.employeeID !== undefined) {
             this._header = "Mitarbeiter bearbeiten";
-            this._buttonText = "Ändern"
+            this._buttonText = "Bestätigen"
             this.birthDate = new FormControl(new Date(moment(this.data.dateOfBirth, 'DD.MM.YYYY').format('MM.DD.YYYY')));
             this.hireDate = new FormControl(new Date(moment(this.data.hireDate, 'DD.MM.YYYY').format('MM.DD.YYYY')));
+            this.data.hireDate = this.hireDate.value;
+            this.data.dateOfBirth = this.birthDate.value;
         }
         else {
-            this._header = "Neuer Mitarbeiter";
+            this._header = "Mitarbeiter erstellen";
             this._buttonText = "Erstellen";
             this.data.selTeams = [];
             this.data.hireDate = this.hireDate.value;
@@ -87,7 +87,7 @@ export class CreateEmployeeComponent implements OnInit {
             firstNameCtrl: ['', Validators.required],
             lastNameCtrl: ['', Validators.required],
             phoneNumberCtrl: ['', Validators.required],
-            emailCtrl: ['', Validators.email],
+            emailCtrl: ['', Validators.compose([Validators.email, Validators.required])],
             birthDateCtrl: [''],
             hireDateCtrl: ['', Validators.compose([Validators.minLength(8), Validators.maxLength(10)])]
         });
@@ -123,15 +123,11 @@ export class CreateEmployeeComponent implements OnInit {
 
     onAddTeam() {
         console.log(this.data.teamID);
-        this._teamService.getTeam(this.data.teamID)
-            .subscribe(data => {
-                this.selTeam = data;
+        this.selTeam = this.allTeams.filter(x => x.teamID === this.data.teamID)[0];
 
-                if (this.data.selTeams.some(e => e.teamID === this.selTeam.teamID) == false) {
-                    this.data.selTeams.push(this.selTeam);
-                }
-            }
-            );
+        if (this.data.selTeams.some(e => e.teamID === this.selTeam.teamID) == false) {
+            this.data.selTeams.push(this.selTeam);
+        }
     }
 
     onNoClickEmp(): void {

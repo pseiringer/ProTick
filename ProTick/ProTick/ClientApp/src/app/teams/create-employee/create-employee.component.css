@@ -1,5 +1,4 @@
-.selectedTeamsListItem
-{
+.selectedTeamsListItem {
   background-color: #f7f5f5;
   margin: 2px;
   border-radius: 3px;
@@ -8,5 +7,38 @@
 
   .selectedTeamsListItem:hover {
     background-color: #f2a718;
-
   }
+
+.close {
+  margin-top: 0%;
+  padding-top: 0%;
+}
+
+mat-form-field {
+  width: 50%;
+}
+
+.someicon {
+  margin-right: 5px;
+}
+
+.link mat-icon {
+  opacity: 0;
+}
+
+.link:hover mat-icon {
+  opacity: 1;
+}
+
+.selectedTeamsListItem {
+  border-radius: 4px;
+  width: 50%;
+}
+
+  .selectedTeamsListItem:hover {
+    background-color: lightgrey;
+  }
+
+button {
+  outline: 0;
+}

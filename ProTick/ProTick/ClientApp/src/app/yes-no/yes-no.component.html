@@ -4,8 +4,12 @@
   <p *ngIf="textExists()">{{text}}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="false" cdkFocusInitial *ngIf="noExists()">{{no}}</button>
-  <button mat-button [mat-dialog-close]="false" cdkFocusInitial *ngIf="!(noExists())">No</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial *ngIf="yesExists()">{{yes}}</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial *ngIf="!(yesExists())">Yes</button>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>
+    <span *ngIf="noExists()">{{no}}</span>
+    <span *ngIf="!(noExists())">Nein</span>
+  </button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    <span *ngIf="yesExists()">{{yes}}</span>
+    <span *ngIf="!(yesExists())">Ja</span>
+  </button>
 </mat-dialog-actions>

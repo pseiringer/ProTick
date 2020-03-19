@@ -1,21 +1,17 @@
 <form [formGroup]="forwardTicketForm">
-  <p mat-dialog-title>Ticket Weitergeben</p>
-  <button mat-button (click)="onCancelClicked()" style="display: inline-block; float: right">
-    <mat-icon>cancel</mat-icon>
-  </button>
-  <mat-dialog-content>
-    <label>
-      <p>ID: {{ticketID}}</p>
-    </label>
+  <p mat-dialog-title align="center">Ticket {{ticketID}} weitergeben</p>
+
+  <mat-dialog-content align="center">
+    <label>{{description}}</label>
+
     <br />
-    <label>
-      <p>Beschreibung: {{description}}</p>
-    </label>
-    <br />
+
     <mat-form-field>
       <input matInput formControlName="note" placeholder="Notiz" />
     </mat-form-field>
+
     <br />
+
     <mat-form-field>
       <mat-label>Subprozess</mat-label>
       <mat-select [(ngModel)]="selectedSubprocess" formControlName="subprocessID">
@@ -28,8 +24,9 @@
       <mat-error>{{error}}</mat-error>
     </mat-form-field>
   </mat-dialog-content>
+
   <mat-dialog-actions>
-    <button mat-button (click)="onCancelClicked()">Abbrechen</button>
-    <button mat-button [disabled]="!forwardTicketForm.valid" (click)="onSaveClicked()">Ticket {{functionality}}</button>
+    <button mat-stroked-button (click)="onCancelClicked()">Abbrechen</button>
+    <button mat-flat-button color="primary" [disabled]="!forwardTicketForm.valid" cdkFocusInitial (click)="onSaveClicked()">Ticket {{functionality}}</button>
   </mat-dialog-actions>
 </form>

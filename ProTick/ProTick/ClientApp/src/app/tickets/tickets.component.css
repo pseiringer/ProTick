@@ -4,8 +4,11 @@
 }
 
 .ticket-list {
-  margin: 3%;
-  margin-top: 1%;
+  padding-left: 3%; 
+  padding-right: 3%;
+  padding-top: 1%;
+  overflow: hidden;
+  height: 100%;
 }
 
 .mat-column-ticketid {
@@ -168,4 +171,16 @@ body {
 
 tr.example-element-row {
   cursor: pointer;
+}
+
+  tr.example-element-row:hover {
+    background-color: #f0f0f0!important;
+  }
+
+button {
+  outline: 0;
+}
+
+mat-select {
+  letter-spacing: 0px !important;
 }
