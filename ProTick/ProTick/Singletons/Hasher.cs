@@ -13,7 +13,8 @@ namespace ProTick.Singletons
         {
             using (SHA256 sha = SHA256.Create())
             {
-                byte[] hashedBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashedBytes = sha.ComputeHash(
+                    Encoding.UTF8.GetBytes(password));
 
                 StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < hashedBytes.Length; i++)
