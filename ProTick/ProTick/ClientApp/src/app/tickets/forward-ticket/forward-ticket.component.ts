@@ -25,7 +25,7 @@ export class ForwardTicketComponent implements OnInit {
     }
 
     functionality: Functionality = undefined;
-    isDone: boolean = false;
+    //isDone: boolean = false;
 
     ticketID: number = undefined;
     description: string = undefined;
@@ -61,11 +61,10 @@ export class ForwardTicketComponent implements OnInit {
                 this.functionality = this.options.functionality;
 
                 if (this.functionality === Functionality.Begin) {
-                    //this.forwardTicketForm.controls['note'].disable();
                     this.forwardTicketForm.controls['subprocessID'].disable();
 
                     this.processService
-                        .getSubprocessById(ticket.subprocessID) //TODO get next subprocess
+                        .getSubprocessById(ticket.subprocessID) //get next subprocess
                         .subscribe(data => {
                             console.log(data);
                             this.allSubprocesses = [data];
@@ -78,19 +77,25 @@ export class ForwardTicketComponent implements OnInit {
                 else if (this.functionality === Functionality.Finish) {
 
                     this.parentChildService
-                        .getChildrenBySubprocessID(ticket.subprocessID) //TODO get next subprocess
+                        .getChildrenBySubprocessID(ticket.subprocessID) //get child subprocesses
                         .subscribe(data => {
                             console.log(data);
                             this.allSubprocesses = [];
-                            if (data !== undefined && data.length > 0)
-                                if (data[0] !== null) {
-                                    this.allSubprocesses = data;
+                            if (data !== undefined && data.length > 0) {
+                                this.allSubprocesses = data;
+                                if (data[0] !== null)
                                     this.selectedSubprocess = data[0].subprocessID;
-                                }
-                                else {
-                                    this.isDone = true;
+                                else
                                     this.selectedSubprocess = 0;
-                                }
+                                //if (data[0] !== null) {
+                                //    this.allSubprocesses = data;
+                                //    this.selectedSubprocess = data[0].subprocessID;
+                                //}
+                                //else {
+                                //    this.isDone = true;
+                                //    this.selectedSubprocess = 0;
+                                //}
+                            }
                             else
                                 this.selectedSubprocess = -1;
                         });
@@ -124,13 +129,18 @@ export class ForwardTicketComponent implements OnInit {
                 //result.subprocessID = this.forwardTicketForm.controls['subprocessID'].value;
             }
             else if (isFinish) {
-                result.stateID = this.staticDatabaseObjectService.getStates().Open;
+                if (result.subprocessID != 0)
+                    result.stateID = this.staticDatabaseObjectService.getStates().Open;
+                else {
+                    result.subprocessID = -1;
+                    result.stateID = this.staticDatabaseObjectService.getStates().Finished;
+                }
             }
 
-            if (this.isDone) {
-                result.subprocessID = -1;
-                result.stateID = this.staticDatabaseObjectService.getStates().Finished;
-            }
+            //if (this.isDone) {
+            //    result.subprocessID = -1;
+            //    result.stateID = this.staticDatabaseObjectService.getStates().Finished;
+            //}
 
             this.dialogRef.close(result);
         }

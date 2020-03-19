@@ -68,11 +68,6 @@ export class TicketsComponent implements OnInit {
         this.reloadTickets();
         this.reloadTeams();
         this.reloadStates();
-
-        //console.log(this.authGuard.getRole());
-        //console.log(this.authGuard.isAdmin());
-
-        //this.renderTable();
     }
 
 
@@ -143,7 +138,6 @@ export class TicketsComponent implements OnInit {
             if (result !== undefined) {
                 this.ticketService.postTicket(result)
                     .subscribe(data => {
-                        //TODO error handling
                         this.reloadTickets();
                     });
             }
@@ -169,7 +163,6 @@ export class TicketsComponent implements OnInit {
             if (result !== undefined) {
                 this.ticketService.putTicket(id, result)
                     .subscribe(data => {
-                        //TODO error handling
                         this.reloadTickets();
                     });
             }
@@ -239,13 +232,11 @@ export class TicketsComponent implements OnInit {
         if (this.authGuard.isAdmin())
             this.ticketService.getTicket()
                 .subscribe(data => {
-                    //TODO error handling
                     this.fillTickets(data);
                 });
         else
             this.ticketService.getTicketsByUsername(this.authGuard.getUsername())
                 .subscribe(data => {
-                    //TODO Error handling
                     this.fillTickets(data);
                 });
     }
