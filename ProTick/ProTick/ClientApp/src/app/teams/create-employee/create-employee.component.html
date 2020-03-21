@@ -9,7 +9,7 @@
 <mat-horizontal-stepper [linear]="true" #stepper>
   <!--persönliche Daten-->
   <mat-step [stepControl]="personalFormGroup" style="align-content: center">
-    <form [formGroup]="personalFormGroup">
+    <form [formGroup]="personalFormGroup" align="center">
       <ng-template matStepLabel>Persönliche Daten</ng-template>
       <mat-form-field [hideRequiredMarker]="true">
         <input matInput [(ngModel)]="data.firstName" placeholder="Vorname" formControlName="firstNameCtrl">
@@ -45,13 +45,13 @@
       </mat-form-field>
       <br />
       <div>
-        <button mat-button matStepperNext [disabled]="!personalFormGroup.valid">Weiter</button>
+        <button mat-flat-button color="primary" style="color: white; width: 50%;" matStepperNext [disabled]="!personalFormGroup.valid">Weiter</button>
       </div>
     </form>
   </mat-step>
   <!--Addresse-->
   <mat-step [stepControl]="addressFormGroup">
-    <form [formGroup]="addressFormGroup">
+    <form [formGroup]="addressFormGroup" align="center">
       <ng-template matStepLabel>Addresse</ng-template>
 
       <mat-form-field [hideRequiredMarker]="true">
@@ -84,52 +84,57 @@
       </mat-form-field>
 
       <div>
-        <button mat-button matStepperPrevious>Zurück</button>
-        <button mat-button matStepperNext [disabled]="!addressFormGroup.valid">Weiter</button>
+        <button mat-stroked-button style="width: 24%;" matStepperPrevious>Zurück</button>
+        <button style="margin-left: 2pt; color: white; width: 24%;" mat-flat-button color="primary" matStepperNext [disabled]="!addressFormGroup.valid">Weiter</button>
       </div>
     </form>
   </mat-step>
   <!--Teamauswahl-->
   <mat-step [stepControl]="teamFormGroup">
-    <ng-template matStepLabel>Teamauswahl</ng-template>
+    <div align="center">
+      <ng-template matStepLabel>Teamauswahl</ng-template>
 
-    <mat-form-field>
-      <mat-label>Rolle</mat-label>
-      <mat-select [(ngModel)]="data.roleID">
-        <mat-option *ngFor="let role of allRoles" [value]="role.roleID">
-          {{role.title}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <br />
+      <mat-form-field>
+        <mat-label>Rolle</mat-label>
+        <mat-select [(ngModel)]="data.roleID">
+          <mat-option *ngFor="let role of allRoles" [value]="role.roleID">
+            {{role.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
 
-    <mat-form-field>
-      <mat-label>Teams</mat-label>
-      <mat-select [(ngModel)]="data.teamID">
-        <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
-          {{team.description}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <button mat-icon-button>
+        <mat-icon title="Klicken Sie auf einen Mitarbeiter, um diesen zu entfernen." style="cursor: help;">info</mat-icon>
+      </button>
 
-    <button mat-icon-button (click)="onAddTeam()">
-      <mat-icon>playlist_add</mat-icon>
-    </button>
+      <mat-form-field>
+        <mat-label>Teams</mat-label>
+        <mat-select [(ngModel)]="data.teamID">
+          <mat-option *ngFor="let team of allTeams" [value]="team.teamID">
+            {{team.description}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <p>Klicken, um zu entfernen</p>
+      <button mat-icon-button (click)="onAddTeam()">
+        <mat-icon>playlist_add</mat-icon>
+      </button>
 
-    <mat-action-list>
-      <button class="selectedTeamsListItem" *ngFor="let t of data.selTeams" mat-list-item (click)="onRemoveTeam(t)"> {{t.description}} </button>
-    </mat-action-list>
+      <mat-action-list>
+        <button align="center" class="selectedTeamsListItem link" *ngFor="let t of data.selTeams" mat-list-item (click)="onRemoveTeam(t)">
+          {{t.description}} <mat-icon class="someicon">delete</mat-icon>
+        </button>
+      </mat-action-list>
 
+      <div>
+        <button mat-stroked-button style="width: 50%;" matStepperPrevious>Zurück</button>
+      </div>
 
-    <div>
-      <button mat-button matStepperPrevious>Zurück</button>
-    </div>
-
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClickEmp()">Abbrechen</button>
-      <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{_buttonText}}</button>
+      <div mat-dialog-actions align="center">
+        <button mat-stroked-button style="width: 24%;" (click)="onNoClickEmp()">Abbrechen</button>
+        <button mat-flat-button color="primary" style="margin-left: 2pt; color: white; width: 24%;" [mat-dialog-close]="data" cdkFocusInitial>{{_buttonText}}</button>
+      </div>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

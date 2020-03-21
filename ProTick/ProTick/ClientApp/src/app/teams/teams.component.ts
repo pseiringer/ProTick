@@ -188,9 +188,6 @@ export class TeamsComponent implements OnInit {
       empAdd.roleID = emp.roleID;
       empAdd.addressID = emp.addressID;
       if (empAdd.addressID > 0) {
-
-
-
         this._addressService.getAddress(emp.addressID)
           .subscribe(data => {
             empAdd.street = data.street;
@@ -202,7 +199,6 @@ export class TeamsComponent implements OnInit {
             this.allEmployeeAddresses.push(empAdd);
 
             this.empTable.renderRows();
-
           });
       }
       else {
@@ -237,14 +233,7 @@ export class TeamsComponent implements OnInit {
                   .subscribe(data => this.et = data);
               });
             }
-
-            this.clearTeam();
-            this.clearET();
-            this.getTeams();
-          });
-      }
-    });
-  }
+    }
 
   onAddEmp(): void {
     const dialogRef = this.dialog.open(

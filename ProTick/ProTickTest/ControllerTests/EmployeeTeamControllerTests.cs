@@ -319,8 +319,10 @@ namespace ProTickTest
 
                 actualCount = context.EmployeeTeam.ToList().Count;
                 Assert.Equal(2, actualCount);
-                Assert.True(context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == 3) == null);
-                Assert.True(context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID != 3) != null);
+                Assert.True(
+                    context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID == 3) == null);
+                Assert.True(
+                    context.EmployeeTeam.FirstOrDefault(x => x.EmployeeTeamID != 3) != null);
 
                 controller.DeleteEmployeeTeamByTeamAndEmpID(dtos[1].TeamID, dtos[1].EmployeeID);
 
